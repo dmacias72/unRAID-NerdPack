@@ -77,8 +77,7 @@ sum1=$(/usr/bin/md5sum &plugin;/&name;-&version;.txz)
 sum2=$(/usr/bin/cat &plugin;/&name;-&version;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plugin;/&name;-&version;.txz
-  rm &plugin;/&name;-&version;.md5
+  rm -f &plugin;/&name;-&version;.*
   exit 1
 else
   upgradepkg --install-new &plugin;/&name;-&version;.txz
@@ -112,9 +111,8 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-rm -rf &emhttp;
-rm -f &plugin;/&name;-&version;z*
-rm -f  &plugin;/*.txz
+removepkg &plugin;/&name;-&version;.txz
+rm -f &plugin;/&name;-&version;.*
 
 echo ""
 echo "-----------------------------------------------------------"
