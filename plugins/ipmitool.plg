@@ -24,7 +24,7 @@
 ###2015.11.18
 - fixed "Waiting for events" triggering notification on system start
 ###2015.11.17
-- fix permissions for emhttp events
+- fix permissions for events
 ###2015.11.10b
 - deleted wrong page file
 ###2015.11.10
