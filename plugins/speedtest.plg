@@ -9,7 +9,7 @@
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/&repo;/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
-<!ENTITY pkgs 	    "/boot/packages/">
+<!ENTITY pkgs 	    "/boot/packages">
 <!ENTITY plugin	 "/boot/config/plugins/&name;">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
 ]>
