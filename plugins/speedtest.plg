@@ -57,14 +57,14 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 The 'plugin' package file.
 -->
 <FILE Name="&plugin;/&name;-&version;.txz">
-<URL>&repo;/archive/&name;-&version;.txz</URL>
+<URL>&gitURL;/archive/&name;-&version;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
 <FILE Name="&plugin;/&name;-&version;.md5">
-<URL>&repo;/archive/&name;-&version;.md5</URL>
+<URL>&gitURL;/archive/&name;-&version;.md5</URL>
 </FILE>
 
 <!--
@@ -77,8 +77,8 @@ sum1=$(/usr/bin/md5sum &plugin;/&name;-&version;.txz)
 sum2=$(/usr/bin/cat &plugin;/&name;-&version;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  #rm &plugin;/&name;-&version;.txz
-  #rm &plugin;/&name;-&version;.md5
+  rm &plugin;/&name;-&version;.txz
+  rm &plugin;/&name;-&version;.md5
   exit 1
 else
   upgradepkg --install-new &plugin;/&name;-&version;.txz
