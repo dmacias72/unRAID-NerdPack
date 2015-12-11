@@ -4,7 +4,7 @@
 <!ENTITY name      "speedtest">
 <!ENTITY repo      "unRAID">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.10">
+<!ENTITY version   "2015.12.10a">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/&repo;/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -112,7 +112,6 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-rm -rf &emhttp;
 removepkg &plugin;/&name;-&version;.txz
 rm -f &plugin;/&name;-&version;.txz
 rm -f  &plugin;/*.txz
