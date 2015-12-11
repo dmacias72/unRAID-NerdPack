@@ -2,11 +2,10 @@
 
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
-<!ENTITY repo      "unRAID">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.11a">
+<!ENTITY version   "2015.12.11">
 <!ENTITY launch    "Settings/&name;">
-<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/&repo;/master">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
 <!ENTITY pkgs 	    "/boot/packages/">
@@ -22,7 +21,7 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
-###2015.12.11a
+###2015.12.11
 - update package name
 - update install and remove scripts
 ###2015.12.10
@@ -61,14 +60,14 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 The 'plugin' package file.
 -->
 <FILE Name="&plgpath;/&plgname;.txz">
-<URL>&repo;/archive/&plgname;.txz</URL>
+<URL>&gitURL;/archive/&plgname;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
 <FILE Name="&plgpath;/&plgname;.md5">
-<URL>&repo;/archive/&plgname;.md5</URL>
+<URL>&gitURL;/archive/&plgname;.md5</URL>
 </FILE>
 
 <!--
