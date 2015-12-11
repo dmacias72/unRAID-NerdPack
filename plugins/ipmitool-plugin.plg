@@ -115,7 +115,7 @@ The 'remove' script.
 removepkg &plgpath;/&plgname;.txz \
           &plgpath;/&pkg;
 rm -rf &emhttp; \
-   -rf &plgpath;/&plgname;
+   -rf &plgpath;
 
 echo "Unloading ipmi drivers..."
 modprobe -r ipmi_si
