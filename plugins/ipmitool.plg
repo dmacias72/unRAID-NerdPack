@@ -76,8 +76,8 @@ sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
 sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz
-  rm &plgpath;/&plgname;.md5
+  rm &plgpath;/&plgname;.txz \
+     &plgpath;/&plgname;.md5
   exit 1
 else
   upgradepkg --install-new &plgpath;/&plgname;.txz
@@ -112,11 +112,12 @@ The 'remove' script.
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
 &emhttp;/scripts/stop
-removepkg &plgpath;/&plgname;.txz
-rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
-rm -f &plgpath;/&plgname;.md5
-removepkg &plugin;/&pkg;
+removepkg &plgpath;/&plgname;.txz \
+          &plgpath;/&pkg;
+rm -rf &emhttp; \
+   -f &plgpath;/&plgname;.txz \
+   -f &plgpath;/&plgname;.md5
+
 
 echo "Unloading ipmi drivers..."
 modprobe -r ipmi_si
