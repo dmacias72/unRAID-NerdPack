@@ -7,12 +7,12 @@
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
-<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY pkg       "ipmitool-1.8.13-x86_64-1_slack.txz">
 <!ENTITY md5       "3301f21f0d66160877f90ffc3278703b">
 <!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname	 "&name;-&version;-x86_64-1">
-<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
