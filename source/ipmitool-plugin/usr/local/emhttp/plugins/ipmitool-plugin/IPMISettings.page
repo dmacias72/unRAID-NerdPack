@@ -4,7 +4,7 @@ Title="IPMI tool"
 ---
 <?php
 $sName = "ipmievd";
-$ipmitool_cfg = parse_plugin_cfg("ipmitool");
+$ipmitool_cfg = parse_plugin_cfg("ipmitool-plugin");
 $ipmitool_service = isset($ipmitool_cfg['SERVICE']) ? $ipmitool_cfg['SERVICE'] 	: "disable";
 $ipmitool_remote = isset($ipmitool_cfg['REMOTE']) ? $ipmitool_cfg['REMOTE'] 	: "disable";
 $ipmitool_lanip = trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
@@ -17,7 +17,7 @@ $ipmitool_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /
 <script type="text/javascript" src="/plugins/ipmitool-plugin/javascript/jquery.mask.js"></script>
 
 <form markdown="1" name="ipmitool_settings" method="POST" action="/update.php" target="progressFrame">
-<input type="hidden" name="#file" value="ipmitool-plugin/ipmitool.cfg" />
+<input type="hidden" name="#file" value="ipmitool-plugin/ipmitool-plugin.cfg" />
 <input type="hidden" id="command" name="#command" value="" />
 
 Enable Event Notifications:

@@ -2,7 +2,7 @@ Menu="IPMItool:1"
 Title="Sensors"
 ---
 <?php
-$ipmitool_cfg = parse_plugin_cfg("ipmitool");
+$ipmitool_cfg = parse_plugin_cfg("ipmitool-plugin");
 $ipmitool_password = "";
 $ipmitool_options = "";
 if($ipmitool_cfg['REMOTE'] == "enable") {
