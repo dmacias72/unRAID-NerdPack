@@ -1,5 +1,0 @@
-#!/bin/bash
-source /boot/config/plugins/ipmitool/ipmitool.cfg
-if [ $SERVICE = enable ]; then
-	/usr/local/emhttp/plugins/ipmitool/scripts/start
-fi

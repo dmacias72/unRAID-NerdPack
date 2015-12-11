@@ -1,7 +1,7 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "ipmitool">
+<!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
 <!ENTITY version   "2015.12.11">
 <!ENTITY launch    "Tools/IPMItool">
@@ -115,9 +115,7 @@ The 'remove' script.
 removepkg &plgpath;/&plgname;.txz \
           &plgpath;/&pkg;
 rm -rf &emhttp; \
-   -f &plgpath;/&plgname;.txz \
-   -f &plgpath;/&plgname;.md5
-
+   -rf &plgpath;/&plgname;
 
 echo "Unloading ipmi drivers..."
 modprobe -r ipmi_si

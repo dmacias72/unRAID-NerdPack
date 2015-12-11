@@ -1,11 +1,11 @@
 #!/bin/sh
 # read our configuration
-source /boot/config/plugins/ipmitool/ipmitool.cfg
+source /boot/config/plugins/ipmitool-plugin/ipmitool.cfg
 
 prog="ipmievd"
 prog2="ipmitail"
 IPMIEVD="/usr/sbin/$prog"
-IPMITAIL="/usr/local/emhttp/plugins/ipmitool/scripts/$prog2"
+IPMITAIL="/usr/local/emhttp/plugins/ipmitool-plugin/scripts/$prog2"
 LOCKFILE="/var/lock/$prog"
 PIDFILE="/var/run/$prog.pid0"
 CONFIG="/boot/config/plugins/ipmitool"

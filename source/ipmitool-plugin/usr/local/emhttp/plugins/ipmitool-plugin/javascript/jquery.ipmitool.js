@@ -42,7 +42,7 @@ function clearEvents() {
  		$('#allEvents').attr('checked', false);
     	$.ajax({
    		type : "POST",
- 	  		url : "/plugins/ipmitool/include/delete_event.php",
+ 	  		url : "/plugins/ipmitool-plugin/include/delete_event.php",
     	 	data : {options: "clear" + Options + atob(Password)},
     	 	success: function(data) {
     	 		$("#tblEvent tbody").empty();
@@ -56,7 +56,7 @@ function clearEvents() {
   		var par = $(this).parent().parent(); //get table row
    	 	$.ajax({
   	   		type : "POST",
-   	   	url : "/plugins/ipmitool/include/delete_event.php",
+   	   	url : "/plugins/ipmitool-plugin/include/delete_event.php",
 	      	data : {options: "delete " + EventId + Options + atob(Password)},
    	   	success: function(data) {
 					par.remove(); //remove table row
@@ -84,7 +84,7 @@ function sensorArray(Refresh){
   	$.ajax({
       type: "POST",
       dataType: "json",
-   	url: "/plugins/ipmitool/include/ipmitool_array.php",
+   	url: "/plugins/ipmitool-plugin/include/ipmitool_array.php",
    	data : {options: "-vc sdr" + Options + atob(Password)},
    	success: function(data) {
    		$.each(data, function (i, val) {
@@ -119,7 +119,7 @@ function sensorArray(Refresh){
 					} else {
 						$("#tblSensor tbody").append(
 						"<tr id='"+Name+"'>"+
-						"<td title='"+data[i][3]+"'><img src='/plugins/ipmitool/images/green-on.png'/></td>"+ //status
+						"<td title='"+data[i][3]+"'><img src='/plugins/ipmitool-plugin/images/green-on.png'/></td>"+ //status
 						"<td>"+data[i][0]+"</td>"+ //sensor name
 	   				"<td class='advanced' style='display:" + Display + ";'>" + LowerNonRec + "</td>"+
 						"<td class='advanced' style='display:" + Display + ";'>" + LowerCritical + "</td>"+
@@ -147,7 +147,7 @@ function eventArray(){
   	$.ajax({
       type: "POST",
       dataType: "json",
-   	url: "/plugins/ipmitool/include/ipmitool_array.php",
+   	url: "/plugins/ipmitool-plugin/include/ipmitool_array.php",
    	data : {options: "-c sel elist" + Options + atob(Password)},
    	success: function(data) {
    		$.each(data, function (i, val) {
@@ -156,7 +156,7 @@ function eventArray(){
 				$("#tblEvent tbody").append(
 				"<tr>"+
 				"<td>	<input class='checkEvent' type='checkbox' value=" + data[i][0] + "></td>"+ //checkbox
-				"<td title='"+data[i][5]+"'><img src='/plugins/ipmitool/images/" + Status + "-on.png'/></td>"+ //status 
+				"<td title='"+data[i][5]+"'><img src='/plugins/ipmitool-plugin/images/" + Status + "-on.png'/></td>"+ //status 
 				"<td>" + data[i][0] + "</td>"+ //event id
 				"<td>" + data[i][1] + " "+data[i][2]+"</td>"+ //time stamp
 				"<td>" + Sensor[1] + "</td>"+ //sensor name

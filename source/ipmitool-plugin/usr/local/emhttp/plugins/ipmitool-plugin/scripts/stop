@@ -1,6 +1,6 @@
 #!/bin/sh
 # read our configuration
-source /boot/config/plugins/ipmitool/ipmitool.cfg
+source /boot/config/plugins/ipmitool-plugin/ipmitool.cfg
 
 prog="ipmievd"
 prog2="ipmitail"

@@ -14,10 +14,10 @@ $ipmitool_password = isset($ipmitool_cfg['PASSWORD']) ? $ipmitool_cfg['PASSWORD'
 $ipmitool_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
 ?>
 
-<script type="text/javascript" src="/plugins/ipmitool/javascript/jquery.mask.js"></script>
+<script type="text/javascript" src="/plugins/ipmitool-plugin/javascript/jquery.mask.js"></script>
 
 <form markdown="1" name="ipmitool_settings" method="POST" action="/update.php" target="progressFrame">
-<input type="hidden" name="#file" value="ipmitool/ipmitool.cfg" />
+<input type="hidden" name="#file" value="ipmitool-plugin/ipmitool.cfg" />
 <input type="hidden" id="command" name="#command" value="" />
 
 Enable Event Notifications:
@@ -73,9 +73,9 @@ function checkRUNNING(form) {
 		$("#btnApply").prop("disabled", false);
 	}
 	if (form.SERVICE.value == "enable")
-		form.command.value = "/usr/local/emhttp/plugins/ipmitool/scripts/start";
+		form.command.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/start";
 	else {
-		form.command.value = "/usr/local/emhttp/plugins/ipmitool/scripts/stop";
+		form.command.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/stop";
 	}
 }
 
