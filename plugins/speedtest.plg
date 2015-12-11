@@ -22,6 +22,8 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 
 <CHANGES>
 ###2015.12.10
+- update install and remove scripts
+- changed plugin repo
 - add date and time to table
 - add switchbuttons
 - update packages
