@@ -113,7 +113,8 @@ The 'remove' script.
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
 removepkg &plugin;/&name;-&version;.txz
-rm -f &plugin;/&name;-&version;.txz
+rm -rf &emhttp;
+rm -f &plugin;/&name;-&version;z*
 rm -f  &plugin;/*.txz
 
 echo ""
