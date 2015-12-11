@@ -48,7 +48,7 @@ This plugin uses ipmitool to display sensor readings
 -->
 
 <FILE Name="&plgpath;/&pkg;" Run="upgradepkg --install-new">
-<URL>&pkgURL;/;&pkg;</URL>
+<URL>&pkgURL;/&pkg;</URL>
 <MD5>&md5;</MD5>
 </FILE>
 
