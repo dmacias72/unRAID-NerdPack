@@ -4,7 +4,7 @@
 <!ENTITY name      "speedtest">
 <!ENTITY repo      "unRAID">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.11">
+<!ENTITY version   "2015.12.11a">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/&repo;/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -22,7 +22,7 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
-###2015.12.11
+###2015.12.11a
 - update package name
 - update install and remove scripts
 ###2015.12.10
