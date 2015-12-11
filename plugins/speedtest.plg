@@ -10,7 +10,8 @@
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
 <!ENTITY pkgs 	    "/boot/packages/">
-<!ENTITY plugin	 "/boot/config/plugins/&name;">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
 ]>
 
@@ -59,15 +60,15 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plugin;/&name;-&version;-x86_64-1.txz">
-<URL>&repo;/archive/&name;-&version;-x86_64-1.txz</URL>
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&repo;/archive/&plgname;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plugin;/&name;-&version;-x86_64-1.md5">
-<URL>&repo;/archive/&name;-&version;-x86_64-1.md5</URL>
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&repo;/archive/&plgname;.md5</URL>
 </FILE>
 
 <!--
@@ -76,19 +77,19 @@ The 'install' script.
 <FILE Run="/bin/bash">
 <INLINE> 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plugin;/&name;-&version;-x86_64-1.txz)
-sum2=$(/usr/bin/cat &plugin;/&name;-&version;-x86_64-1.md5)
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plugin;/&name;-&version;-x86_64-1.txz
-  rm &plugin;/&name;-&version;-x86_64-1.md5
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
   exit 1
 else
-  upgradepkg --install-new &plugin;/&name;-&version;-x86_64-1.txz
+  upgradepkg --install-new &plgpath;/&plgname;.txz
 fi
 
 # Create symlink to xml on flash drive
-ln -sf &plugin;/&name;.xml &emhttp;/&name;.xml
+ln -sf &plgpath;/&name;.xml &emhttp;/&name;.xml
 
 #upgrade pip and install speedtest-cli
 pip install --upgrade pip
@@ -115,9 +116,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
+removepkg &plgpath;/&plgname;.txz
 rm -rf &emhttp;
-removepkg &plugin;/&name;-&version;-x86_64-1.txz
-rm -f &plugin;/&name;-&version;-x86_64-1.txz
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
 
 echo ""
 echo "-----------------------------------------------------------"
