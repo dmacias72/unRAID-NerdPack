@@ -1,0 +1,101 @@
+Icon="ipmitool.png"
+Menu="NetworkServices"
+Title="IPMI tool"
+---
+<?php
+$sName = "ipmievd";
+$ipmitool_cfg = parse_plugin_cfg("ipmitool");
+$ipmitool_service = isset($ipmitool_cfg['SERVICE']) ? $ipmitool_cfg['SERVICE'] 	: "disable";
+$ipmitool_remote = isset($ipmitool_cfg['REMOTE']) ? $ipmitool_cfg['REMOTE'] 	: "disable";
+$ipmitool_lanip = trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
+$ipmitool_ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/', $ipmitool_cfg['IPADDR']) ? $ipmitool_cfg['IPADDR'] : $ipmitool_lanip;
+$ipmitool_user = isset($ipmitool_cfg['USER']) ? $ipmitool_cfg['USER'] 		: "";
+$ipmitool_password = isset($ipmitool_cfg['PASSWORD']) ? $ipmitool_cfg['PASSWORD'] 		: "";
+$ipmitool_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
+?>
+
+<script type="text/javascript" src="/plugins/ipmitool/javascript/jquery.mask.js"></script>
+
+<form markdown="1" name="ipmitool_settings" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="ipmitool/ipmitool.cfg" />
+<input type="hidden" id="command" name="#command" value="" />
+
+Enable Event Notifications:
+: <select id="SERVICE" name="SERVICE" size="1" onChange="checkRUNNING(this.form);">
+  <?=mk_option($ipmitool_service, "disable", "No");?>
+  <?=mk_option($ipmitool_service, "enable", "Yes");?>
+  </select>
+
+Enable Remote Connection:
+: <select id="REMOTE" class="ipmi_run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
+  <?=mk_option($ipmitool_remote, "disable", "No");?>
+  <?=mk_option($ipmitool_remote, "enable", "Yes");?>
+  </select>
+
+<label class="ipmi_lan">IPMI IP Address:</label>
+: <input id="IPADDR" type="text" class="ipmi_lan ipmi_address" name="IPADDR" maxlength="40" value="<?=$ipmitool_ipaddr;?>" title="IPMI IP address" placeholder="" >
+
+<label class="ipmi_lan">IPMI User Name:</label>
+: <input id="USER" type="text" class="ipmi_lan" name="USER" maxlength="40" value="<?=$ipmitool_user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
+
+<label class="ipmi_lan">IPMI Password:</label>
+: <input id="PASSWORD" type="password" class="ipmi_lan" name="PASSWORD" maxlength="40" value="<?=$ipmitool_password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
+
+<input id="DEFAULT" class="ipmi_run" type="button" value="Default" onClick="resetDATA(this.form);">
+: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()">
+</form>
+
+<script type="text/javascript">
+$(function(){
+	showStatus('<?=$sName;?>');
+	checkRUNNING(document.ipmitool_settings);
+	checkREMOTE(document.ipmitool_settings);
+	decData(document.ipmitool_settings);
+	//ip address input mask
+	$('.ipmi_address').mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation:  {'Z': {pattern: /[0-9]/, optional: true}}});
+});
+
+function resetDATA(form) {
+	form.REMOTE.selectedIndex = 0;
+	form.IPADDR.value = "";
+	form.USER.value = "";
+	form.PASSWORD.value = "";
+	form.submit();
+}
+
+function checkRUNNING(form) {
+	if ("<?=$ipmitool_running;?>" == "yes")
+	{
+		$(".ipmi_run").prop("disabled", true);
+		form.btnApply.disabled = "disabled";
+   }else{
+   	$(".ipmi_run").prop("disabled", false);
+		$("#btnApply").prop("disabled", false);
+	}
+	if (form.SERVICE.value == "enable")
+		form.command.value = "/usr/local/emhttp/plugins/ipmitool/scripts/start";
+	else {
+		form.command.value = "/usr/local/emhttp/plugins/ipmitool/scripts/stop";
+	}
+}
+
+function decData(form) {
+ form.PASSWORD.value = atob(form.PASSWORD.value);
+}
+
+function checkREMOTE(form) {
+	if (form.REMOTE.selectedIndex < 1 )
+		$(".ipmi_lan").hide();
+	else
+   	$(".ipmi_lan").show();
+   	$(".ipmi_lan").prop("disabled", (form.SERVICE.value == "enable"));
+}
+
+function verifyDATA(form) {
+	form.SERVICE.value = form.SERVICE.value.replace(/ /g,"_");
+	form.REMOTE.value = form.REMOTE.value.replace(/ /g,"_");
+	form.USER.value = form.USER.value.replace(/ /g,"_");
+	form.PASSWORD.value = btoa(form.PASSWORD.value);
+}
+
+</script>

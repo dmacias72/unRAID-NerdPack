@@ -1,0 +1,25 @@
+Menu="IPMItool:3"
+Title="Event Log"
+---
+<div>
+	<table style="margin-top:-21px;" class="tablesorter ipmi_sel" id="tblEvent">			
+		<thead>
+			<tr>
+				<th><input id="allEvents" type="checkbox">  All </th>
+				<th> Status </th>
+				<th> Event ID </th>
+				<th> Time Stamp </th>
+				<th> Sensor Name </th>
+				<th> Sensor Type </th>
+				<th> Subject </th>
+				<th> Description </th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<div style="margin-left:18px">
+		<button type="button" id="btnClearEvents"/>Clear</button>
+		<button type="button" onClick="eventArray();"/>Refresh</button>
+ 	</div>
+</div>

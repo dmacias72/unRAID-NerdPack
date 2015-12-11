@@ -1,0 +1,35 @@
+#!/bin/sh
+# read our configuration
+source /boot/config/plugins/ipmitool/ipmitool.cfg
+
+prog="ipmievd"
+prog2="ipmitail"
+IPMIEVD="/usr/sbin/$prog"
+IPMITAIL="/usr/local/emhttp/plugins/ipmitool/scripts/$prog2"
+LOCKFILE="/var/lock/$prog"
+PIDFILE="/var/run/$prog.pid0"
+CONFIG="/boot/config/plugins/ipmitool"
+OPTIONS=""
+
+# no-op if already running
+if [ ! -r $PIDFILE ]; then
+  if [ $REMOTE == "enable" ]; then
+	  OPTIONS="-I lanplus -H $IPADDR -U $USER -P $(echo $PASSWORD | base64 --decode)"
+  fi
+  sleep 1
+
+  nohup $IPMIEVD sel $OPTIONS > /dev/null 2>&1 | logger -tipmitool &
+  touch $LOCKFILE
+  TIMER=0
+  while [ ! -e $PIDFILE ]; do
+	  sleep 1
+  	let TIMER=$TIMER+1
+        if [ $TIMER -gt 5 ]; then
+             echo -n "$PIDFILE not created"
+             break
+     	  fi
+  done
+  if [ -r $PIDFILE ]; then
+    nohup $IPMITAIL >/dev/null 2>&1 < /dev/null &
+  fi
+fi

@@ -1,0 +1,47 @@
+Menu="IPMItool:1"
+Title="Sensors"
+---
+<?php
+$ipmitool_cfg = parse_plugin_cfg("ipmitool");
+$ipmitool_password = "";
+$ipmitool_options = "";
+if($ipmitool_cfg['REMOTE'] == "enable") {
+	$ipmitool_options = " -I lanplus -H {$ipmitool_cfg['IPADDR']} -U {$ipmitool_cfg['USER']} -P ";
+	$ipmitool_password = $ipmitool_cfg['PASSWORD'];
+}
+?>
+
+<link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
+
+<div>
+	<span class="status" style="margin-top: -22px;"><input type="checkbox" class="advancedview"></span>
+	<table style="margin-top:-21px;" class="tablesorter ipmi_sensors" id="tblSensor">
+		<thead>
+			<tr>
+				<th> Status </th>
+				<th> Sensor </th>
+				<th class="advanced" style="display:none"> Lower <br> Non-Recover </th>
+				<th class="advanced" style="display:none"> Lower <br> Critical </th>
+				<th class="advanced" style="display:none"> Lower <br> Non-Critical </th>
+				<th> Reading </th>
+				<th> Units </th>
+				<th class="advanced" style="display:none"> Upper <br> Non-Critical </th>
+				<th class="advanced" style="display:none"> Upper <br> Critical </th>
+				<th class="advanced" style="display:none"> Upper <br> Non-Recover </th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+	<div style="margin-left:18px">
+		<button type="button" onClick="done();">Done</button>
+	</div>
+</div>
+
+<script type="text/javascript" src="/plugins/ipmitool/javascript/jquery.ipmitool.js"></script>
+<script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
+
+<script type="text/javascript">
+var Password = '<?=$ipmitool_password?>';
+var Options = '<?=$ipmitool_options?>';
+</script>

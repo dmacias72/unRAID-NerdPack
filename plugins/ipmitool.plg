@@ -1,0 +1,136 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "ipmitool">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.12.11">
+<!ENTITY launch    "Tools/IPMItool">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkg       "ipmitool-1.8.13-x86_64-1_slack.txz">
+<!ENTITY md5       "3301f21f0d66160877f90ffc3278703b">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
+
+<CHANGES>
+###2015.12.11
+- change repo
+- change install and remove method
+###2015.11.18
+- fixed "Waiting for events" triggering notification on system start
+###2015.11.17
+- fix permissions for emhttp events
+###2015.11.10b
+- deleted wrong page file
+###2015.11.10
+- stop event monitoring on plugin removal
+###2015.11.09
+- minor bug fixes
+###2015.11.08
+- add settings page
+- add event notifications
+- add remote IPMI access
+###2015.08.15
+- update for unRAID 6.1-rc+ only
+###2015.05.07a
+- fix bug
+###2015.05.07
+- initial unRAID 6 release.
+</CHANGES>
+
+<!--
+This plugin uses ipmitool to display sensor readings
+-->
+
+<FILE Name="&plgpath;/&pkg;" Run="upgradepkg --install-new">
+<URL>&pkgURL;&pkg;</URL>
+<MD5>&md5;</MD5>
+</FILE>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash" Method="install">
+<INLINE> 
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
+  exit 1
+else
+  upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
+
+# Update file permissions of scripts
+chmod +0755 &emhttp;/scripts/*
+
+# Load impi drivers
+echo "Loading ipmi drivers..."
+modprobe ipmi_si
+modprobe ipmi_devintf
+
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+&emhttp;/scripts/stop
+removepkg &plgpath;/&plgname;.txz
+rm -rf &emhttp;
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
+removepkg &plugin;/&pkg;
+
+echo "Unloading ipmi drivers..."
+modprobe -r ipmi_si
+modprobe -r ipmi_devintf
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
+

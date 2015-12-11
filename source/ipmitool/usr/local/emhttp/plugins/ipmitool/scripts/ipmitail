@@ -1,0 +1,11 @@
+#!/bin/bash
+prog="ipmievd: "
+
+exec /usr/bin/tail -n 0 -F /var/log/syslog | \
+
+while read LINE;
+do
+[[ "$LINE" != *$prog* ]] || [["$LINE" == *"Waiting for events"*]] && continue
+sleep 1 |
+exec /usr/local/emhttp/webGui/scripts/notify -s "Notice [$HOSTNAME]" -d "$(echo "$LINE" | sed -e 's/.*ipmievd: //')" -i "warning" && continue 2
+done

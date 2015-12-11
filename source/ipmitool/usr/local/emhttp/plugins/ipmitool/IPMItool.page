@@ -1,0 +1,5 @@
+Menu="UNRAID-OS"
+Title="IPMI tool"
+Type="xmenu"
+Tabs="true"
+---
