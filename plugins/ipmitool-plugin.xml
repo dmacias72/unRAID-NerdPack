@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<Plugin>True</Plugin>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmitool-plugin.plg</PluginURL>
+<PluginAuthor>dmacias72</PluginAuthor>
+<Beta>False</Beta>
+<Category>Tools:System</Category>
+<Name>IPMI Tool</Name>
+<Description>
+The ipmitool plugin allows you to view your system sensors and events using your ipmi hardware. Allows for local or remote access and event notification.
+</Description>
+<Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
+<Icon>https://raw.githubusercontent.com/dmacias72/dmacias-plugin-repository/master/ipmitool-plugin.png</Icon>
+<Date>2015-12-11</Date>
+<Changes>
+###2015.12.11
+- change repo
+- change install and remove method
+###2015.11.18
+- fixed "Waiting for events" triggering notification on system start
+###2015.11.17
+- fix permissions for emhttp events
+###2015.11.10b
+- whoops deleted sensors page
+###2015.11.10
+- stop event monitoring on plugin removal
+###2015.11.09
+- minor bug fixes
+###2015.11.08
+- add settings page
+- add event notifications
+- add remote IPMI access
+###2015.08.15
+- update for unRAID 6.1-rc+ only
+###2015.05.07a
+- fix bug
+###2015.05.07
+- initial unRAID 6 release
+</Changes>
+</Containers>

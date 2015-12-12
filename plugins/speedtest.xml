@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<Plugin>True</Plugin>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.plg</PluginURL>
+<PluginAuthor>dmacias72</PluginAuthor>
+<Beta>False</Beta>
+<Category>Tools:System</Category>
+<Name>Speedtest</Name>
+<Description>
+This plugin interacts with the command line interface for testing internet bandwidth using speedtest.net
+</Description>
+<Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
+<Icon>https://raw.githubusercontent.com/dmacias72/dmacias-plugin-repository/master/speedtest.png</Icon>
+<Date>2015-12-11</Date>
+<Changes>
+###2015.12.11
+- update package name
+- update install and remove scripts
+###2015.12.10
+- add date and time to table
+- add switchbuttons
+- update packages
+###2015.10.19
+- typos
+###2015.10.18b
+- update to python 2.7.9
+###2015.10.18a
+- update install script
+###2015.10.17
+- initial commit
+</Changes>
+</Containers>
