@@ -1,0 +1,146 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "NerdPack">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.12.13">
+<!ENTITY launch    "Settings/&name;">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgs 	    "/boot/packages">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
+
+<CHANGES>
+###2015.12.13
+- initial commit of wrapper plugin for packages in repo
+###2015.12.07
+- Added perl 5.22.0
+- Added vim 7.4.898 (thanks Ryan Detzel)
+
+###2015.09.09
+- Keep all packages installed after NerdPack uninstall so we don't break other plugin's dependancies. (thanks David Coppit)
+
+###2015.08.09
+- Added p7zip 9.38.1
+
+###2015.07.31
+- Added iperf 3.0.11
+
+###2015.06.27
+- Added sshfs 2.5
+
+###2015.06.23
+- Added python 2.7.9 (fixes iotop dependency)
+
+###2015.05.16
+- Added subversion 1.7.16
+- Added MD5 checks for all packages
+
+###2015.05.15
+- Added lftp 4.6.1
+- Replaced installpkg with upgradepkg to allow package upgrading
+- Added removal of packages upon uninstall of &name;
+
+###2015.04.29
+- Added git 2.3.5
+
+###2015.04.24
+- Added strace 4.10
+
+###2015.04.23
+- Added bwm-ng 0.6
+
+###2015.02.07
+- Added unrar 5.2.5
+
+###2015.01.06
+- Inital release. includes:
+ - iftop 1.0pre2
+ - iotop 0.6
+ - screen 4.2.1
+ - lshw B.02.17
+ - kbd 1.15.3
+ - inotify-tools 3.14
+ - cpio 2.11
+</CHANGES>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash" Method="install">
+<INLINE>
+if [ ! -d &emhttp; ]; then
+	mkdir -p &emhttp;
+fi
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz \
+     &plgpath;/&plgname;.md5
+  exit 1
+else
+  upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
+
+# Update file permissions of scripts
+chmod +0755 &emhttp;/scripts/*
+
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;, eschultz"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+removepkg &plgpath;/&plgname;.txz \
+          &plgpath;/&pkg;
+rm -rf &emhttp; \
+   -rf &plgpath;
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2015, &author;, eschultz"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
