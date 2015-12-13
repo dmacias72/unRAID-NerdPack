@@ -128,10 +128,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-removepkg &plgpath;/&plgname;.txz \
-          &plgpath;/&pkg;
-rm -rf &emhttp; \
-   -rf &plgpath;
+removepkg &plgpath;/&plgname;.txz
+rm -rf &emhttp;
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
 
 echo ""
 echo "-----------------------------------------------------------"
