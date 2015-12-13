@@ -12,7 +12,7 @@ ipmitool-plugin: The ipmitool plugin allows you to view your system sensors and
 ipmitool-plugin: events using your ipmi hardware. Allows for local or remote 
 ipmitool-plugin: access and event notification.
 ipmitool-plugin: 
-ipmitool-plugin: https://github.com/dmacias72/unRAID
+ipmitool-plugin: https://github.com/dmacias72/unRAID-plugins
 ipmitool-plugin: 
 ipmitool-plugin: 
 ipmitool-plugin: 
