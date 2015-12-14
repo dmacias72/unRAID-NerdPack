@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+         |-----handy-ruler------------------------------------------------------|
+NerdPack: Nerd Tools unRAID Plugin
+NerdPack:
+NerdPack: unRAID plugin wrapper for extra packages, mostly CLI, for advanced
+NerdPack: users.  Use at your own risk. Not officially supported by LimeTech.
+NerdPack: 
+NerdPack: Supports: apr, apt-util, bwm-ng, cpio, git, iftop, inotify, iotop,
+NerdPack: iperf, kbd, lftp, lshw, neon, p7zip, perl, python, readline, screen,
+NerdPack: sshfs-fuse, strace, subversion, unrar, utempter, vim
+NerdPack: 
+NerdPack: plugin:   https://github.com/dmacias72/unRAID-plugins
+NerdPack: packages: https://github.com/eschultz/unraid6-nerdpack
