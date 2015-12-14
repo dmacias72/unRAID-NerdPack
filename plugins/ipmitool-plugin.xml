@@ -11,8 +11,10 @@ The ipmitool plugin allows you to view your system sensors and events using your
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/dmacias-plugin-repository/master/ipmitool-plugin.png</Icon>
-<Date>2015-12-11</Date>
+<Date>2015-12-14</Date>
 <Changes>
+###2015.12.14
+- make sure to remove old plugin
 ###2015.12.11
 - change repo
 - change install and remove method

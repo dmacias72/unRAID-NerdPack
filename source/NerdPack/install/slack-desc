@@ -6,14 +6,14 @@
 # customary to leave one space after the ':' except on otherwise blank lines.
 
          |-----handy-ruler------------------------------------------------------|
-nerdapck: Nerd Tools unRAID Plugin
-nerdpack:
-nerdpack: unRAID plugin wrapper for extra packages, mostly CLI, for advanced
-nerdpack: users.  Use at your own risk. Not officially supported by LimeTech.
-nerdpack: 
-nerdpack: Supports: apr, apt-util, bwm-ng, cpio, git, iftop, inotify, iotop,
-nerdpack: iperf, kbd, lftp, lshw, neon, p7zip, perl, python, readline, screen,
-nerdpack: sshfs-fuse, strace, subversion, unrar, utempter, vim
-nerdpack: 
-nerdpack: plugin:   https://github.com/dmacias72/unRAID-plugins
-nerdpack: packages: https://github.com/eschultz/unraid6-nerdpack
+NerdPack: Nerd Tools unRAID Plugin
+NerdPack:
+NerdPack: unRAID plugin wrapper for extra packages, mostly CLI, for advanced
+NerdPack: users.  Use at your own risk. Not officially supported by LimeTech.
+NerdPack: 
+NerdPack: Supports: apr, apt-util, bwm-ng, cpio, git, iftop, inotify, iotop,
+NerdPack: iperf, kbd, lftp, lshw, neon, p7zip, perl, python, readline, screen,
+NerdPack: sshfs-fuse, strace, subversion, unrar, utempter, vim
+NerdPack: 
+NerdPack: plugin:   https://github.com/dmacias72/unRAID-plugins
+NerdPack: packages: https://github.com/eschultz/unraid6-nerdpack

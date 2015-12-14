@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.13">
+<!ENTITY version   "2015.12.14">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -17,6 +17,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2015.12.14
+- fix some minor bugs
 ###2015.12.13
 - initial commit of wrapper plugin for packages in repo
 ###2015.12.07
@@ -89,10 +91,6 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash" Method="install">
 <INLINE>
-if [ ! -d &emhttp; ]; then
-	mkdir -p &emhttp;
-fi
-
 # Verify and install plugin package
 sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
 sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
@@ -128,10 +126,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-removepkg &plgpath;/&plgname;.txz
-rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
-rm -f &plgpath;/&plgname;.md5
+removepkg &plgpath;/&plgname;.txz \
+          &plgpath;/&pkg;
+rm -rf &emhttp; \
+   -rf &plgpath;
 
 echo ""
 echo "-----------------------------------------------------------"

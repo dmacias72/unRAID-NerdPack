@@ -1,4 +1,5 @@
 $(function(){
+	//Shadowbox.init({onClose:packageQuery});
 	//tablesorter options
 	$('#tblPackages').tablesorter({headers:{5:{sorter:false}}});
 
@@ -54,14 +55,15 @@ function packageManager() {
 		type : "POST",
 		url : "/update.php",
       data : $('#package_form').serializeArray(),
-	   success: function() {
-			openBox('/plugins/NerdPack/scripts/packagemanager&arg1=webgui&arg2='+$.cookie('nerdpack_packages'),'Install Packages',490,430,true);
- 	    }
+	   complete: function() {
+			openBox('/plugins/NerdPack/scripts/packagemanager&arg1=webgui&arg2='+$.cookie('nerdpack_packages'),'Manage Packages',600,900,true);
+ 	   }
    });
 };
 
 //list all available packages in a table
 function packageQuery() {
+	$("#tblPackages tbody").empty();
 	$.ajax({
 		type: "GET",
 		dataType: "json",
@@ -197,19 +199,4 @@ function checkDepends() {
 		$('#python').switchButton({checked: true});
 		$('#python','.pkgvalue').val('yes');
 	}
-};
-
-// check github for newer package and report status
-function getPackages() {
-	$.ajax({
-  		type: "GET",
-      url: "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages",
-      dataType: "json",
-      success: function(data) {
-		},
-		complete : function () {
-		},
-		error: function () {
-		}
-	});
 };

@@ -3,16 +3,17 @@ Menu="NetworkServices"
 Title="Nerd Pack"
 ---
 <?php
-include("/urs/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
+include("/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
 
 $pkg_repo = "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages";
 $repo_file= "/boot/config/plugins/NerdPack/packages.json";
 
-get_content_from_github($pkg_repo, $repo_file){
+get_content_from_github($pkg_repo, $repo_file);
 ?>
 
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 
+<div id="iframe-popup" style="display:none;-webkit-overflow-scrolling:touch;"></div>
 <form markdown="1" id="package_form" name="package_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg" />
 <table style="margin-top:-22px;" class="tablesorter" id="tblPackages">

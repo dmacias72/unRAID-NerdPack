@@ -1,10 +1,10 @@
 #!/usr/bin/php -q
 <?php
-include("/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
+require_once("/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
 
-function logger($message) {
-  echo "$message\n";
-  //shell_exec( "echo $message | logger -tnerdpack");
+function logger($output) {
+	shell_exec( "echo '$output' 2>&1 | logger -tnerdpack");
+	echo "\n".$output."\n";
 }
 
 $config_file = "/boot/config/plugins/NerdPack/NerdPack.cfg";
@@ -27,11 +27,8 @@ logger("Processing Packages...");
 foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 
 	$pkg_cmd = '';
-
 	$pkg_name = str_replace("_", ".", $pkg_name); // replace "_" with "." in package names
-	
 	$pkg_pattern = "/^".$pkg_name.".*/"; // search patter for packages
-
 	$pkg_install_status = preg_grep($pkg_pattern, $pkgs_installed); // check install status
 
 	if($pkg_pref == "yes" && !$pkg_install_status){
@@ -39,7 +36,7 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 		//if executing from the wegui check status and download if necessary
 		if ($argv[1] == "webgui"){
 
-			if(!preg_grep($pkg_pattern , $pkgs_downloaded)) {
+			if(!preg_grep($pkg_pattern, $pkgs_downloaded)) {
 
 				$pkg_online_status = preg_grep($pkg_pattern , $pkgs_github);
 
@@ -48,41 +45,18 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 				});
 				
 				$pkg_gitname = array_values($pkg_matches)[0]["name"];
-			
 				$pkg_file = $pkg_path.$pkg_gitname;
-
-				$pkg_url = array_values($pkg_matches)[0]["download_url"];
-				
-				$pkg_sha = array_values($pkg_matches)[0]["sha"];
-				
-				$pkg_size = array_values($pkg_matches)[0]["size"];
+				$pkg_url  = array_values($pkg_matches)[0]["download_url"];
+				$pkg_sha  = array_values($pkg_matches)[0]["sha"];
 
 				logger("Downloading $pkg_gitname package...");
-				get_file_from_url($pkg_file, $pkg_url);
-				
-				/*$pkg_msg = "$pkg_name package download failed.";
-				if (file_put_contents($pkg_new, fopen($pkg_git.$pkg_name, 'r')));{
-				$pkg_size = filesize($pkg_new);
-				$pkg_handle = fopen($pkg_new, "rb");
-				$pkg_contents = fread($pkg_handle, $pkg_size);
-				fclose($pkg_handle);
-				$pkg_str = "blob ".$pkg_size."\0".$pkg_contents;
-				$pkg_sha = sha1($pkg_str);
-				if($pkg_sha == $_POST["pkgsha"]) {
-					$pkg_msg = "$pkg_name package downloaded.";
-					if (is_file($pkg_old))
-						unlink($pkg_old);
-				if($pkg_pref == "yes") {
-					$pkg_msg = "$pkg_name package updated.";
-					}
-				}else {
-				if (is_file($pkg_new))
-					unlink($pkg_new);
-					}
-				}
-				echo json_encode($pkg_msg);
-				*/
 
+				get_file_from_url($pkg_file, $pkg_url);
+
+				if(file_check_sha($pkg_file, $pkg_sha))
+					logger("$pkg_gitname package downloaded sucessfully!");
+				else
+					logger("$pkg_gitname package download failed!");
 			}
 		}
 
@@ -96,14 +70,10 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 
 	}
 	if(!empty($pkg_cmd)){
-		logger("$pkg_msg $pkg_name package...");
-		$pkg_cmd = $pkg_cmd.$pkg_path.$pkg_name."*";
-
-		exec($pkg_cmd, $output, $return_var);
-
-		for ($i = 0; $i < sizeof($output); $i++) {
-		 logger($output[$i]);
-		}
+		echo "$pkg_msg $pkg_name package...\n";
+		$pkg_cmd = $pkg_cmd.$pkg_path.$pkg_name."*  2>&1";
+		$output = shell_exec($pkg_cmd);
+		logger($output);
 	}
 }
 

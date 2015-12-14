@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.13a">
+<!ENTITY version   "2015.12.14">
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -18,7 +18,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2015.12.13a
+###2015.12.14
 - make sure and remove old plugin
 ###2015.12.11
 - change repo
@@ -73,12 +73,8 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash" Method="install">
 <INLINE>
-if [ ! -d &emhttp; ]; then
-	mkdir -p &emhttp;
-fi
-
 if [ ! -d /usr/local/emhttp/plugins/ipmitool ]; then
-	mkdir -p /usr/local/emhttp/plugins/ipmitool
+	rm -rf  /usr/local/emhttp/plugins/ipmitool
 fi
 
 # Verify and install plugin package
