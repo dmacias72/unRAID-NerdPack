@@ -5,6 +5,7 @@ require_once("/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
 function logger($output) {
 	shell_exec( "echo '$output' 2>&1 | logger -tnerdpack");
 	echo "\n".$output."\n";
+	usleep(100000);
 }
 
 $config_file = "/boot/config/plugins/NerdPack/NerdPack.cfg";
@@ -31,10 +32,10 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 	$pkg_pattern = "/^".$pkg_name.".*/"; // search patter for packages
 	$pkg_install_status = preg_grep($pkg_pattern, $pkgs_installed); // check install status
 
-	if($pkg_pref == "yes" && !$pkg_install_status){
+	if($pkg_pref == "yes"){
 
 		//if executing from the wegui check status and download if necessary
-		if ($argv[1] == "webgui"){
+		if ($argv[1] == "download"){
 
 			if(!preg_grep($pkg_pattern, $pkgs_downloaded)) {
 
@@ -59,10 +60,10 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 					logger("$pkg_gitname package download failed!");
 			}
 		}
-
-		$pkg_msg = "Installing";
-		$pkg_cmd = "upgradepkg --install-new ";
-
+		if (!$pkg_install_status){
+			$pkg_msg = "Installing";
+			$pkg_cmd = "upgradepkg --install-new ";
+		}
 	}elseif($pkg_pref == "no" && $pkg_install_status && $argv[2] == "remove"){
 
 		$pkg_msg = "Removing";
@@ -70,11 +71,12 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 
 	}
 	if(!empty($pkg_cmd)){
-		echo "$pkg_msg $pkg_name package...\n";
+		logger("$pkg_msg $pkg_name package...");
 		$pkg_cmd = $pkg_cmd.$pkg_path.$pkg_name."*  2>&1";
 		$output = shell_exec($pkg_cmd);
 		logger($output);
-	}
+	}else
+	logger($pkg_name." package up to date");
 }
 
 logger("All packages processed");
