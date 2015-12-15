@@ -6,12 +6,24 @@ $(function(){
 	$('#removepkg')
 	.switchButton({
 		labels_placement: "left",
-		on_label: 'unInstall Packages',
-  		off_label: 'unInstall Packages',
-  		checked: $.cookie('nerdpack_packages') == 'remove'
+		on_label: 'unInstall On',
+  		off_label: 'unInstall Off',
+  		checked: $.cookie('nerdpack_packages_remove') == 'remove'
   	})
 	.change(function () {
-		$.cookie('nerdpack_packages', $('#removepkg').prop('checked') ? 'remove' : 'donotremove', { expires: 3650 });
+		$.cookie('nerdpack_packages_remove', $('#removepkg').prop('checked') ? 'remove' : 'donotremove', { expires: 3650 });
+	});
+
+	// "delete package" switch and cookie
+	$('#deletepkg')
+	.switchButton({
+		labels_placement: "left",
+		on_label: 'delete On',
+  		off_label: 'delete Off',
+  		checked: $.cookie('nerdpack_packages_delete') == 'delete'
+  	})
+	.change(function () {
+		$.cookie('nerdpack_packages_delete', $('#removepkg').prop('checked') ? 'delete' : 'donotdelete', { expires: 3650 });
 	});
 
 	// select all packages switch
@@ -55,8 +67,10 @@ function packageManager() {
 		url : "/update.php",
       data : $('#package_form').serializeArray(),
 	   success: function() {
-			openBox('/plugins/NerdPack/scripts/packagemanager&arg1=download&arg2='+
-						$.cookie('nerdpack_packages'),'Manage Packages',600,900,true);
+			openBox('/plugins/NerdPack/scripts/packagemanager&arg1=download'+
+						'&arg2='+$.cookie('nerdpack_packages_remove')+
+						'&arg3='+$.cookie('nerdpack_packages_delete'),
+						'Manage Packages',600,900,true);
  	   }
    });
 };
@@ -86,10 +100,7 @@ function packageQuery() {
 				"<td><input class='pkgcheckbox' id='"+data[i].pkgname+"' type='checkbox'>"+
 				"<input class='pkgvalue' type='hidden' id='"+data[i].pkgname+"_value' name='"+
 					data[i].pkgnver+"' value='"+data[i].config+"'></td>"+
-				"<td><img src='/plugins/dynamix/images/close.png' width='24' height='24' "+
-					"class='btnRemove' title='remove package from flash drive'/></td>"+
 				"</tr>");
-				$(".btnRemove").unbind("click", Remove).bind("click", Remove);
 				$('#'+data[i].pkgname)
 					.switchButton({
 						labels_placement: 'right',
@@ -126,22 +137,3 @@ function checkDepends() {
 		$('#python','.pkgvalue').val('yes');
 	}
 };
-
-function Remove(){
-	var par = $(this).parent().parent();
-	if (par.children("td:nth-child(4)").html() == "yes"){
-		var Package = par.children("td:nth-child(1)").html();
-		var Downloaded = par.children("td:nth-child(4)").html();
-		var Confirm = confirm("Remove package "+Package+" from flash drive?")
-		if (Confirm) {
-			par.children("td:nth-child(4)").html("no");
-			$.ajax({
-				type : "POST",
-				url: '/plugins/NerdPack/include/PackageRemove.php',
-				data : {pkg:Package},
-				success: function() {
-				}
-			});
-		}
-	}
-}; 

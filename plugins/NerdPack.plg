@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.15">
+<!ENTITY version   "2015.12.14">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -17,10 +17,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2015.12.15
+###2015.12.14
 - add update functions
 - add remove package function
-###2015.12.14
 - fix some minor bugs
 ###2015.12.13
 - initial commit of wrapper plugin for packages in repo

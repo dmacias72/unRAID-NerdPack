@@ -62,19 +62,23 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 		}
 		if (!$pkg_install_status){
 			$pkg_msg = "Installing";
-			$pkg_cmd = "upgradepkg --install-new ";
+			$pkg_cmd = "upgradepkg --install-new ".$pkg_path.$pkg_name."* 2>&1";
 		}
 	}elseif($pkg_pref == "no" && $pkg_install_status && $argv[2] == "remove"){
 
 		$pkg_msg = "Removing";
-		$pkg_cmd = "removepkg ";
-
+		$pkg_cmd = "removepkg ".$pkg_path.$pkg_name."* 2>&1";
+		if ($argv[3] == "delete"){
+			$pkg_cmd .= "; rm ".$pkg_path.$pkg_name."* 2>&1";
+			$pkg_msg .= " and deleting";
+		}
 	}
 	if(!empty($pkg_cmd)){
 		logger("$pkg_msg $pkg_name package...");
-		$pkg_cmd = $pkg_cmd.$pkg_path.$pkg_name."*  2>&1";
+		usleep(100000);
 		$output = shell_exec($pkg_cmd);
 		logger($output);
+		usleep(100000);
 	}else
 	logger($pkg_name." package up to date");
 }
