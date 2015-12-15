@@ -13,18 +13,19 @@ get_content_from_github($pkg_repo, $repo_file);
 
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 
-<div id="iframe-popup" style="display:none;-webkit-overflow-scrolling:touch;"></div>
+<span class="status" style="margin-top: -45px;"><input id="removepkg" type="checkbox"></span>
 <form markdown="1" id="package_form" name="package_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg" />
 <table style="margin-top:-22px;" class="tablesorter" id="tblPackages">
 	<thead>
 		<tr>
-			<th class="tablesorter-header"> Name </th>
-			<th class="tablesorter-header"> Version </th>
-			<th class="tablesorter-header"> Size (kB) </th>
-			<th class="tablesorter-header"> Downloaded </th>
-			<th class="tablesorter-header"> Installed </th>
-			<th><input id="removepkg" type="checkbox"><input id="checkall" type="checkbox"></th>
+			<th> Name </th>
+			<th> Version </th>
+			<th> Size (kB) </th>
+			<th> Downloaded </th>
+			<th> Installed </th>
+			<th><input id="checkall" type="checkbox"></th>
+			<th> Remove </th>
 		</tr>
 	</thead>
 	<tbody>
