@@ -10,7 +10,7 @@
 The ipmitool plugin allows you to view your system sensors and events using your ipmi hardware. Allows for local or remote access and event notification.
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
-<Icon>https://raw.githubusercontent.com/dmacias72/dmacias-plugin-repository/master/ipmitool-plugin.png</Icon>
+<Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmitool-plugin.png</Icon>
 <Date>2015-12-14</Date>
 <Changes>
 ###2015.12.14
