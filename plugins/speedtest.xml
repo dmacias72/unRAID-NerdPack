@@ -10,7 +10,7 @@
 This plugin interacts with the command line interface for testing internet bandwidth using speedtest.net
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
-<Icon>https://raw.githubusercontent.com/dmacias72/dmacias-plugin-repository/master/speedtest.png</Icon>
+<Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
 <Date>2015-12-11</Date>
 <Changes>
 ###2015.12.11
