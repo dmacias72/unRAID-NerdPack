@@ -1,4 +1,6 @@
 <?php
+
+// Progress bar for curl download
 function progress_bar($download_size, $downloaded_size, $upload_size = null, $uploaded_size = null)
 {
 	static $previousProgress = 0;
@@ -35,6 +37,7 @@ function progress_bar($download_size, $downloaded_size, $upload_size = null, $up
 	}
 }
 
+// Download a file from given url
 function get_file_from_url($file, $url) {
 	$chfile = fopen($file, 'w');
 	$ch = curl_init();
@@ -52,6 +55,7 @@ function get_file_from_url($file, $url) {
 	fclose($chfile);
 }
 
+// get a json array of the contents of gihub repo
 function get_content_from_github($repo, $file){
 	$ch = curl_init();
 	$ch_vers = curl_version();
@@ -66,6 +70,7 @@ function get_content_from_github($repo, $file){
    	file_put_contents($file, $content);
 }
 
+// Compare the github sha value of a file
 function file_check_sha($file, $sha){
 	$size = filesize($file);
 	$handle = fopen($file, "rb");
