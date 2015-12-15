@@ -75,10 +75,9 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 	}
 	if(!empty($pkg_cmd)){
 		logger("$pkg_msg $pkg_name package...");
-		usleep(100000);
-		$output = shell_exec($pkg_cmd);
-		logger($output);
-		usleep(100000);
+		shell_exec($pkg_cmd);
+		//$output = shell_exec($pkg_cmd);
+		//logger($output);
 	}else
 	logger($pkg_name." package up to date");
 }
