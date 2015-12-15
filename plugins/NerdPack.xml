@@ -5,7 +5,7 @@
 <PluginAuthor>dmacias72</PluginAuthor>
 <Beta>False</Beta>
 <Category>Tools:System</Category>
-<Name>Speedtest</Name>
+<Name>NerdPack GUI</Name>
 <Description>
 This plugin allows installation of extra packages, mostly CLI, for advanced users.  Use at your own risk.  Not officially supported by LimeTech.
 </Description>
@@ -49,7 +49,7 @@ This plugin allows installation of extra packages, mostly CLI, for advanced user
 ###2015.05.15
 - Added lftp 4.6.1
 - Replaced installpkg with upgradepkg to allow package upgrading
-- Added removal of packages upon uninstall of &name;
+- Added removal of packages upon uninstall of NerdPack
 
 ###2015.04.29
 - Added git 2.3.5
