@@ -73,6 +73,14 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash" Method="install">
 <INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+#remove old plugin name directory
 if [ ! -d /usr/local/emhttp/plugins/ipmitool ]; then
 	rm -rf  /usr/local/emhttp/plugins/ipmitool
 fi
