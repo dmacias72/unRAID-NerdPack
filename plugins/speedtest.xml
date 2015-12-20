@@ -11,8 +11,13 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2015-12-11</Date>
+<Date>2015-12-19</Date>
 <Changes>
+###2015.12.19
+- changed icon thanks to hernandito
+- convert to stand alone script for cron jobs
+- rearrange setting page layout
+- one click remove
 ###2015.12.11
 - update package name
 - update install and remove scripts
