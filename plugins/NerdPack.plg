@@ -97,6 +97,13 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash" Method="install">
 <INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
 # Verify and install plugin package
 sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
 sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
@@ -148,3 +155,4 @@ echo ""
 </FILE>
 
 </PLUGIN>
+
