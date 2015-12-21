@@ -1,0 +1,127 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "libvirtwol">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.12.01">
+<!ENTITY pluginURL "https://raw.githubusercontent.com/&author;/&name;/master/&name;.plg">
+<!ENTITY pkgURL	 "https://raw.githubusercontent.com/&author;/unRAID_6.0/master/">
+<!ENTITY pkgs 	    "/boot/packages/">
+<!ENTITY plugin	 "/boot/config/plugins/&name;">
+<!ENTITY launch    "Settings/VMManager">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+
+]>
+
+<PLUGIN  name="&name;"
+         author="&author;"
+         version="&version;"
+         pluginURL="&pluginURL;"
+			launch="&launch;"
+>
+<!--
+This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are installed as needed and is controlable from the webgui.
+-->
+
+<CHANGES>
+###2015.12.01
+- added fix for other packet sizes
+###2015.11.18
+- update python to 2.7.9
+###2015.11.17
+- fix start and stop event permissions
+###2015.11.16
+- added promiscuous mode to listen for all packets 
+- will recieve all ether proto 0x0842 packets now
+###2015.11.15
+- added support for ethertype 0x0842
+- tested with ether-wake but asus router still not waking
+###2015.11.14c
+- fix plugin page image and link
+- pkg variable typo
+###2015.11.14
+- initial commit
+</CHANGES>
+
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/python-2.7.9-x86_64-1.txz</URL>
+<MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
+</FILE>
+<FILE Name="&pkgs;libvirt-python-1.2.18-x86_64-1ponce.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libvirt-python-1.2.18-x86_64-1ponce.txz</URL>
+<MD5>4198c7784a57d7ff80fb1d53811ceb5e</MD5>
+</FILE>
+<FILE Name="&pkgs;libpcap-1.4.0-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libpcap-1.4.0-x86_64-1.txz</URL>
+<MD5>cbe651aff5d49d1c3a5a7ad6a4262393</MD5>
+</FILE>
+<FILE Name="&pkgs;pylibpcap-0.6.2-x86_64-1_slack.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;pylibpcap-0.6.2-x86_64-1_slack.txz</URL>
+<MD5>2531f44126b3c05d76782c9eedba9988</MD5>
+</FILE>
+
+<!--
+git from github as tarball
+-->
+<FILE Name="&plugin;/&name;-&version;.tar.gz">
+<URL>"https://github.com/&author;/&name;/archive/&version;.tar.gz"</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE> 
+if [ ! -d &emhttp; ]; then
+	mkdir -p &emhttp;
+fi
+tar -zxf &plugin;/&name;-&version;.tar.gz --strip=1 -C &emhttp;/
+find &plugin; -type f -iname "*.tar.gz" ! -iname "&name;-&version;.tar.gz" -delete
+chmod +0755 /usr/local/emhttp/plugins/&name;/scripts/*
+sed -i -- 's/OtherSettings/VMManager:1/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+/usr/local/emhttp/plugins/&name;/scripts/stop
+rm -rf /usr/local/emhttp/plugins/&name;
+rm -f &plugin;/&name;-&version;.tar.gz
+sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<FILE Name="/tmp/libvirtwol-chkconf" Run="/bin/bash">
+<INLINE>
+<![CDATA[
+#!/bin/sh
+# This will check each entry in the config so nothing is missing, and if missing, sets to default
+CFGFILE=/boot/config/plugins/libvirtwol/libvirtwol.cfg
+[ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
+rm /tmp/libvirtwol-chkconf
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>
