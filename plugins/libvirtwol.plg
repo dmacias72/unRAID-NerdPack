@@ -3,27 +3,28 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.01">
-<!ENTITY pluginURL "https://raw.githubusercontent.com/&author;/&name;/master/&name;.plg">
-<!ENTITY pkgURL	 "https://raw.githubusercontent.com/&author;/unRAID_6.0/master/">
-<!ENTITY pkgs 	    "/boot/packages/">
-<!ENTITY plugin	 "/boot/config/plugins/&name;">
+<!ENTITY version   "2015.12.21">
 <!ENTITY launch    "Settings/VMManager">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgs 	    "/boot/packages">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
-
 ]>
 
-<PLUGIN  name="&name;"
-         author="&author;"
-         version="&version;"
-         pluginURL="&pluginURL;"
-			launch="&launch;"
->
+<PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
+
 <!--
 This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are installed as needed and is controlable from the webgui.
 -->
 
 <CHANGES>
+###2015.12.21
+- add unRAID version check
+- add md5 package ckeck
+- convert install and remove scripts
 ###2015.12.01
 - added fix for other packet sizes
 ###2015.11.18
@@ -62,10 +63,17 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 </FILE>
 
 <!--
-git from github as tarball
+The 'plugin' package file.
 -->
-<FILE Name="&plugin;/&name;-&version;.tar.gz">
-<URL>"https://github.com/&author;/&name;/archive/&version;.tar.gz"</URL>
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
 </FILE>
 
 <!--
@@ -73,13 +81,39 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash">
 <INLINE> 
-if [ ! -d &emhttp; ]; then
-	mkdir -p &emhttp;
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
 fi
-tar -zxf &plugin;/&name;-&version;.tar.gz --strip=1 -C &emhttp;/
-find &plugin; -type f -iname "*.tar.gz" ! -iname "&name;-&version;.tar.gz" -delete
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
+  exit 1
+else
+  upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
+
+# Update file permissions of scripts
 chmod +0755 /usr/local/emhttp/plugins/&name;/scripts/*
+
+# add menu to VM Manager
 sed -i -- 's/OtherSettings/VMManager:1/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
+
+#restart event daemon
+&emhttp;/scripts/stop
+sleep 1
+&emhttp;/scripts/start
+
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -97,9 +131,13 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-/usr/local/emhttp/plugins/&name;/scripts/stop
-rm -rf /usr/local/emhttp/plugins/&name;
-rm -f &plugin;/&name;-&version;.tar.gz
+&emhttp;/scripts/stop
+removepkg &plgpath;/&plgname;.txz
+rm -rf &emhttp;
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
+
+# restore VM Manager Menu
 sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
 
 echo ""
@@ -109,18 +147,6 @@ echo " Copyright 2015, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
-</INLINE>
-</FILE>
-
-<FILE Name="/tmp/libvirtwol-chkconf" Run="/bin/bash">
-<INLINE>
-<![CDATA[
-#!/bin/sh
-# This will check each entry in the config so nothing is missing, and if missing, sets to default
-CFGFILE=/boot/config/plugins/libvirtwol/libvirtwol.cfg
-[ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
-rm /tmp/libvirtwol-chkconf
-]]>
 </INLINE>
 </FILE>
 
