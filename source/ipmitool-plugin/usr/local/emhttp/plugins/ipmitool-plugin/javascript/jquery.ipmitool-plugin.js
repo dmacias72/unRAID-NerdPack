@@ -19,27 +19,35 @@ $(function(){
 		$.cookie('ipmitool_sensor_mode', $('.advancedview').prop('checked') ? 'advanced' : 'basic', { expires: 3650 });
 	});
 	
-	$('#allEvents').click(function(event) {  //on click
-   	if(this.checked) { // check select status
-      	$('.checkEvent').each(function() { //loop through each checkbox
-         	this.checked = true;  //select all checkboxes with class "checkEvent"              
-         });
-      }else{
-         $('.checkEvent').each(function() { //loop through each checkbox
-            this.checked = false; //deselect all checkboxes with class "checkEvent"                      
-      	});        
-      }
-   });
+	// select all packages switch
+	$('#allEvents')
+		.switchButton({
+			labels_placement: "right",
+			on_label: 'Select All',
+			off_label: 'Select All',
+			checked: false
+		})
+		.change(function() {  //on change
+	   	if(this.checked) { // check select status
+	      	$('.checkEvent').each(function() { //loop through each checkbox
+					$(this).switchButton({checked: true});
+   	      });
+      	}else{
+	         $('.checkEvent').each(function() { //loop through each checkbox
+					$(this).switchButton({checked: false});
+      		});        
+      	}
+   	});
 
 	$('#tblSensor').tablesorter({headers:{0:{sorter:false}}});
-	$('#tblEvent').tablesorter({headers:{0:{sorter:false}}});
+	$('#tblEvent').tablesorter({headers:{5:{sorter:false}}});
 	sensorRefresh();
 });
 
 function clearEvents() {
 	//if all events checked clear all
 	if($('#allEvents').prop('checked')) {
- 		$('#allEvents').attr('checked', false);
+		$('#allEvents').switchButton({checked: false});
     	$.ajax({
    		type : "POST",
  	  		url : "/plugins/ipmitool-plugin/include/delete_event.php",
@@ -152,20 +160,27 @@ function eventArray(){
    	success: function(data) {
    		$.each(data, function (i, val) {
    			var Status = (data[i][5] == 'Asserted') ? 'red' : 'green';
-   			var Sensor = (data[i][3]).split(" "); // separate sensor name and type
-				$("#tblEvent tbody").append(
+ 				$("#tblEvent tbody").append(
 				"<tr>"+
-				"<td>	<input class='checkEvent' type='checkbox' value=" + data[i][0] + "></td>"+ //checkbox
 				"<td title='"+data[i][5]+"'><img src='/plugins/ipmitool-plugin/images/" + Status + "-on.png'/></td>"+ //status 
 				"<td>" + data[i][0] + "</td>"+ //event id
 				"<td>" + data[i][1] + " "+data[i][2]+"</td>"+ //time stamp
-				"<td>" + Sensor[1] + "</td>"+ //sensor name
-				"<td>" + Sensor[0] + "</td>"+ //sensor type
+				"<td>" + data[i][3] + "</td>"+ //sensor name
 				"<td>" + data[i][4] +"</td>"+ //subject
-				"<td>" + data[i][6] + "</td>"+ //description
+				"<td>	<input class='checkEvent' type='checkbox' value=" + data[i][0] + "></td>"+ //checkbox
 				"</tr>");
 			$("#tblEvent").trigger("update"); //update table for tablesorter
      		});
+ 		},
+ 		complete: function () {
+ 			$(".checkEvent")
+				.switchButton({
+					labels_placement: 'right',
+					on_label: 'On',
+  					off_label: 'Off',
+				  	checked: false
+  				});
+
  		},
        error : function() {}
 	});
