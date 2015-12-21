@@ -1,0 +1,20 @@
+#!/bin/sh
+prog="shellinaboxd"
+SHELLINABOXD="/usr/sbin/$prog"
+LOCKFILE="/var/lock/$prog"
+PIDFILE="/var/run/$prog.pid"
+
+# no-op if not running
+if [ -r $PIDFILE ]; then
+TIMER=0
+while `killall $prog 2>/dev/null`; do
+	sleep 1
+	TIMER=$((TIMER+1))
+	if [ $TIMER -ge 30 ]; then
+		killall -9 $prog
+		sleep 1
+		break
+	fi
+done
+rm -f $LOCKFILE && rm -f $PIDFILE
+fi

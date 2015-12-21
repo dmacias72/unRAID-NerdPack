@@ -1,0 +1,5 @@
+#!/bin/bash
+source /boot/config/plugins/shellinabox-plugin/shellinabox-plugin.cfg
+if [ $SERVICE = enable ]; then
+	/usr/local/emhttp/plugins/shellinabox-plugin/scripts/start
+fi

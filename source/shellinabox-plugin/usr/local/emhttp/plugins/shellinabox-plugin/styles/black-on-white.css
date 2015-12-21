@@ -1,0 +1,54 @@
+#vt100 #cursor.bright {
+  background-color: black;
+  color:            white;
+}
+
+#vt100 #cursor.dim {
+  background-color: white;
+  opacity:          0.2;
+  -moz-opacity:     0.2;
+  filter:           alpha(opacity=20);
+}
+
+#vt100 #scrollable {
+  color:            #000000;
+  background-color: #ffffff;
+}
+
+#vt100 #scrollable.inverted {
+  color:            #ffffff;
+  background-color: #000000;
+}
+
+#vt100 .ansiDef {
+  color:            #000000;
+}
+
+#vt100 .ansiDefR {
+  color:            #ffffff;
+}
+
+#vt100 .bgAnsiDef {
+  background-color: #ffffff;
+}
+
+#vt100 .bgAnsiDefR {
+  background-color: #000000;
+}
+
+#vt100 #scrollable.inverted .ansiDef {
+  color:            #ffffff;
+}
+
+#vt100 #scrollable.inverted .ansiDefR {
+  color:            #000000;
+}
+
+#vt100 #scrollable.inverted .bgAnsiDef {
+  background-color: #000000;
+}
+
+#vt100 #scrollable.inverted .bgAnsiDefR {
+  background-color: #ffffff;
+}
+

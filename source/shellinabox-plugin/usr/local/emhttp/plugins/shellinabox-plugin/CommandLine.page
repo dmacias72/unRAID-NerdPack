@@ -1,0 +1,29 @@
+Menu="UNRAID-OS"
+Title="Command Line"
+Type="xmenu"
+---
+<?php
+$sName = "shellinaboxd";
+$shellinabox_cfg = parse_plugin_cfg("shellinabox");
+$shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "8088";
+?>
+<style>
+iframe {
+  height: 600px;
+  width: 100%;
+  resize: both;
+  overflow: auto;
+  border: 0px;
+}
+</style>
+
+<div>
+	<iframe id="shell" src="https://<?=$var['NAME'];?>:<?=$shellinabox_port;?>">
+	</iframe>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	showStatus('<?=$sName;?>');
+});
+</script>

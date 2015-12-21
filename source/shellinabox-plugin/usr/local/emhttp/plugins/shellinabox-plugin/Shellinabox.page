@@ -1,0 +1,103 @@
+Icon="shellinabox.png"
+Menu="NetworkServices"
+Title="Command Line"
+---
+<?php
+$sName = "shellinaboxd";
+$shellinabox_cfg = parse_plugin_cfg("shellinabox-plugin");
+$shellinabox_service = isset($shellinabox_cfg['SERVICE']) ? $shellinabox_cfg['SERVICE'] 	: "disable";
+$shellinabox_runas = isset($shellinabox_cfg['RUNAS']) 		? $shellinabox_cfg['RUNAS'] 		: "nobody";
+$shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "4200";
+$shellinabox_running = trim(shell_exec( "[ -f /proc/`cat /var/run/shellinaboxd.pid 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
+$shellinabox_version = shell_exec( "/usr/sbin/shellinaboxd --version 2>&1 | grep ShellInABox | sed -e 's/^ShellInABox version //'" );
+$shellinabox_version = ($shellinabox_running == "yes") ? 
+	"<a style='color:green;' target='_blank' href='https://".$var['NAME'].":".$shellinabox_port."' title='Click on link then accept security, then /Tools/CommandLine will work'><b>$shellinabox_version</b></a>":
+	"<b><font style='color:orange;'>$shellinabox_version</font></b>";
+?>
+
+<form markdown="1" name="shellinabox_settings" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="shellinabox-plugin/shellinabox-plugin.cfg" />
+<input type="hidden" id="command" name="#command" value="" />
+
+Enable Shellinabox Server <?=$shellinabox_version;?>:
+: <select id="SERVICE" name="SERVICE" size="1" onChange="checkRUNNING(this.form);">
+  <?=mk_option($shellinabox_service, "disable", "No");?>
+  <?=mk_option($shellinabox_service, "enable", "Yes");?>
+  </select>
+
+Port:
+: <input id="PORT" type="text" class="stopped" name="PORT" maxlength="40" value="<?=$shellinabox_port;?>" title="port must be 0-65535" placeholder="Default Port is 8000" >
+
+Run as User:
+: <select id="USERS" class="stopped" title="select user, cannot be root" size="1" onChange="checkUSER(this.form, '<?=$shellinabox_runas;?>');">
+  <?=mk_option($shellinabox_runas, "nobody", "nobody");?>
+  <option value='other' <?=($shellinabox_runas != "root" && $shellinabox_runas != "nobody")?"selected=yes":"";?>>other</option>
+  </select>
+  <input type="hidden" name="RUNAS" style="width:222px" maxlength="40" value=<?=$shellinabox_runas;?> >
+
+<input id="DEFAULT" class="stopped" type="submit" value="Default" onClick="resetDATA(this.form)">
+: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()">
+</form>
+
+<script type="text/javascript">
+$(function(){
+	showStatus('<?=$sName;?>');
+	checkRUNNING(document.shellinabox_settings);
+	checkUSER(document.shellinabox_settings,'<?=$shellinabox_runas;?>');
+});
+
+function resetDATA(form) {
+	form.PORT.value = "4200";
+	form.RUNAS.value = "nobody";
+	form.USERS.value = "nobody";
+}
+
+function checkRUNNING(form) {
+	if ("<?=$shellinabox_running;?>" == "yes")
+	{
+		$(".stopped").prop("disabled", true);
+		form.btnApply.disabled = "disabled";	
+   } 
+   else
+   	$(".stopped").prop("disabled", (form.SERVICE.value == "enable"));
+	if (form.SERVICE.value == "enable")
+		form.command.value = "/usr/local/emhttp/plugins/shellinabox-plugin/scripts/start";
+	else {
+		form.command.value = "/usr/local/emhttp/plugins/shellinabox-plugin/scripts/stop";
+	 	form.btnApply.disabled = (form.SERVICE.value == "enable");	
+	}
+}
+
+function checkUSER(form, currentUSER) {
+	if (form.USERS.selectedIndex < 1 ) {
+		form.RUNAS.value = form.USERS.options[form.USERS.selectedIndex].value;
+		form.RUNAS.type = "hidden";
+	}
+	else
+	{
+		form.RUNAS.value = currentUSER;
+		if (form.RUNAS.value == "root")
+			form.RUNAS.value = "nobody";
+		form.RUNAS.type = "text";
+		form.RUNAS.title = "Run As User Cannot be Root";
+	}
+}
+
+function verifyDATA(form) {
+	if (isNumber(form.PORT.value)){
+		if (form.PORT.value < 0 || form.PORT.value > 65535){
+			form.PORT.value = "4200";
+		}
+	} else {
+		form.PORT.value = "4200";
+	}
+	if (form.RUNAS.value == null || form.RUNAS.value == "" || form.RUNAS.value == "root" ){
+		form.RUNAS.value = "nobody";
+		$shellinabox_runas = "nobody";
+	}
+	form.SERVICE.value = form.SERVICE.value.replace(/ /g,"_");
+	form.PORT.value = form.PORT.value.replace(/ /g,"_");
+	form.RUNAS.value = form.RUNAS.value.replace(/ /g,"_");
+}
+
+</script>

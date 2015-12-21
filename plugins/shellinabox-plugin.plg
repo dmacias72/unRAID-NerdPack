@@ -1,0 +1,139 @@
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "shellinabox-plugin">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.12.21">
+<!ENTITY launch    "Settings/&name;">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgs 	    "/boot/config/plugins/&name;">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
+
+<!--
+This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies are installed as needed and is controlable from the webgui.
+-->
+
+<CHANGES>
+###2015.12.21
+- move repo to unRAID-plugins
+- change plugin name to shellinabox-plugin
+- convert install and remove scripts
+- add package md5 and unRAID version check
+###2015.10.23
+- fix "no version information" log errors
+###2015.09.20
+- update shellinabox packages to 2.19 (revision e30c33d)
+- fix color styles
+###2015.09.07
+- fix start and stop scripts
+###2015.09.06
+- use markdown syntax and parse_plugin_cfg
+- change color styles
+###2015.09.05
+- fixed start event
+- add more color styles
+- fixed icon and image on black theme
+###2015.09.04
+- start and stop events
+- update run as user
+- update image
+###2015.09.03
+- initial commit
+</CHANGES>
+
+
+<FILE Name="&pkgs;/shellinabox-2.19-x86_64-1sl.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/shellinabox-2.19-x86_64-1sl.txz</URL>
+<MD5>96f21406d18181f469e732795d2965e8</MD5>
+</FILE>
+<FILE Name="&pkgs;/linux-pam-1.1.8-x86_64-1gds.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/linux-pam-1.1.8-x86_64-1gds.txz</URL>
+<MD5>f5d4e99dc0b65f4d6b3bacf479c9c6e2</MD5>
+</FILE>
+
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+#remove old plugin name directory
+if [ ! -d /usr/local/emhttp/plugins/shellinabox ]; then
+	rm -rf  /usr/local/emhttp/plugins/shellinabox
+fi
+
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
+  exit 1
+else
+  upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
+
+# Update file permissions of scripts
+chmod +0755 &emhttp;/scripts/*
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+/usr/local/emhttp/plugins/&name;/scripts/stop
+removepkg &plgpath;/*.txz
+rm -rf &emhttp;
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
