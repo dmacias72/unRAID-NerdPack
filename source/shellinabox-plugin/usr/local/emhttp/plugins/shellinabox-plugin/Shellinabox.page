@@ -1,4 +1,4 @@
-Icon="shellinabox.png"
+Icon="shellinabox-plugin.png"
 Menu="NetworkServices"
 Title="Command Line"
 ---
@@ -60,6 +60,7 @@ function checkRUNNING(form) {
    } 
    else
    	$(".stopped").prop("disabled", (form.SERVICE.value == "enable"));
+
 	if (form.SERVICE.value == "enable")
 		form.command.value = "/usr/local/emhttp/plugins/shellinabox-plugin/scripts/start";
 	else {

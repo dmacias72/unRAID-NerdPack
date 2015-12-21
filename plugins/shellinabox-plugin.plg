@@ -1,8 +1,10 @@
+<?xml version='1.0' standalone='yes'?>
+
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "shellinabox-plugin">
 <!ENTITY author    "dmacias72">
 <!ENTITY version   "2015.12.21">
-<!ENTITY launch    "Settings/&name;">
+<!ENTITY launch    "Settings/Shellinabox">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
@@ -123,7 +125,7 @@ The 'remove' script.
 /usr/local/emhttp/plugins/&name;/scripts/stop
 removepkg &plgpath;/*.txz
 rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/*.txz
 rm -f &plgpath;/&plgname;.md5
 
 echo ""
@@ -133,6 +135,20 @@ echo " Copyright 2015, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
+</INLINE>
+</FILE>
+
+<FILE Name="/tmp/shellinabox-chkconf" Run="/bin/bash">
+<INLINE>
+<![CDATA[
+#!/bin/sh
+# This will check each entry in the config so nothing is missing, and if missing, sets to default
+CFGFILE=/boot/config/plugins/shellinabox-plugin/shellinabox-plugin.cfg
+[ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"4200\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
+rm /tmp/shellinabox-chkconf
+]]>
 </INLINE>
 </FILE>
 
