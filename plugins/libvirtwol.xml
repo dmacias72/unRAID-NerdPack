@@ -13,7 +13,8 @@ Wake On Lan for Libvirt. Allows you to recieve a wake on lan packet to wake or s
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
 <Date>2015-12-21</Date>
 <Changes>
-###2015.12.21
+###2015.12.21a
+- fix config file and start/stop
 - add unRAID version check
 - add md5 package ckeck
 - convert install and remove scripts
