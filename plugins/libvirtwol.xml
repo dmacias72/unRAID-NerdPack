@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<Plugin>True</Plugin>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.plg</PluginURL>
+<PluginAuthor>dmacias72</PluginAuthor>
+<Beta>False</Beta>
+<Category>Tools:System</Category>
+<Name>Virtual Machine Wake On Lan</Name>
+<Description>
+Wake On Lan for Libvirt. Allows you to recieve a wake on lan packet to wake or start up kvm virtual machines. 
+</Description>
+<Support>http://lime-technology.com/forum/index.php?topic=44017.0</Support>
+<Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
+<Date>2015-12-21</Date>
+<Changes>
+###2015.12.21
+- add unRAID version check
+- add md5 package ckeck
+- convert install and remove scripts
+###2015.12.01
+- added fix for other packet sizes
+###2015.11.18
+- update python to 2.7.9
+###2015.11.17
+- fix start and stop event permissions
+###2015.11.16
+- added promiscuous mode to listen for all packets 
+- will recieve all ether proto 0x0842 packets now
+###2015.11.15
+- added support for ethertype 0x0842
+- tested with ether-wake but asus router still not waking
+###2015.11.14c
+- fix plugin page image and link
+- pkg variable typo
+###2015.11.14
+- initial commit
+</Changes>
+</Containers>
