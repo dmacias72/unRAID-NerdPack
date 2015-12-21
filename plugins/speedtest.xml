@@ -13,6 +13,12 @@ This plugin interacts with the command line interface for testing internet bandw
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
 <Date>2015-12-20</Date>
 <Changes>
+###2015.12.20a
+- Added cron settings page
+- Separated into proper webgui locations
+- Speedtest settings under Settings
+- Speedtest Cron Settings under Settings/Scheduler
+- Speedtest App under Tools/Speedtest
 ###2015.12.20
 - added speedtest-xml script to /usr/sbin/ for cron jobs 
 - added logging to speedtest.php for start and completion of the script

@@ -3,8 +3,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.20">
-<!ENTITY launch    "Settings/&name;">
+<!ENTITY version   "2015.12.20a">
+<!ENTITY launch    "Tools/Speedtest">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
@@ -21,6 +21,12 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2015.12.20a
+- Added cron settings page
+- Separated into proper webgui locations
+- Speedtest settings under Settings
+- Speedtest Cron Settings under Settings/Scheduler
+- Speedtest App under Tools/Speedtest
 ###2015.12.20
 - added speedtest-xml script to /usr/sbin/ for cron jobs 
 - added logging to speedtest.php for start and completion of the script
@@ -134,6 +140,10 @@ removepkg &plgpath;/&plgname;.txz
 rm -rf &emhttp;
 rm -f &plgpath;/&plgname;.txz
 rm -f &plgpath;/&plgname;.md5
+
+# Remove cron entry
+rm -f /boot/config/plugins/dynamix/speedtest.cron
+/usr/local/sbin/update_cron
 
 echo ""
 echo "-----------------------------------------------------------"
