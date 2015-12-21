@@ -1,7 +1,4 @@
 #!/bin/sh
-# read our configuration
-source /boot/config/plugins/ipmitool-plugin/ipmitool-plugin.cfg
-
 prog="ipmievd"
 prog2="ipmitail"
 LOCKFILE="/var/lock/$prog"
