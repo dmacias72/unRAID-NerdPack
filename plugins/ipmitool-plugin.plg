@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.14">
+<!ENTITY version   "2015.12.20">
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -18,13 +18,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2015.12.20
+- fixed "Waiting for events" triggering notification on system start
+- reorganize events page
+- add switchbuttons
+- move from UnRAID OS to System Information under Tools menu
+- add unRAID version check
 ###2015.12.14
 - make sure and remove old plugin
 ###2015.12.11
 - change repo
 - change install and remove method
-###2015.11.18
-- fixed "Waiting for events" triggering notification on system start
 ###2015.11.17
 - fix permissions for events
 ###2015.11.10b
@@ -104,6 +108,11 @@ chmod +0755 &emhttp;/scripts/*
 echo "loading ipmi drivers..."
 modprobe ipmi_si
 modprobe ipmi_devintf
+
+#restart event daemon
+&emhttp;/scripts/stop
+sleep 1
+&emhttp;/scripts/start
 
 # Cleaning old source files
 find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
