@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<Plugin>True</Plugin>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.plg</PluginURL>
+<PluginAuthor>dmacias72</PluginAuthor>
+<Beta>False</Beta>
+<Category>Tools:System</Category>
+<Name>Shell In A Box</Name>
+<Description>
+Shell In A Box implements a web server that can export arbitrary command line tools to a web based terminal emulator. A Command Line tool is created under the Tools menu.
+</Description>
+<Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
+<Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.png</Icon>
+<Date>2015-12-21</Date>
+<Changes>
+###2015.12.21
+- move repo to unRAID-plugins
+- change plugin name to shellinabox-plugin
+- convert install and remove scripts
+- add package md5 and unRAID version check
+###2015.10.23
+- fix "no version information" log errors
+###2015.09.20
+- update shellinabox packages to 2.19 (revision e30c33d)
+- fix color styles
+###2015.09.07
+- fix start and stop scripts
+###2015.09.06
+- use markdown syntax and parse_plugin_cfg
+- change color styles
+###2015.09.05
+- fixed start event
+- add more color styles
+- fixed icon and image on black theme
+###2015.09.04
+- start and stop events
+- update run as user
+- update image
+###2015.09.03
+- initial commit
+</Changes>
+</Containers>
