@@ -9,7 +9,7 @@
 <Description>
 Shell In A Box implements a web server that can export arbitrary command line tools to a web based terminal emulator. A Command Line tool is created under the Tools menu.
 </Description>
-<Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
+<Support>http://lime-technology.com/forum/index.php?topic=42683.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.png</Icon>
 <Date>2015-12-21</Date>
 <Changes>
