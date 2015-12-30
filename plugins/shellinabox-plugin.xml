@@ -11,8 +11,10 @@ Shell In A Box implements a web server that can export arbitrary command line to
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=42683.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.png</Icon>
-<Date>2015-12-21</Date>
+<Date>2015-12-29</Date>
 <Changes>
+###2015.12.29
+- remove old plugin directory on install
 ###2015.12.21
 - move repo to unRAID-plugins
 - change plugin name to shellinabox-plugin

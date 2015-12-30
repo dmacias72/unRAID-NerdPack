@@ -11,8 +11,10 @@ The ipmitool plugin allows you to view your system sensors and events using your
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmitool-plugin.png</Icon>
-<Date>2015-12-20</Date>
+<Date>2015-12-29</Date>
 <Changes>
+###2015.12.29
+- remove old plugin directory on install
 ###2015.12.20
 - fixed "Waiting for events" triggering notification on system start
 - reorganize events page
