@@ -11,8 +11,13 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2015-12-20</Date>
+<Date>2015-12-29</Date>
 <Changes>
+###2015.12.29
+- update tablesorter to v2.25.0 combined 
+- add tablesorter filters to table
+- save speedtest host server
+- add shadow box display when running speedtest
 ###2015.12.20a
 - Added cron settings page
 - Separated into proper webgui locations
