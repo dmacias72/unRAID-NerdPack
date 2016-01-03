@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.29">
+<!ENTITY version   "2016.01.02">
 <!ENTITY launch    "Tools/Speedtest">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,12 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.01.02
+- added tablesorter pager plugin
+- fix tablesort css padding
+- click on row to show share image
+- save sort and filter settings
+- added default cfg
 ###2015.12.29
 - update tablesorter to v2.25.0 combined 
 - add tablesorter filters to table
@@ -73,6 +79,21 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <FILE Name="&pkgs;/pip-7.1.2-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
 <URL>&pkgURL;/pip-7.1.2-x86_64-1_slack.txz</URL>
 <MD5>1e0a8d9e281cd075c175eca86aea2130</MD5>
+</FILE>
+
+<FILE Name="/boot/config/plugins/speedtest/speedtest.cfg">
+<INLINE>
+<![CDATA[
+SECURE="no"
+UNITS="bits"
+SHARE="share"
+LIST="auto"
+SERVER=""
+hour="3"
+mode="2"
+min="0"
+]]>
+</INLINE>
 </FILE>
 
 <!--
