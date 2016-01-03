@@ -1,0 +1,106 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "wol">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.11.21">
+<!ENTITY pluginURL "https://github.com/dmacias72/&name;/raw/master/&name;.plg">
+<!ENTITY plugin	 "/boot/config/plugins/&name;">
+<!ENTITY launch    "Settings/&name;">
+<!ENTITY pkgURL	 "https://raw.githubusercontent.com/&author;/unRAID_6.0/master/">
+<!ENTITY pkgs 	    "/boot/packages/">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN  name="&name;"
+         author="&author;"
+         version="&version;"
+         pluginURL="&pluginURL;"
+			launch="&launch;"
+>
+<CHANGES>
+###2015.11.21
+- minor fixes
+###2015.03.05a
+- fix default ethernet interface
+###2015.02.24
+- button bindings when editing 
+###2015.02.21
+- added autosave
+- added table sorting
+- disable scan function caching
+- loading gifs
+- show scan results only after scan
+- scan ip after wake
+###2015.02.20
+- initial unRAID 6 release.
+</CHANGES>
+
+<!--
+This plugin uses etherwake for wake on lan
+-->
+<FILE Name="&pkgs;etherwake-1.09-x86_64-5cf.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;etherwake-1.09-x86_64-5cf.txz</URL>
+<MD5>0b65b7b7ac2262f1a9b998cbb9f913e2</MD5>
+</FILE>
+
+<FILE Name="&pkgs;nmap-6.40-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;nmap-6.40-x86_64-1.txz</URL>
+<MD5>462cf835c4475ddfd2bd15cd10e8349d</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libnl-1.1.4-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libnl-1.1.4-x86_64-1.txz</URL>
+<MD5>435837a5bf0401a937d6ec93e458333b</MD5>
+</FILE>
+
+<!--
+get from github as tarball
+-->
+<FILE Name="&plugin;/&name;-&version;.tar.gz">
+<URL>"https://github.com/&author;/&name;/archive/&version;.tar.gz"</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash" Method="install">
+<INLINE> 
+if [ ! -d &emhttp; ]; then
+ 	mkdir -p &emhttp;
+fi 
+
+tar -zxf &plugin;/&name;-&version;.tar.gz --strip=1 -C &emhttp;/
+find &plugin; -type f -iname "*.tar.gz" ! -iname "&name;-&version;.tar.gz" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+rm -rf &emhttp;
+rm -f &plugin;/&name;-&version;.tar.gz
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
+
