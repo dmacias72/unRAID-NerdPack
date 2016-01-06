@@ -108,6 +108,10 @@ fi
 # Update file permissions of scripts
 chmod +0755 &emhttp;/scripts/*
 
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been installed."
