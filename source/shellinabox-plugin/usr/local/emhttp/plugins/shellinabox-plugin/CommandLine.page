@@ -4,8 +4,8 @@ Type="xmenu"
 ---
 <?php
 $sName = "shellinaboxd";
-$shellinabox_cfg = parse_plugin_cfg("shellinabox");
-$shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "8088";
+$shellinabox_cfg = parse_plugin_cfg("shellinabox-plugin");
+$shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "4200";
 ?>
 <style>
 iframe {
