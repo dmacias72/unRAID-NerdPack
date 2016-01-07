@@ -12,16 +12,22 @@ USER_CSS="Color:+$STYLES/color.css,Monochrome:-$STYLES/monochrome.css;White:+$ST
 
 # no-op if already running
 if [ ! -r $PIDFILE ]; then
-sleep 1
-nohup /usr/sbin/$prog --user=$RUNAS --background=$PIDFILE --port=$PORT --cert=$CONFIG --user-css=$USER_CSS > /dev/null 2>&1 | logger -tshellinaboxd &
-touch $LOCKFILE
-TIMER=0
-while [ ! -e $PIDFILE ]; do
+
+	SSL_CONFIG=""
+	if [ $SSL == "disable" ]; then
+		SSL_CONFIG="--disable-ssl"
+	fi
+
 	sleep 1
-	let TIMER=$TIMER+1
-      if [ $TIMER -gt 5 ]; then
-           echo -n "$PIDFILE not created"
-           break
-     	fi
-done
+	nohup /usr/sbin/$prog --user=$RUNAS --background=$PIDFILE --port=$PORT --cert=$CONFIG --user-css=$USER_CSS $SSL_CONFIG > /dev/null 2>&1 | logger -tshellinaboxd &
+	touch $LOCKFILE
+	TIMER=0
+	while [ ! -e $PIDFILE ]; do
+		sleep 1
+		let TIMER=$TIMER+1
+   	   if [ $TIMER -gt 5 ]; then
+      	     echo -n "$PIDFILE not created"
+         	  break
+	     	fi
+	done
 fi

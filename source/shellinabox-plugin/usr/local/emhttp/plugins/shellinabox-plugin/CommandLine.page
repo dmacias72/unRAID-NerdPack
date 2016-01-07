@@ -20,7 +20,7 @@ iframe {
 </style>
 
 <div>
-	<iframe id="shell" src="https://<?=$shellinabox_host?>:<?=$shellinabox_port;?>">
+	<iframe id="shell" src="http://<?=$shellinabox_host?>:<?=$shellinabox_port;?>">
 	</iframe>
 </div>
 

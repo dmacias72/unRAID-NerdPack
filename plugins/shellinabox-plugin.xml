@@ -13,6 +13,8 @@ Shell In A Box implements a web server that can export arbitrary command line to
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.png</Icon>
 <Date>2016-01-07</Date>
 <Changes>
+###2016.01.07c
+- add option to disable SSL
 ###2016.01.07b
 - remove install cert button for now
 ###2016.01.07a

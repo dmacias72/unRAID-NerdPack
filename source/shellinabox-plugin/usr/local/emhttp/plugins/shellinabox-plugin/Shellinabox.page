@@ -14,7 +14,7 @@ $shellinabox_cert = isset($shellinabox_cfg['CERT']) 		 ? $shellinabox_cfg['CERT'
 $shellinabox_running = trim(shell_exec( "[ -f /proc/`cat /var/run/shellinaboxd.pid 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
 $shellinabox_version = shell_exec( "/usr/sbin/shellinaboxd --version 2>&1 | grep ShellInABox | sed -e 's/^ShellInABox version //'" );
 $shellinabox_version = ($shellinabox_running == "yes") ? 
-	"<a style='color:green;' target='_blank' href='https://".$shellinabox_host.":".$shellinabox_port."' title='Click on link then accept security, then /Tools/CommandLine will work'><b>$shellinabox_version</b></a>":
+	"<a style='color:green;' target='_blank' href='http://".$shellinabox_host.":".$shellinabox_port."' title='Click on link then accept security, then /Tools/CommandLine will work'><b>$shellinabox_version</b></a>":
 	"<b><font style='color:orange;'>$shellinabox_version</font></b>";
 ?>
 
@@ -32,6 +32,12 @@ Connect by IP Address:
 : <select id="IPADDR" name="IPADDR" size="1" class="stopped">
   <?=mk_option($shellinabox_ipaddr, "disable", "No");?>
   <?=mk_option($shellinabox_ipaddr, "enable", "Yes");?>
+  </select>
+
+Enable SSL connection:
+: <select id="SSL" name="SSL" size="1" class="stopped">
+  <?=mk_option($shellinabox_ssl, "disable", "No");?>
+  <?=mk_option($shellinabox_ssl, "enable", "Yes");?>
   </select>
 
 Port:
@@ -57,6 +63,7 @@ $(function(){
 
 function resetDATA(form) {
 	form.IPADDR.value = "disable";
+	form.SSL.value = "disable";
 	form.PORT.value = "4200";
 	form.RUNAS.value = "nobody";
 	form.USERS.value = "nobody";
@@ -110,6 +117,7 @@ function verifyDATA(form) {
 	}
 	form.SERVICE.value = form.SERVICE.value.replace(/ /g,"_");
 	form.IPADDR.value = form.IPADDR.value.replace(/ /g,"_");
+	form.SSL.value = form.SSL.value.replace(/ /g,"_");
 	form.PORT.value = form.PORT.value.replace(/ /g,"_");
 	form.RUNAS.value = form.RUNAS.value.replace(/ /g,"_");
 }
