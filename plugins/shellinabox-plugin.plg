@@ -76,6 +76,7 @@ SERVICE="disable"
 IPADDR="disable"
 PORT="4200"
 RUNAS="nobody"
+CERT="certificate.pem"
 ]]>
 </INLINE>
 </FILE>
