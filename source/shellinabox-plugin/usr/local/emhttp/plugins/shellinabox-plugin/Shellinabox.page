@@ -6,10 +6,11 @@ Title="Command Line"
 $sName = "shellinaboxd";
 $shellinabox_cfg = parse_plugin_cfg("shellinabox-plugin");
 $shellinabox_service = isset($shellinabox_cfg['SERVICE']) ? $shellinabox_cfg['SERVICE'] 	: "disable";
-$shellinabox_runas = isset($shellinabox_cfg['RUNAS']) 		? $shellinabox_cfg['RUNAS'] 		: "nobody";
-$shellinabox_ipaddr = isset($shellinabox_cfg['IPADDR']) ? $shellinabox_cfg['IPADDR'] 	: "disable";
-$shellinabox_host = ($shellinabox_ipaddr == "disable") ? $var['NAME'] : $var['IPADDR'];
+$shellinabox_runas = isset($shellinabox_cfg['RUNAS']) 	 ? $shellinabox_cfg['RUNAS'] 		: "nobody";
+$shellinabox_ipaddr = isset($shellinabox_cfg['IPADDR'])   ? $shellinabox_cfg['IPADDR'] 	: "disable";
+$shellinabox_host = ($shellinabox_ipaddr == "disable")    ? $var['NAME'] 						: $var['IPADDR'];
 $shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "4200";
+$shellinabox_cert = isset($shellinabox_cfg['CERT']) 		 ? $shellinabox_cfg['CERT'] 		:  "certificate.pem";
 $shellinabox_running = trim(shell_exec( "[ -f /proc/`cat /var/run/shellinaboxd.pid 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
 $shellinabox_version = shell_exec( "/usr/sbin/shellinaboxd --version 2>&1 | grep ShellInABox | sed -e 's/^ShellInABox version //'" );
 $shellinabox_version = ($shellinabox_running == "yes") ? 
@@ -34,7 +35,7 @@ Connect by IP Address:
   </select>
 
 Port:
-: <input id="PORT" type="text" class="stopped" name="PORT" maxlength="40" value="<?=$shellinabox_port;?>" title="port must be 0-65535" placeholder="Default Port is 8000" >
+: <input style="width:135px" id="PORT" type="text" class="stopped" name="PORT" maxlength="40" value="<?=$shellinabox_port;?>" title="port must be 0-65535" placeholder="Default Port is 8000" >
 
 Run as User:
 : <select id="USERS" class="stopped" title="select user, cannot be root" size="1" onChange="checkUSER(this.form, '<?=$shellinabox_runas;?>');">
@@ -44,7 +45,7 @@ Run as User:
   <input type="hidden" name="RUNAS" style="width:222px" maxlength="40" value=<?=$shellinabox_runas;?> >
 
 <input id="DEFAULT" class="stopped" type="submit" value="Default" onClick="resetDATA(this.form)">
-: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()"><button id="btnCert" type="button" onclick="window.location.href='http://<?=$shellinabox_host;?>/boot/config/plugins/shellinabox-plugin/certificate-server.pem'"> Install Cert </button>
+: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()"><button id="btnCert" type="button" onclick="window.location.href='http://<?=$shellinabox_host;?>/boot/config/plugins/shellinabox-plugin/<?=$shellinabox_cert;?>'"> Install Cert </button>
 </form>
 
 <script type="text/javascript">
