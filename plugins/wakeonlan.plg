@@ -1,0 +1,147 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "wakeonlan">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.11.21">
+<!ENTITY launch    "Settings/&name;">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
+
+<PLUGIN  name="&name;"
+         author="&author;"
+         version="&version;"
+         pluginURL="&pluginURL;"
+			launch="&launch;"
+>
+<CHANGES>
+###2016.01.
+- 
+###2015.11.21
+- minor fixes
+###2015.03.05a
+- fix default ethernet interface
+###2015.02.24
+- button bindings when editing 
+###2015.02.21
+- added autosave
+- added table sorting
+- disable scan function caching
+- loading gifs
+- show scan results only after scan
+- scan ip after wake
+###2015.02.20
+- initial unRAID 6 release.
+</CHANGES>
+
+<!--
+This plugin uses etherwake for wake on lan
+-->
+<FILE Name="&plgpath;/etherwake-1.09-x86_64-5cf.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/etherwake-1.09-x86_64-5cf.txz</URL>
+<MD5>0b65b7b7ac2262f1a9b998cbb9f913e2</MD5>
+</FILE>
+
+<FILE Name="&plgpath;/nmap-6.40-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/nmap-6.40-x86_64-1.txz</URL>
+<MD5>462cf835c4475ddfd2bd15cd10e8349d</MD5>
+</FILE>
+
+<FILE Name="&plgpath;/libnl-1.1.4-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libnl-1.1.4-x86_64-1.txz</URL>
+<MD5>435837a5bf0401a937d6ec93e458333b</MD5>
+</FILE>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE> 
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
+  exit 1
+else
+  upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
+
+if [ -d /usr/local/emhttp/plugins/wol ]; then
+ 	rm -f /usr/local/emhttp/plugins/wol
+fi
+
+if [ ! -d /var/log/&name; ]; then
+ 	mkdir -p /var/log/&name;
+fi
+chmod 755 /&tmp/&name;
+
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+removepkg &plgpath;/&plgname;.txz
+rm -rf &emhttp;
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
+
+#remove installed packages
+removepkg &plgpath;/*.txz
+rm rm -f &plgpath;/*.txz
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
