@@ -11,8 +11,13 @@ Shell In A Box implements a web server that can export arbitrary command line to
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=42683.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.png</Icon>
-<Date>2016-01-06</Date>
+<Date>2016-01-07</Date>
 <Changes>
+###2016.01.07
+- add ip address connection option
+- add install certificate button
+- fix starting service with changed settings not saving
+- default config file
 ###2016.01.06
 - change package path to plugin directory
 - fix Tool/Command Line page misspelled cfg file and defaulting to port 8088 instead of 4200

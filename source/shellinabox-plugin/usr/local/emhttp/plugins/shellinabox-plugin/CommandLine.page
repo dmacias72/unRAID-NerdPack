@@ -5,6 +5,8 @@ Type="xmenu"
 <?php
 $sName = "shellinaboxd";
 $shellinabox_cfg = parse_plugin_cfg("shellinabox-plugin");
+$shellinabox_ipaddr = isset($shellinabox_cfg['IPADDR']) ? $shellinabox_cfg['IPADDR'] 	: "disable";
+$shellinabox_host = ($shellinabox_ipaddr == "disable") ? $var['NAME'] : $var['IPADDR'];
 $shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "4200";
 ?>
 <style>
@@ -18,7 +20,7 @@ iframe {
 </style>
 
 <div>
-	<iframe id="shell" src="https://<?=$var['NAME'];?>:<?=$shellinabox_port;?>">
+	<iframe id="shell" src="https://<?=$shellinabox_host?>:<?=$shellinabox_port;?>">
 	</iframe>
 </div>
 

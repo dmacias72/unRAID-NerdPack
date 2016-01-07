@@ -7,11 +7,13 @@ $sName = "shellinaboxd";
 $shellinabox_cfg = parse_plugin_cfg("shellinabox-plugin");
 $shellinabox_service = isset($shellinabox_cfg['SERVICE']) ? $shellinabox_cfg['SERVICE'] 	: "disable";
 $shellinabox_runas = isset($shellinabox_cfg['RUNAS']) 		? $shellinabox_cfg['RUNAS'] 		: "nobody";
+$shellinabox_ipaddr = isset($shellinabox_cfg['IPADDR']) ? $shellinabox_cfg['IPADDR'] 	: "disable";
+$shellinabox_host = ($shellinabox_ipaddr == "disable") ? $var['NAME'] : $var['IPADDR'];
 $shellinabox_port = (isset($shellinabox_cfg['PORT']) && is_numeric($shellinabox_cfg['PORT']) && $shellinabox_cfg['PORT'] > 0 && $shellinabox_cfg['PORT'] < 65535 ) ? $shellinabox_cfg['PORT'] : "4200";
 $shellinabox_running = trim(shell_exec( "[ -f /proc/`cat /var/run/shellinaboxd.pid 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
 $shellinabox_version = shell_exec( "/usr/sbin/shellinaboxd --version 2>&1 | grep ShellInABox | sed -e 's/^ShellInABox version //'" );
 $shellinabox_version = ($shellinabox_running == "yes") ? 
-	"<a style='color:green;' target='_blank' href='https://".$var['NAME'].":".$shellinabox_port."' title='Click on link then accept security, then /Tools/CommandLine will work'><b>$shellinabox_version</b></a>":
+	"<a style='color:green;' target='_blank' href='https://".$shellinabox_host.":".$shellinabox_port."' title='Click on link then accept security, then /Tools/CommandLine will work'><b>$shellinabox_version</b></a>":
 	"<b><font style='color:orange;'>$shellinabox_version</font></b>";
 ?>
 
@@ -25,6 +27,12 @@ Enable Shellinabox Server <?=$shellinabox_version;?>:
   <?=mk_option($shellinabox_service, "enable", "Yes");?>
   </select>
 
+Connect by IP Address:
+: <select id="IPADDR" name="IPADDR" size="1" class="stopped">
+  <?=mk_option($shellinabox_ipaddr, "disable", "No");?>
+  <?=mk_option($shellinabox_ipaddr, "enable", "Yes");?>
+  </select>
+
 Port:
 : <input id="PORT" type="text" class="stopped" name="PORT" maxlength="40" value="<?=$shellinabox_port;?>" title="port must be 0-65535" placeholder="Default Port is 8000" >
 
@@ -36,7 +44,7 @@ Run as User:
   <input type="hidden" name="RUNAS" style="width:222px" maxlength="40" value=<?=$shellinabox_runas;?> >
 
 <input id="DEFAULT" class="stopped" type="submit" value="Default" onClick="resetDATA(this.form)">
-: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()">
+: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()"><button id="btnCert" type="button" onclick="window.location.href='http://<?=$shellinabox_host;?>/boot/config/plugins/shellinabox-plugin/certificate-server.pem'"> Install Cert </button>
 </form>
 
 <script type="text/javascript">
@@ -47,6 +55,7 @@ $(function(){
 });
 
 function resetDATA(form) {
+	form.IPADDR.value = "disable";
 	form.PORT.value = "4200";
 	form.RUNAS.value = "nobody";
 	form.USERS.value = "nobody";
@@ -56,16 +65,18 @@ function checkRUNNING(form) {
 	if ("<?=$shellinabox_running;?>" == "yes")
 	{
 		$(".stopped").prop("disabled", true);
-		form.btnApply.disabled = "disabled";	
-   } 
-   else
-   	$(".stopped").prop("disabled", (form.SERVICE.value == "enable"));
+		form.btnApply.disabled = true;	
+		form.btnCert.disabled = false;
+   }else{
+   	$(".stopped").prop("disabled", false);
+   	form.btnCert.disabled = true;
+ }
 
 	if (form.SERVICE.value == "enable")
 		form.command.value = "/usr/local/emhttp/plugins/shellinabox-plugin/scripts/start";
 	else {
 		form.command.value = "/usr/local/emhttp/plugins/shellinabox-plugin/scripts/stop";
-	 	form.btnApply.disabled = (form.SERVICE.value == "enable");	
+	 	form.btnApply.disabled = (form.SERVICE.value == "enable");
 	}
 }
 
@@ -97,6 +108,7 @@ function verifyDATA(form) {
 		$shellinabox_runas = "nobody";
 	}
 	form.SERVICE.value = form.SERVICE.value.replace(/ /g,"_");
+	form.IPADDR.value = form.IPADDR.value.replace(/ /g,"_");
 	form.PORT.value = form.PORT.value.replace(/ /g,"_");
 	form.RUNAS.value = form.RUNAS.value.replace(/ /g,"_");
 }
