@@ -45,7 +45,7 @@ Run as User:
   <input type="hidden" name="RUNAS" style="width:222px" maxlength="40" value=<?=$shellinabox_runas;?> >
 
 <input id="DEFAULT" class="stopped" type="submit" value="Default" onClick="resetDATA(this.form)">
-: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()"><button id="btnCert" type="button" onclick="window.location.href='http://<?=$shellinabox_host;?>/boot/config/plugins/shellinabox-plugin/<?=$shellinabox_cert;?>'"> Install Cert </button>
+: <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()"><!--<button id="btnCert" type="button" onclick="window.location.href='http://<?=$shellinabox_host;?>/boot/config/plugins/shellinabox-plugin/<?=$shellinabox_cert;?>'"> Download Cert </button>-->
 </form>
 
 <script type="text/javascript">
@@ -67,10 +67,10 @@ function checkRUNNING(form) {
 	{
 		$(".stopped").prop("disabled", true);
 		form.btnApply.disabled = true;	
-		form.btnCert.disabled = false;
+		//form.btnCert.disabled = false;
    }else{
    	$(".stopped").prop("disabled", false);
-   	form.btnCert.disabled = true;
+   	//form.btnCert.disabled = true;
  }
 
 	if (form.SERVICE.value == "enable")
