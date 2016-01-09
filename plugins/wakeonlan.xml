@@ -13,6 +13,9 @@ Wake On Lan plugin allows you to scan your network, add and save computers from 
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/wakeonlan.png</Icon>
 <Date>2016-01-09</Date>
 <Changes>
+###2016.01.09a
+- saved mac address cannot be blank
+- minor code changes
 ###2016.01.09
 - move repo to unRaid-plugins
 - add tablesorter fork for better sorting and sort save
