@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "wakeonlan">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.11.21">
+<!ENTITY version   "2016.01.09">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -15,15 +15,12 @@
 
 <PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
 
-<PLUGIN  name="&name;"
-         author="&author;"
-         version="&version;"
-         pluginURL="&pluginURL;"
-			launch="&launch;"
->
 <CHANGES>
-###2016.01.
-- 
+###2016.01.09
+- move repo to unRaid-plugins
+- add tablesorter fork for better sorting and sort save
+- add separate tab for scanning
+- completely update layout and revise code
 ###2015.11.21
 - minor fixes
 ###2015.03.05a
@@ -97,14 +94,16 @@ else
   upgradepkg --install-new &plgpath;/&plgname;.txz
 fi
 
+# remove old plugin name folder
 if [ -d /usr/local/emhttp/plugins/wol ]; then
  	rm -f /usr/local/emhttp/plugins/wol
 fi
 
+# create log directory
 if [ ! -d /var/log/&name; ]; then
  	mkdir -p /var/log/&name;
 fi
-chmod 755 /&tmp/&name;
+chmod 755 /var/log/&name;
 
 # Cleaning old source files
 find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
@@ -132,7 +131,7 @@ rm -f &plgpath;/&plgname;.md5
 
 #remove installed packages
 removepkg &plgpath;/*.txz
-rm rm -f &plgpath;/*.txz
+rm -f &plgpath;/*.txz
 
 echo ""
 echo "-----------------------------------------------------------"
