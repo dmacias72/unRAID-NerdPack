@@ -1,0 +1,386 @@
+[
+  {
+    "name": "apr-1.5.0-x86_64-1.txz",
+    "path": "packages/apr-1.5.0-x86_64-1.txz",
+    "sha": "d52ce60a38d664088a4986017cce93639845c81d",
+    "size": 231684,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/apr-1.5.0-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/apr-1.5.0-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/d52ce60a38d664088a4986017cce93639845c81d",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/apr-1.5.0-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/apr-1.5.0-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/d52ce60a38d664088a4986017cce93639845c81d",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/apr-1.5.0-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "apr-util-1.5.3-x86_64-1.txz",
+    "path": "packages/apr-util-1.5.3-x86_64-1.txz",
+    "sha": "643d634d1968528b5b35f2a60f168d745cb82581",
+    "size": 124572,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/apr-util-1.5.3-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/apr-util-1.5.3-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/643d634d1968528b5b35f2a60f168d745cb82581",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/apr-util-1.5.3-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/apr-util-1.5.3-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/643d634d1968528b5b35f2a60f168d745cb82581",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/apr-util-1.5.3-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "bwm-ng-0.6-x86_64-1_SBo.txz",
+    "path": "packages/bwm-ng-0.6-x86_64-1_SBo.txz",
+    "sha": "3192deec82d307a12eb8fde0eb838bdf17664bbc",
+    "size": 41644,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/bwm-ng-0.6-x86_64-1_SBo.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/bwm-ng-0.6-x86_64-1_SBo.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/3192deec82d307a12eb8fde0eb838bdf17664bbc",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/bwm-ng-0.6-x86_64-1_SBo.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/bwm-ng-0.6-x86_64-1_SBo.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/3192deec82d307a12eb8fde0eb838bdf17664bbc",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/bwm-ng-0.6-x86_64-1_SBo.txz"
+    }
+  },
+  {
+    "name": "cpio-2.11-x86_64-2.txz",
+    "path": "packages/cpio-2.11-x86_64-2.txz",
+    "sha": "3748afb5d8663b1127b52e11b578c3a46d01104b",
+    "size": 182520,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/cpio-2.11-x86_64-2.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/cpio-2.11-x86_64-2.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/3748afb5d8663b1127b52e11b578c3a46d01104b",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/cpio-2.11-x86_64-2.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/cpio-2.11-x86_64-2.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/3748afb5d8663b1127b52e11b578c3a46d01104b",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/cpio-2.11-x86_64-2.txz"
+    }
+  },
+  {
+    "name": "git-2.3.5-x86_64-1.txz",
+    "path": "packages/git-2.3.5-x86_64-1.txz",
+    "sha": "34730a715d4d6c4c08f7d75a45736c9414262121",
+    "size": 4330056,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/git-2.3.5-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/git-2.3.5-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/34730a715d4d6c4c08f7d75a45736c9414262121",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/git-2.3.5-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/git-2.3.5-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/34730a715d4d6c4c08f7d75a45736c9414262121",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/git-2.3.5-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "iftop-1.0pre2-x86_64-1.txz",
+    "path": "packages/iftop-1.0pre2-x86_64-1.txz",
+    "sha": "c3ff93ebf565e061f1f4cc98d87c0fbba4f78563",
+    "size": 38604,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/iftop-1.0pre2-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/iftop-1.0pre2-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/c3ff93ebf565e061f1f4cc98d87c0fbba4f78563",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/iftop-1.0pre2-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/iftop-1.0pre2-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/c3ff93ebf565e061f1f4cc98d87c0fbba4f78563",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/iftop-1.0pre2-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "inotify-tools-3.14-x86_64-1.txz",
+    "path": "packages/inotify-tools-3.14-x86_64-1.txz",
+    "sha": "6b815601b949560ca9c3f4fa7dbce24d9e74b84d",
+    "size": 43908,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/inotify-tools-3.14-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/inotify-tools-3.14-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/6b815601b949560ca9c3f4fa7dbce24d9e74b84d",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/inotify-tools-3.14-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/inotify-tools-3.14-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/6b815601b949560ca9c3f4fa7dbce24d9e74b84d",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/inotify-tools-3.14-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "iotop-0.6-x86_64-1_fs.tgz",
+    "path": "packages/iotop-0.6-x86_64-1_fs.tgz",
+    "sha": "fdfe9270c20d923ef5af2ec09de25918575fa12c",
+    "size": 50268,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/iotop-0.6-x86_64-1_fs.tgz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/iotop-0.6-x86_64-1_fs.tgz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/fdfe9270c20d923ef5af2ec09de25918575fa12c",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/iotop-0.6-x86_64-1_fs.tgz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/iotop-0.6-x86_64-1_fs.tgz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/fdfe9270c20d923ef5af2ec09de25918575fa12c",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/iotop-0.6-x86_64-1_fs.tgz"
+    }
+  },
+  {
+    "name": "iperf-3.0.11-x86_64-1_SBo.txz",
+    "path": "packages/iperf-3.0.11-x86_64-1_SBo.txz",
+    "sha": "43d842a98911b40ca0ba9d7de653322b9f146f3f",
+    "size": 74188,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/iperf-3.0.11-x86_64-1_SBo.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/iperf-3.0.11-x86_64-1_SBo.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/43d842a98911b40ca0ba9d7de653322b9f146f3f",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/iperf-3.0.11-x86_64-1_SBo.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/iperf-3.0.11-x86_64-1_SBo.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/43d842a98911b40ca0ba9d7de653322b9f146f3f",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/iperf-3.0.11-x86_64-1_SBo.txz"
+    }
+  },
+  {
+    "name": "kbd-1.15.3-x86_64-2.txz",
+    "path": "packages/kbd-1.15.3-x86_64-2.txz",
+    "sha": "554072a6a13787ebc6bf8686142f7b608564a641",
+    "size": 1147168,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/kbd-1.15.3-x86_64-2.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/kbd-1.15.3-x86_64-2.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/554072a6a13787ebc6bf8686142f7b608564a641",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/kbd-1.15.3-x86_64-2.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/kbd-1.15.3-x86_64-2.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/554072a6a13787ebc6bf8686142f7b608564a641",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/kbd-1.15.3-x86_64-2.txz"
+    }
+  },
+  {
+    "name": "lftp-4.6.1-x86_64-1.txz",
+    "path": "packages/lftp-4.6.1-x86_64-1.txz",
+    "sha": "b701b679080d8d9504665262d7d96717bac48fdd",
+    "size": 729564,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/lftp-4.6.1-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/lftp-4.6.1-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/b701b679080d8d9504665262d7d96717bac48fdd",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/lftp-4.6.1-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/lftp-4.6.1-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/b701b679080d8d9504665262d7d96717bac48fdd",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/lftp-4.6.1-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "lshw-B.02.17-x86_64-1_SBo_LT.txz",
+    "path": "packages/lshw-B.02.17-x86_64-1_SBo_LT.txz",
+    "sha": "2f61acd56e5e0808b8d00df0a49d37edbf72c724",
+    "size": 1337912,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/lshw-B.02.17-x86_64-1_SBo_LT.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/lshw-B.02.17-x86_64-1_SBo_LT.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/2f61acd56e5e0808b8d00df0a49d37edbf72c724",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/lshw-B.02.17-x86_64-1_SBo_LT.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/lshw-B.02.17-x86_64-1_SBo_LT.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/2f61acd56e5e0808b8d00df0a49d37edbf72c724",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/lshw-B.02.17-x86_64-1_SBo_LT.txz"
+    }
+  },
+  {
+    "name": "neon-0.29.6-x86_64-2.txz",
+    "path": "packages/neon-0.29.6-x86_64-2.txz",
+    "sha": "d90ec6d2b0f64423235cc959c1727514ff258323",
+    "size": 207400,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/neon-0.29.6-x86_64-2.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/neon-0.29.6-x86_64-2.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/d90ec6d2b0f64423235cc959c1727514ff258323",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/neon-0.29.6-x86_64-2.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/neon-0.29.6-x86_64-2.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/d90ec6d2b0f64423235cc959c1727514ff258323",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/neon-0.29.6-x86_64-2.txz"
+    }
+  },
+  {
+    "name": "p7zip-9.38.1-x86_64-1tom.txz",
+    "path": "packages/p7zip-9.38.1-x86_64-1tom.txz",
+    "sha": "df71c05811579dd4268911e7b852116ebdd2bce2",
+    "size": 1150356,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/p7zip-9.38.1-x86_64-1tom.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/p7zip-9.38.1-x86_64-1tom.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/df71c05811579dd4268911e7b852116ebdd2bce2",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/p7zip-9.38.1-x86_64-1tom.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/p7zip-9.38.1-x86_64-1tom.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/df71c05811579dd4268911e7b852116ebdd2bce2",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/p7zip-9.38.1-x86_64-1tom.txz"
+    }
+  },
+  {
+    "name": "perl-5.22.0-x86_64-1.txz",
+    "path": "packages/perl-5.22.0-x86_64-1.txz",
+    "sha": "f1775d5df04264070aec2681eb91be7827fed084",
+    "size": 14695928,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/perl-5.22.0-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/perl-5.22.0-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/f1775d5df04264070aec2681eb91be7827fed084",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/perl-5.22.0-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/perl-5.22.0-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/f1775d5df04264070aec2681eb91be7827fed084",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/perl-5.22.0-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "python-2.7.9-x86_64-1.txz",
+    "path": "packages/python-2.7.9-x86_64-1.txz",
+    "sha": "13b7469411d2ea60d2ee339c49b01ad27f62ca92",
+    "size": 14210320,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/python-2.7.9-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/python-2.7.9-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/13b7469411d2ea60d2ee339c49b01ad27f62ca92",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/python-2.7.9-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/python-2.7.9-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/13b7469411d2ea60d2ee339c49b01ad27f62ca92",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/python-2.7.9-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "readline-6.3-x86_64-1.txz",
+    "path": "packages/readline-6.3-x86_64-1.txz",
+    "sha": "45ea95700a8d518be6c4db347087bf5bc533528e",
+    "size": 343876,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/readline-6.3-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/readline-6.3-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/45ea95700a8d518be6c4db347087bf5bc533528e",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/readline-6.3-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/readline-6.3-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/45ea95700a8d518be6c4db347087bf5bc533528e",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/readline-6.3-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "screen-4.2.1-x86_64-1.txz",
+    "path": "packages/screen-4.2.1-x86_64-1.txz",
+    "sha": "768a677ab7ca8d642232b3453d04569c1da4a8d1",
+    "size": 534436,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/screen-4.2.1-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/screen-4.2.1-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/768a677ab7ca8d642232b3453d04569c1da4a8d1",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/screen-4.2.1-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/screen-4.2.1-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/768a677ab7ca8d642232b3453d04569c1da4a8d1",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/screen-4.2.1-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "sshfs-fuse-2.5-x86_64-1sl.txz",
+    "path": "packages/sshfs-fuse-2.5-x86_64-1sl.txz",
+    "sha": "644f539276ad52d0fb136cd9db43a8a28c831e0c",
+    "size": 54152,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/sshfs-fuse-2.5-x86_64-1sl.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/sshfs-fuse-2.5-x86_64-1sl.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/644f539276ad52d0fb136cd9db43a8a28c831e0c",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/sshfs-fuse-2.5-x86_64-1sl.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/sshfs-fuse-2.5-x86_64-1sl.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/644f539276ad52d0fb136cd9db43a8a28c831e0c",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/sshfs-fuse-2.5-x86_64-1sl.txz"
+    }
+  },
+  {
+    "name": "strace-4.10-x86_64-1.txz",
+    "path": "packages/strace-4.10-x86_64-1.txz",
+    "sha": "688f7c2c0420fcec5b8cb88cc2691126c5876199",
+    "size": 164496,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/strace-4.10-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/strace-4.10-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/688f7c2c0420fcec5b8cb88cc2691126c5876199",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/strace-4.10-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/strace-4.10-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/688f7c2c0420fcec5b8cb88cc2691126c5876199",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/strace-4.10-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "subversion-1.7.16-x86_64-1.txz",
+    "path": "packages/subversion-1.7.16-x86_64-1.txz",
+    "sha": "cb1e2ffabf5ed4b21f2bade1a58980e9867247bd",
+    "size": 3377472,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/subversion-1.7.16-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/subversion-1.7.16-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/cb1e2ffabf5ed4b21f2bade1a58980e9867247bd",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/subversion-1.7.16-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/subversion-1.7.16-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/cb1e2ffabf5ed4b21f2bade1a58980e9867247bd",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/subversion-1.7.16-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "unrar-5.2.5-x86_64-1_SBo.txz",
+    "path": "packages/unrar-5.2.5-x86_64-1_SBo.txz",
+    "sha": "070d5b035aba584ea5682105f07a0b0ba4811c62",
+    "size": 324924,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/unrar-5.2.5-x86_64-1_SBo.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/unrar-5.2.5-x86_64-1_SBo.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/070d5b035aba584ea5682105f07a0b0ba4811c62",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/unrar-5.2.5-x86_64-1_SBo.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/unrar-5.2.5-x86_64-1_SBo.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/070d5b035aba584ea5682105f07a0b0ba4811c62",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/unrar-5.2.5-x86_64-1_SBo.txz"
+    }
+  },
+  {
+    "name": "utempter-1.1.5-x86_64-1.txz",
+    "path": "packages/utempter-1.1.5-x86_64-1.txz",
+    "sha": "02ccceac91bad62c82b0d79b909a9733a68b2dc2",
+    "size": 13912,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/utempter-1.1.5-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/utempter-1.1.5-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/02ccceac91bad62c82b0d79b909a9733a68b2dc2",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/utempter-1.1.5-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/utempter-1.1.5-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/02ccceac91bad62c82b0d79b909a9733a68b2dc2",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/utempter-1.1.5-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "vim-7.4.898-x86_64-1.txz",
+    "path": "packages/vim-7.4.898-x86_64-1.txz",
+    "sha": "a49d1f0b016313de223276054dd29654c3057bcc",
+    "size": 6138512,
+    "url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/vim-7.4.898-x86_64-1.txz?ref=master",
+    "html_url": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/vim-7.4.898-x86_64-1.txz",
+    "git_url": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/a49d1f0b016313de223276054dd29654c3057bcc",
+    "download_url": "https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/vim-7.4.898-x86_64-1.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages/vim-7.4.898-x86_64-1.txz?ref=master",
+      "git": "https://api.github.com/repos/eschultz/unraid6-nerdpack/git/blobs/a49d1f0b016313de223276054dd29654c3057bcc",
+      "html": "https://github.com/eschultz/unraid6-nerdpack/blob/master/packages/vim-7.4.898-x86_64-1.txz"
+    }
+  }
+]
