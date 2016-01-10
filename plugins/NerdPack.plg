@@ -89,15 +89,15 @@
 <!--
 The Github repo packages file.
 -->
-<FILE Name="&plgpath;/packages.json">
-<URL>&gitURL;/plugins/packages/packages.json</URL>
+<FILE Name="&plgpath;/packages/packages.json">
+<URL>&gitURL;/plugins/packages.json</URL>
 </FILE>
 
 <!--
 The package description file.
 -->
 <FILE Name="&plgpath;/packages/packages-desc">
-<URL>&gitURL;/plugins/packages/packages-desc</URL>
+<URL>&gitURL;/plugins/packages-desc</URL>
 </FILE>
 
 <!--
