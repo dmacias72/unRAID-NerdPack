@@ -2,7 +2,7 @@
 require_once("/usr/local/emhttp/plugins/NerdPack/include/NerdPackHelpers.php");
 
 $plg_path ="/boot/config/plugins/NerdPack";// plugin path
-$pkg_path = "$plg_path/packages"; // package path
+$pkg_path = "$plg_path/packages/"; // package path
 $config_file = "$plg_path/NerdPack.cfg";// config file
 
 $pkg_cfg = (is_file($config_file)) ? parse_ini_file($config_file) : array(); // get package configs
@@ -11,10 +11,10 @@ $pkgs_downloaded = array_diff( scandir($pkg_path, 1), array(".", "..") ); // get
 
 $pkgs_installed = array_diff( scandir("/var/log/packages", 1), array(".", "..") ); // get array of all installed packages
 
-$pkgs_desc_file = file_get_contents("$pkg_path/packages-desc");// get package descriptions
+$pkgs_desc_file = file_get_contents($pkg_path."packages-desc");// get package descriptions
 $pkgs_desc_array = json_decode($pkgs_desc_file, true);
 
-$pkgs_github_file = file_get_contents("$pkg_path/packages.json");// get packages
+$pkgs_github_file = file_get_contents($pkg_path."packages.json");// get packages
 $pkgs_github_array = json_decode($pkgs_github_file, true);
 
 $pkgs_array = array();

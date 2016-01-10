@@ -55,9 +55,9 @@ function logger($output, $quiet) {
 	usleep(100000);
 }
 
-$config_file = "/boot/config/plugins/NerdPack/NerdPack.cfg";
-
-$pkg_path ="/boot/config/plugins/NerdPack/packages/";
+$plg_path ="/boot/config/plugins/NerdPack";// plugin path
+$pkg_path = "$plg_path/packages/"; // package path
+$config_file = "$plg_path/NerdPack.cfg";// config file
 
 $pkg_cfg = (is_file($config_file)) ? parse_ini_file($config_file) : array(); // get package configs
 
@@ -65,7 +65,7 @@ $pkgs_downloaded = array_diff( scandir($pkg_path, 1), array(".", "..") ); // get
 
 $pkgs_installed = array_diff( scandir("/var/log/packages", 1), array(".", "..") );
 
-$pkgs_json = "/boot/config/plugins/NerdPack/packages.json";
+$pkgs_json = $pkg_path."packages.json";
 $pkgs_file = (is_file($pkgs_json)) ? file_get_contents($pkgs_json) : array(); 
 
 $pkgs_github = json_decode($pkgs_file, true);
