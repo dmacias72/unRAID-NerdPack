@@ -13,6 +13,8 @@ This plugin allows installation of extra packages, mostly CLI, for advanced user
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack.png</Icon>
 <Date>2016-01-10</Date>
 <Changes>
+###2016.01.10a
+- fix name of package description file
 ###2016.01.10
 - added dynamic package description tootips
 - updated tablesorter to v2.25.0

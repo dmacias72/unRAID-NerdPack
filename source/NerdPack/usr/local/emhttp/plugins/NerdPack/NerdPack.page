@@ -12,7 +12,7 @@ $pkg_path = "$plg_path/packages"; // package path
 $pkg_repo = "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages";
 $repo_file= "$pkg_path/packages.json";
 
-$pkg_desc = "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack-desc";
+$pkg_desc = "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/packages-desc";
 $desc_file= "$pkg_path/packages-desc";
 
 get_content_from_github($pkg_repo, $repo_file);
