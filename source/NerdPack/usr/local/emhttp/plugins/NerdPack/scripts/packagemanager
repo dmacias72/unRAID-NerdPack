@@ -1,10 +1,57 @@
 #!/usr/bin/php -q
 <?php
+$usage = <<<EOF
+
+Process package files in NerdPack config. Download and install,
+delete and uninstall, based on the config value and [options].
+
+Usage: packagemanager [options]
+
+  -d, --download   download missing packages selected
+  -r, --delete     delete packages not selected
+  -q, --quiet      supress all packages progress
+  -u, --uninstall  uninstall packages not selected
+  -v, --verbose    print all packages progress
+      --help       display this help and exit
+      --version    output version information and exit
+
+
+EOF;
+
+$shortopts  = "drquv";
+$longopts  = array(
+	"delete",
+	"download",
+	"help",
+	"quiet",
+	"uninstall",
+	"verbose",
+	"version"
+);
+$args = getopt($shortopts, $longopts);
+
+if (array_key_exists("help", $args)) {
+  echo $usage;
+  exit(1);
+}
+
+if (array_key_exists("version", $args)) {
+  echo "Package Manager Version: 1.2\n";
+  exit(1);
+}
+
+$argd = (array_key_exists("d", $args) || array_key_exists("download", $args));
+$argq = (array_key_exists("q", $args) || array_key_exists("quiet", $args));
+$argr = (array_key_exists("r", $args) || array_key_exists("delete", $args));
+$argu = (array_key_exists("u", $args) || array_key_exists("uninstall", $args));
+$argv = (array_key_exists("v", $args) || array_key_exists("verbose", $args));
+
 require_once("/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
 
-function logger($output) {
+function logger($output, $quiet) {
 	shell_exec( "echo '$output' 2>&1 | logger -tnerdpack");
-	echo "\n".$output."\n";
+	if (!$quiet)
+		echo "\n".$output." \n";
 	usleep(100000);
 }
 
@@ -23,7 +70,7 @@ $pkgs_file = (is_file($pkgs_json)) ? file_get_contents($pkgs_json) : array();
 
 $pkgs_github = json_decode($pkgs_file, true);
 
-logger("Processing Packages...");
+logger("Processing Packages...", 0);
 
 foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 
@@ -35,7 +82,7 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 	if($pkg_pref == "yes"){
 
 		//if executing from the wegui check status and download if necessary
-		if ($argv[1] == "download"){
+		if ($argd){
 
 			if(!preg_grep($pkg_pattern, $pkgs_downloaded)) {
 
@@ -50,37 +97,38 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 				$pkg_url  = array_values($pkg_matches)[0]["download_url"];
 				$pkg_sha  = array_values($pkg_matches)[0]["sha"];
 
-				logger("Downloading $pkg_gitname package...");
+				logger("Downloading $pkg_gitname package...", $argq);
 
 				get_file_from_url($pkg_file, $pkg_url);
 
 				if(file_check_sha($pkg_file, $pkg_sha))
-					logger("$pkg_gitname package downloaded sucessfully!");
+					logger("$pkg_gitname package downloaded sucessfully!", $argq);
 				else
-					logger("$pkg_gitname package download failed!");
+					logger("$pkg_gitname package download failed!", $argq);
 			}
 		}
 		if (!$pkg_install_status){
 			$pkg_msg = "Installing";
 			$pkg_cmd = "upgradepkg --install-new ".$pkg_path.$pkg_name."* 2>&1";
 		}
-	}elseif($pkg_pref == "no" && $pkg_install_status && $argv[2] == "remove"){
+	}elseif($pkg_pref == "no" && $pkg_install_status && $argu){
 
-		$pkg_msg = "Removing";
+		$pkg_msg = "Uninstalling";
 		$pkg_cmd = "removepkg ".$pkg_path.$pkg_name."* 2>&1";
-		if ($argv[3] == "delete"){
+		if ($argr){
 			$pkg_cmd .= "; rm ".$pkg_path.$pkg_name."* 2>&1";
 			$pkg_msg .= " and deleting";
 		}
 	}
 	if(!empty($pkg_cmd)){
-		logger("$pkg_msg $pkg_name package...");
+		logger("$pkg_msg $pkg_name package...", 0);
 		shell_exec($pkg_cmd);
 		//$output = shell_exec($pkg_cmd);
 		//logger($output);
 	}else
-	logger($pkg_name." package up to date");
+	logger($pkg_name." package up to date", $argq);
 }
 
-logger("All packages processed");
+logger("All packages processed", 0);
+
 ?>

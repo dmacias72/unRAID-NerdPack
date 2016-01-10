@@ -1,17 +1,30 @@
 $(function(){
 	//tablesorter options
-	$('#tblPackages').tablesorter({headers:{5:{sorter:false}}});
+	$('#tblPackages').tablesorter({
+		sortList: [[0,1]],
+		widgets: ['saveSort', 'filter', 'stickyHeaders'],
+		widgetOptions: {
+			stickyHeaders_filteredToTop: true,
+			filter_hideEmpty : true,
+			filter_saveFilters : true,
+			filter_functions: {
+     		  	'.filter-version' : true,
+     		  	'.filter-downloaded' : true,
+     		  	'.filter-installed' : true
+			}
+		}
+	});
 
 	// "uninstall package" switch and cookie
-	$('#removepkg')
+	$('#uninstallpkg')
 	.switchButton({
 		labels_placement: "left",
 		on_label: 'unInstall On',
   		off_label: 'unInstall Off',
-  		checked: $.cookie('nerdpack_packages_remove') == 'remove'
+  		checked: $.cookie('nerdpack_packages_uninstall') == '--uninstall'
   	})
 	.change(function () {
-		$.cookie('nerdpack_packages_remove', $('#removepkg').prop('checked') ? 'remove' : 'donotremove', { expires: 3650 });
+		$.cookie('nerdpack_packages_uninstall', $('#uninstallpkg').prop('checked') ? '--uninstall' : '', { expires: 3650 });
 	});
 
 	// "delete package" switch and cookie
@@ -20,10 +33,10 @@ $(function(){
 		labels_placement: "left",
 		on_label: 'delete On',
   		off_label: 'delete Off',
-  		checked: $.cookie('nerdpack_packages_delete') == 'delete'
+  		checked: $.cookie('nerdpack_packages_delete') == '--delete'
   	})
 	.change(function () {
-		$.cookie('nerdpack_packages_delete', $('#removepkg').prop('checked') ? 'delete' : 'donotdelete', { expires: 3650 });
+		$.cookie('nerdpack_packages_delete', $('#deletepkg').prop('checked') ? '--delete' : '', { expires: 3650 });
 	});
 
 	// select all packages switch
@@ -67,10 +80,10 @@ function packageManager() {
 		url : "/update.php",
       data : $('#package_form').serializeArray(),
 	   success: function() {
-			openBox('/plugins/NerdPack/scripts/packagemanager&arg1=download'+
-						'&arg2='+$.cookie('nerdpack_packages_remove')+
+			openBox('/plugins/NerdPack/scripts/packagemanager&arg1=--download'+
+						'&arg2='+$.cookie('nerdpack_packages_uninstall')+
 						'&arg3='+$.cookie('nerdpack_packages_delete'),
-						'Manage Packages',600,900,true);
+						'Package Manager',600,900,true);
  	   }
    });
 };
@@ -92,9 +105,9 @@ function packageQuery() {
 
 				$("#tblPackages tbody").append(
 				"<tr>"+
-				"<td>"+data[i].name+"</td>"+ //package name
+				"<td class='package' title='"+data[i].desc+"'>"+data[i].name+"</td>"+ //package name
 				"<td>"+Update+"</td>"+ //package status
-				"<td>"+(data[i].size / 1000).toFixed(0)+"</td>"+ //package size
+				"<td>"+data[i].size+"</td>"+ //package size
 				"<td>"+data[i].downloaded+"</td>"+ //package installed
 				"<td>"+data[i].installed+"</td>"+ //package installed
 				"<td><input class='pkgcheckbox' id='"+data[i].pkgname+"' type='checkbox'>"+

@@ -3,6 +3,7 @@
 // Progress bar for curl download
 function progress_bar($download_size, $downloaded_size, $upload_size = null, $uploaded_size = null)
 {
+	ob_start();
 	static $previousProgress = 0;
  
 	if ($download_size == 0)
@@ -29,12 +30,13 @@ function progress_bar($download_size, $downloaded_size, $upload_size = null, $up
 
 		echo $status_bar;
 		ob_flush();
-		flush();
+
 
 		if($progress == 100) {
 			echo "\n";
 		}
 	}
+	ob_end_flush();
 }
 
 // Download a file from given url

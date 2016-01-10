@@ -5,27 +5,40 @@ Title="Nerd Pack"
 <?php
 include("/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php");
 
+$theme = $display["theme"];
+$plg_path ="/boot/config/plugins/NerdPack";// plugin path
+$pkg_path = "$plg_path/packages"; // package path
+
 $pkg_repo = "https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages";
-$repo_file= "/boot/config/plugins/NerdPack/packages.json";
+$repo_file= "$pkg_path/packages.json";
+
+$pkg_desc = "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack-desc";
+$desc_file= "$pkg_path/packages-desc";
 
 get_content_from_github($pkg_repo, $repo_file);
+get_content_from_github($pkg_desc, $desc_file);
 ?>
 
+<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/styles/NerdPack.css">
+<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/styles/NerdPack-<?=$theme;?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 
-<span class="status" style="display: inline-block; margin-right: 110px;margin-top: -45px;"><input id="removepkg" type="checkbox"></span>
+<span class="status" style="display: inline-block; margin-right: 110px;margin-top: -45px;"><input id="uninstallpkg" type="checkbox"></span>
 <span class="status" style="display: inline-block;margin-top: -45px;"><input id="deletepkg" type="checkbox"></span>
+
 <form markdown="1" id="package_form" name="package_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg" />
-<table style="margin-top:-22px;" class="tablesorter" id="tblPackages">
+
+<table class="tablesorter hover-highlight" id="tblPackages">
 	<thead>
 		<tr>
-			<th> Name </th>
-			<th> Version </th>
-			<th> Size (kB) </th>
-			<th> Downloaded </th>
-			<th> Installed </th>
-			<th><input id="checkall" type="checkbox"></th>
+			<th class="filter-name" data-placeholder="Search..."> Name </th>
+			<th class="filter-version" data-placeholder="by status"> Version </th>
+			<th class="sorter-metric filter-false" data-placeholder="by size" 
+				data-metric-name-full="byte|Byte|BYTE" data-metric-name-abbr="b|B"> Size </th>
+			<th class="filter-downloaded" data-placeholder="by download"> Downloaded </th>
+			<th class="filter-installed" data-placeholder="by install"> Installed </th>
+			<th class="sorter-false filter-false"><input id="checkall" type="checkbox"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -37,4 +50,6 @@ get_content_from_github($pkg_repo, $repo_file);
 </form>
 
 <script type="text/javascript" src="/plugins/NerdPack/javascript/jquery.NerdPack.js"></script>
+<script type="text/javascript" src="/plugins/NerdPack/javascript/jquery.tablesorter.combined.js"></script>
+<script type="text/javascript" src="/plugins/NerdPack/javascript/parsers/parser-metric.js"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>

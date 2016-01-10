@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/local/emhttp/plugins/NerdPack/scripts/packagemanager
+/usr/local/emhttp/plugins/NerdPack/scripts/packagemanager --quiet
