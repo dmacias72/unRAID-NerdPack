@@ -3,12 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.30">
+<!ENTITY version   "2016.01.10">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
-<!ENTITY pkgs 	    "/boot/packages">
 <!ENTITY plgpath   "/boot/config/plugins/&name;">
 <!ENTITY plgname	 "&name;-&version;-x86_64-1">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
@@ -17,6 +16,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.01.10
+- added dynamic package description tootips
+- updated tablesorter to v2.25.0
+- add tablesorter widgets (filter, saveSort, stickyHeaders, hover-highlight)
+- added cli options to packagemanager script
 ###2015.12.30
 - create packages directory on install
 ###2015.12.15a
@@ -55,7 +59,7 @@
 ###2015.05.15
 - Added lftp 4.6.1
 - Replaced installpkg with upgradepkg to allow package upgrading
-- Added removal of packages upon uninstall of &name;
+- Added removal of packages upon uninstall of NerdPack
 
 ###2015.04.29
 - Added git 2.3.5
@@ -79,6 +83,20 @@
  - inotify-tools 3.14
  - cpio 2.11
 </CHANGES>
+
+<!--
+The Github repo packages file.
+-->
+<FILE Name="&plgpath;/packages.json">
+<URL>&gitURL;/plugins/packages.json</URL>
+</FILE>
+
+<!--
+The package description file.
+-->
+<FILE Name="&plgpath;/packages/packages-desc">
+<URL>&gitURL;/plugins/packages/packages-desc</URL>
+</FILE>
 
 <!--
 The 'plugin' package file.
@@ -133,7 +151,7 @@ echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been installed."
 echo " This plugin requires Dynamix webGui to operate"
-echo " Copyright 2015, &author;, eschultz"
+echo " Copyright 2016, &author;, eschultz"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
@@ -153,7 +171,7 @@ rm -f &plgpath;/&plgname;.md5
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2015, &author;, eschultz"
+echo " Copyright 2016, &author;, eschultz"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
