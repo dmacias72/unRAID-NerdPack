@@ -1,0 +1,26 @@
+/* header */
+.tablesorter .headerSortUp,
+.tablesorter .tablesorter-headerSortUp,
+.tablesorter .tablesorter-headerAsc {
+	background-color:#E0E0E0;
+}
+.tablesorter .headerSortDown,
+.tablesorter .tablesorter-headerSortDown,
+.tablesorter .tablesorter-headerDesc {
+	background-color:#E0E0E0;
+}
+/* filter widget */
+.tablesorter .tablesorter-filter-row {
+	background-color: #E0E0E0;
+}
+
+.tablesorter .tablesorter-filter-row td {
+	background-color: #E0E0E0;
+	border-bottom: #FFFFFF 1px solid;
+}
+/* filters */
+.tablesorter input.tablesorter-filter,
+.tablesorter select.tablesorter-filter {
+	background-color: #FFFFFF;
+	border: 1px solid #E0E0E0;
+}
