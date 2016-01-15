@@ -95,13 +95,13 @@ foreach($pkg_cfg as $pkg_name => $pkg_pref) { //get preferences for each package
 				$pkg_gitname = array_values($pkg_matches)[0]["name"];
 				$pkg_file = $pkg_path.$pkg_gitname;
 				$pkg_url  = array_values($pkg_matches)[0]["download_url"];
-				$pkg_sha  = array_values($pkg_matches)[0]["sha"];
+				$pkg_sha1  = array_values($pkg_matches)[0]["sha"];
 
 				logger("Downloading $pkg_gitname package...", $argq);
 
 				get_file_from_url($pkg_file, $pkg_url);
 
-				if(file_check_sha($pkg_file, $pkg_sha))
+				if(file_check_sha1($pkg_file, $pkg_sha1))
 					logger("$pkg_gitname package downloaded sucessfully!", $argq);
 				else
 					logger("$pkg_gitname package download failed!", $argq);

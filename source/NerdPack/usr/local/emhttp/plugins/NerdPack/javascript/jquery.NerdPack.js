@@ -1,20 +1,4 @@
 $(function(){
-	//tablesorter options
-	$('#tblPackages').tablesorter({
-		sortList: [[0,1]],
-		widgets: ['saveSort', 'filter', 'stickyHeaders'],
-		widgetOptions: {
-			stickyHeaders_filteredToTop: true,
-			filter_hideEmpty : true,
-			filter_saveFilters : true,
-			filter_functions: {
-     		  	'.filter-version' : true,
-     		  	'.filter-downloaded' : true,
-     		  	'.filter-installed' : true
-			}
-		}
-	});
-
 	// "uninstall package" switch and cookie
 	$('#uninstallpkg')
 	.switchButton({
@@ -114,26 +98,43 @@ function packageQuery() {
 				"<input class='pkgvalue' type='hidden' id='"+data[i].pkgname+"_value' name='"+
 					data[i].pkgnver+"' value='"+data[i].config+"'></td>"+
 				"</tr>");
+	
 				$('#'+data[i].pkgname)
-					.switchButton({
-						labels_placement: 'right',
-						on_label: 'On',
-						off_label: 'Off',
-  						checked: data[i].config == "yes"
+				.switchButton({
+					labels_placement: 'right',
+					on_label: 'On',
+					off_label: 'Off',
+					checked: data[i].config == "yes"
 				})
-					.change(function() {
-						var par = $(this).parent().parent();
-						if(this.checked) 
-							par.find('.pkgvalue').val("yes");
-						else
-							par.find('.pkgvalue').val("no");
-						$("#btnApply").prop("disabled", false);
-						checkDepends();
+				.change(function() {
+					var par = $(this).parent().parent();
+					if(this.checked) 
+						par.find('.pkgvalue').val("yes");
+					else
+						par.find('.pkgvalue').val("no");
+					$("#btnApply").prop("disabled", false);
+					checkDepends();
 				});
 			}
-		},
-		complete : function () {
 			$("#tblPackages").trigger("update");
+
+			//tablesorter options
+			$('#tblPackages').tablesorter({
+				sortList: [[0,1]],
+				widgets: ['saveSort', 'filter', 'stickyHeaders'],
+				widgetOptions: {
+					stickyHeaders_filteredToTop: true,
+					filter_hideEmpty : true,
+					filter_liveSearch : true,
+					filter_saveFilters : true,
+					filter_reset : 'button.reset',
+					filter_functions: {
+   	  			  	'.filter-version' : true,
+	     			  	'.filter-downloaded' : true,
+   	  			  	'.filter-installed' : true
+					}
+				}
+			});
 		},
 		error: function () {
 		}

@@ -68,19 +68,22 @@ function get_content_from_github($repo, $file){
    curl_setopt($ch, CURLOPT_URL, $repo);
    $content = curl_exec($ch);
    curl_close($ch);
-   if (!empty($content))
-   	file_put_contents($file, $content);
+   if ((!empty($content)) && ($content != file_get_contents($file)))
+   	  file_put_contents($file, $content);
 }
 
-// Compare the github sha value of a file
-function file_check_sha($file, $sha){
+// Compare the github sha1 value of a file
+function file_check_sha1($file, $sha1){
 	$size = filesize($file);
 	$handle = fopen($file, "rb");
 	$contents = fread($handle, $size);
 	fclose($handle);
+	
+	// create a sha1 like github does
 	$str = "blob ".$size."\0".$contents;
-	$sha_file = sha1($str);
-	$return = ($sha_file == $sha) ? true : false;
+	$sha1_file = sha1($str);
+	
+	$return = ($sha1_file == $sha1) ? true : false;
 	return $return;
 }
 ?>

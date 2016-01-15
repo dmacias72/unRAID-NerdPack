@@ -45,7 +45,7 @@ get_content_from_github($pkg_desc, $desc_file);
 	</tbody>
 </table>
 
-&nbsp;
+<button title="reset filters" type="button" class="reset">Reset</button>
 : <input id="btnApply" type="button" value="Apply"><input type="button" value="Done" onClick="done()">
 </form>
 
