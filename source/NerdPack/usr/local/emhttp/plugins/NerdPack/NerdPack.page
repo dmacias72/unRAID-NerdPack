@@ -52,5 +52,5 @@ get_content_from_github($pkg_desc, $desc_file);
 
 <script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
 <script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
-<script type="text/javascript" src="/plugins/tablesorter/js/parsers/parser-metric.js"></script>
+<script type="text/javascript" src="/plugins/tablesorter/js/parsers/parser-metric.min.js"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
