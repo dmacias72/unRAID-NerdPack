@@ -19,8 +19,9 @@ get_content_from_github($pkg_repo, $repo_file);
 get_content_from_github($pkg_desc, $desc_file);
 ?>
 
-<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/styles/NerdPack.css">
-<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/styles/NerdPack-<?=$theme;?>.css">
+<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/NerdPack.css">
+<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter.css">
+<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$theme;?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 
 <span class="status" style="display: inline-block; margin-right: 110px;margin-top: -45px;"><input id="uninstallpkg" type="checkbox"></span>
@@ -49,7 +50,7 @@ get_content_from_github($pkg_desc, $desc_file);
 : <input id="btnApply" type="button" value="Apply"><input type="button" value="Done" onClick="done()">
 </form>
 
-<script type="text/javascript" src="/plugins/NerdPack/javascript/jquery.NerdPack.js"></script>
-<script type="text/javascript" src="/plugins/NerdPack/javascript/jquery.tablesorter.combined.js"></script>
-<script type="text/javascript" src="/plugins/NerdPack/javascript/parsers/parser-metric.js"></script>
+<script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
+<script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
+<script type="text/javascript" src="/plugins/tablesorter/js/parsers/parser-metric.js"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
