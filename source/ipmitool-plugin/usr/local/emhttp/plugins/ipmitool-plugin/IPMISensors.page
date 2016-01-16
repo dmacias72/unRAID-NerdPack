@@ -9,16 +9,19 @@ if($ipmitool_cfg['REMOTE'] == "enable") {
 	$ipmitool_options = " -I lanplus -H {$ipmitool_cfg['IPADDR']} -U {$ipmitool_cfg['USER']} -P ";
 	$ipmitool_password = $ipmitool_cfg['PASSWORD'];
 }
+$theme = $display["theme"];
 ?>
 
-<link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
+<link type="text/css" rel="stylesheet" href="/plugins/ipmitool-plugin/css/ipmitool-plugin.css">
+<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter.css">
+<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$theme;?>.css">
 
 <div>
 	<span class="status" style="margin-top: -22px;"><input type="checkbox" class="advancedview"></span>
-	<table style="margin-top:-21px;" class="tablesorter ipmi_sensors" id="tblSensor">
+	<table class="tablesorter" id="tblSensor">
 		<thead>
 			<tr>
-				<th> Status </th>
+				<th class="sorter-false"> Status </th>
 				<th> Sensor </th>
 				<th class="advanced" style="display:none"> Lower <br> Non-Recover </th>
 				<th class="advanced" style="display:none"> Lower <br> Critical </th>
@@ -33,13 +36,17 @@ if($ipmitool_cfg['REMOTE'] == "enable") {
 		<tbody>
 		</tbody>
 	</table>
-	<div style="margin-left:18px">
-		<button type="button" onClick="done();">Done</button>
-	</div>
 </div>
+<form markdown="1">
 
-<script type="text/javascript" src="/plugins/ipmitool-plugin/javascript/jquery.ipmitool-plugin.js"></script>
-<script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
+&nbsp;
+: <button type="button" onClick="done();">Done</button>
+
+</form>
+
+<script type="text/javascript" src="/plugins/ipmitool-plugin/js/jquery.ipmitool-plugin.js"></script>
+<script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
+<script type="text/javascript" src="/plugins/tablesorter/js/pager/jquery.tablesorter.pager.js"></script>
 
 <script type="text/javascript">
 var Password = '<?=$ipmitool_password?>';
