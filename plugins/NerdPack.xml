@@ -13,6 +13,8 @@ This plugin allows installation of extra packages, mostly CLI, for advanced user
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack.png</Icon>
 <Date>2016-01-16</Date>
 <Changes>
+###2016.01.16a
+- add metric parser to sort units
 ###2016.01.16
 - minor diplay changes
 - add tablesorter as a separate package
