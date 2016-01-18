@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2015.12.30">
+<!ENTITY version   "2016.01.17">
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -18,6 +18,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.01.17
+- add tablesorter as a separate package
+- fix values outside of critical showing green
+- add icons instead of switches
+- minor code changes
 ###2015.12.30
 - remove old plugin directory on install
 ###2015.12.20
@@ -52,12 +57,33 @@
 </CHANGES>
 
 <!--
+The 'tablesorter' package file.
+-->
+<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.01.16-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/archive/tablesorter-2016.01.16-x86_64-1.txz</URL>
+<MD5>139bbc7f9788339193ab9bd994365b4a</MD5>
+</FILE>
+
+<!--
 This plugin uses ipmitool to display sensor readings
 -->
 
 <FILE Name="&plgpath;/&pkg;" Run="upgradepkg --install-new">
 <URL>&pkgURL;/&pkg;</URL>
 <MD5>&md5;</MD5>
+</FILE>
+
+
+<FILE Name="&plgpath;/&name;.cfg">
+<INLINE>
+<![CDATA[
+SERVICE="disable"
+REMOTE="disable"
+IPADDR=""
+USER=""
+PASSWORD="="
+]]>
+</INLINE>
 </FILE>
 
 <!--
