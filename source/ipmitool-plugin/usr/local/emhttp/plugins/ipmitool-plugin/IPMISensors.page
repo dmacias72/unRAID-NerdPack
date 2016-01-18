@@ -15,6 +15,7 @@ $theme = $display["theme"];
 <link type="text/css" rel="stylesheet" href="/plugins/ipmitool-plugin/css/ipmitool-plugin.css">
 <link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter.css">
 <link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$theme;?>.css">
+<link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 
 <div>
 	<span class="status" style="margin-top: -22px;"><input type="checkbox" class="advancedview"></span>
@@ -36,17 +37,13 @@ $theme = $display["theme"];
 		<tbody>
 		</tbody>
 	</table>
+	<button type="button" onClick="done();">Done</button>
 </div>
-<form markdown="1">
-
-&nbsp;
-: <button type="button" onClick="done();">Done</button>
-
-</form>
 
 <script type="text/javascript" src="/plugins/ipmitool-plugin/js/jquery.ipmitool-plugin.js"></script>
 <script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
 <script type="text/javascript" src="/plugins/tablesorter/js/pager/jquery.tablesorter.pager.js"></script>
+<script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
 
 <script type="text/javascript">
 var Password = '<?=$ipmitool_password?>';

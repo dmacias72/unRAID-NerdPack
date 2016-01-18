@@ -2,3 +2,7 @@
 .tablesorter {
 	margin-top:-21px;
 }
+.tablesorter td.reading{
+	font-weight: bold;
+}
+

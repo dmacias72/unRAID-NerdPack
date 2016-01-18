@@ -20,19 +20,13 @@ $(function(){
 });
 
 //sensor refresh
-(function sensorRefresh() {
+function sensorRefresh() {
   sensorArray(true);
-   setTimeout(sensorRefresh, 30000);
-}());
+   setTimeout(sensorRefresh, 3000);
+};
 
 //load ipmi sensor table
 function sensorArray(Refresh){
-	var Display = 'none';
-
-	if ($.cookie('ipmitool_sensor_mode') == 'advanced') {
-		$('.advanced').show();
-		Display = 'table-cell';
-	} 
   	$.ajax({
       type: "POST",
       dataType: "json",
@@ -52,10 +46,12 @@ function sensorArray(Refresh){
 					var Name = data[i][0].replace('+', 'plus_').replace('-', 'minus_').replace(' ', '_').replace('.', '_');
 					
    				if (data[i][6]=="Voltage"){
+   					if (parseFloat(Reading) < parseFloat(LowerNonRec) || parseFloat(Reading) > parseFloat(UpperNonRec))
+   						Color = "red";
    					if (parseFloat(Reading) > parseFloat(LowerNonRec) && parseFloat(Reading) < parseFloat(UpperNonRec))
    						Color = "red";
    					if (parseFloat(Reading) > parseFloat(LowerCritical) && parseFloat(Reading) < parseFloat(UpperCritical))
-   						Color = "yellow";
+   						Color = "orange";
    					if (parseFloat(Reading) > parseFloat(LowerNonCrit) && parseFloat(Reading) < parseFloat(UpperNonCrit))
    						Color = "green";
    				} else if (data[i][6]=="Fan"){
@@ -73,19 +69,25 @@ function sensorArray(Refresh){
 						.append("<tr id='"+Name+"'>"+
 						"<td title='"+data[i][3]+"'><img src='/plugins/ipmitool-plugin/images/green-on.png'/></td>"+ //status
 						"<td>"+data[i][0]+"</td>"+ //sensor name
-	   				"<td class='advanced' style='display:" + Display + ";'>" + LowerNonRec + "</td>"+
-						"<td class='advanced' style='display:" + Display + ";'>" + LowerCritical + "</td>"+
-						"<td class='advanced' style='display:" + Display + ";'>" + LowerNonCrit + "</td>"+
-						"<td class='reading'>" + "<font color='" + Color + "'>" + Reading + "</font>" + "</td>"+ //sensor reading
+	   				"<td class='advanced'>"+ LowerNonRec   +"</td>"+
+						"<td class='advanced'>"+ LowerCritical +"</td>"+
+						"<td class='advanced'>"+ LowerNonCrit  +"</td>"+
+						"<td class='reading "+ Color +"-text'>"+ Reading +"</td>"+ //sensor reading
 						"<td>"+data[i][2]+"</td>"+ //sensor units
-						"<td class='advanced' style='display:" + Display + ";'>" + UpperNonCrit + "</td>"+
-						"<td class='advanced' style='display:" + Display + ";'>" + UpperCritical + "</td>"+
-						"<td class='advanced' style='display:" + Display + ";'>" + UpperNonRec + "</td>"+
+						"<td class='advanced'>"+ UpperNonCrit  +"</td>"+
+						"<td class='advanced'>"+ UpperCritical +"</td>"+
+						"<td class='advanced'>"+ UpperNonRec   +"</td>"+
 						"</tr>");
 					}
 				}
    		});
 		$("#tblSensor").trigger("update"); //update sensor table
+
+		if ($.cookie('ipmitool_sensor_mode') == 'advanced')
+			$('.advanced').show();
+		else
+			$('.advanced').hide();		 
+
 		$('#tblSensor').tablesorter();
  		},
        error : function() {},
@@ -106,7 +108,7 @@ function eventArray(){
    		$.each(data, function (i, val) {
    			var Status = (data[i][5] == 'Asserted') ? 'red' : 'green';
  				$("#tblEvent tbody")
- 				.append("<tr>"+
+ 				.append("<tr id='"+data[i][0]+"'>"+
 				"<td title='"+data[i][5]+"'><img src='/plugins/ipmitool-plugin/images/" + Status + "-on.png'/></td>"+ //status 
 				"<td>" + data[i][0] + "</td>"+ //event id
 				"<td>" + data[i][1] + " "+data[i][2]+"</td>"+ //time stamp
@@ -118,8 +120,8 @@ function eventArray(){
 				$('.delete').unbind('click').click(function () {
         			Delete($(this).parent().parent().attr("id"));
     			});
-
-     		});
+    			
+   		});
 
 			$("#tblEvent").trigger("update"); //update table for tablesorter
 
@@ -133,7 +135,20 @@ function eventArray(){
 					filter_saveFilters : true,
 					filter_reset : 'a.reset',
 					filter_functions: {
-   	  		  		'.filter-time' : true,
+						'.filter-time' : {
+			          	"3 days"   : function(e, n, f, i, $r, c, data) {
+			          		return ($.now() - n <= 259200000); }, //3*24*60*60 3 days
+   	  			    	"1 week"   : function(e, n, f, i, $r, c, data) {
+   	  			    		return ($.now() - n <= 604800000); }, //7*24*60*60 1 week
+	   		      	"2 weeks"  : function(e, n, f, i, $r, c, data) {
+	   		      		return ($.now() - n <= 1209600000); }, //14*24*60*60 2 weeks
+     				   	"1 month"  : function(e, n, f, i, $r, c, data) {
+     				   		return ($.now() - n <= 2592000000); }, //30*24*60*60 1 month
+     				   	"6 months" : function(e, n, f, i, $r, c, data) {
+     				   		return ($.now() - n <= 15724800000); }, //26*7*24*60*60 6 months
+     			   		"1 year"   : function(e, n, f, i, $r, c, data) {
+     			   			return ($.now() - n <= 31449600000); } //52*7*24*60*60 1 year
+	        			},
      				  	'.filter-name' : true
 					}
 				}
@@ -143,6 +158,11 @@ function eventArray(){
 				fixedHeight: false,
 				size: 10
 			});
+
+			$("#allEvents").click(function() {
+  				Delete('all');
+			});
+
  		},
  		complete: function () {
 
@@ -152,49 +172,21 @@ function eventArray(){
 };
 
 function Delete(Row) {
-	var Confirm = (Row == "all") ? confirm("Are your sure you want to remove all speedtests!?"): true;
-/*	if (Confirm){
-   	var EventId = $(this).val(); //get event id
-  		var par = $(this).parent().parent(); //get table row
-   	 	$.ajax({
-  	   		type : "POST",
-   	   	url : "/plugins/ipmitool-plugin/include/delete_event.php",
-	      	data : {options: "delete " + EventId + Options + atob(Password)},
-   	   	success: function(data) {
-					par.remove(); //remove table row
-       		},
-	       error : function() { }
-   		});
+	var Confirm = (Row == "all") ? confirm("Are your sure you want to remove all events!?"): true;
+	if (Confirm){
+		var Method = (Row == "all") ? "clear " : "delete ";
+		var EventId = (Row == "all") ? "" : Row;
+		$.ajax({
+			type : "POST",
+			url : "/plugins/ipmitool-plugin/include/delete_event.php",
+			data : {options: Method + EventId + Options + atob(Password)},
+			success: function(data) {
+				if (Row == "all")
+					$("#tblEvent tbody").empty(); // empty table
+				else
+					$('#'+Row).remove(); //remove table row
+				},
+			error : function() { }
+		});
 	}
-*/};
-
-function clearEvents() {
-	//if all events checked clear all
-	if($('#allEvents').prop('checked')) {
-		$('#allEvents').switchButton({checked: false});
-    	$.ajax({
-   		type : "POST",
- 	  		url : "/plugins/ipmitool-plugin/include/delete_event.php",
-    	 	data : {options: "clear" + Options + atob(Password)},
-    	 	success: function(data) {
-    	 		$("#tblEvent tbody").empty();
-     		},
-      	 error : function() { }
-   	});
-	} else {
-	// clear only checked events
-   $(':checkbox:checked').each(function(){
-   	var EventId = $(this).val(); //get event id
-  		var par = $(this).parent().parent(); //get table row
-   	 	$.ajax({
-  	   		type : "POST",
-   	   	url : "/plugins/ipmitool-plugin/include/delete_event.php",
-	      	data : {options: "delete " + EventId + Options + atob(Password)},
-   	   	success: function(data) {
-					par.remove(); //remove table row
-       		},
-	       error : function() { }
-   		});
-   	});
-   }
 };

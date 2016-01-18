@@ -1,4 +1,4 @@
 <?php
-$command = "/usr/bin/ipmitool sel ".$_POST["options"];
-exec($command);
+$cmd = "/usr/bin/ipmitool sel ".$_POST["options"];
+exec($cmd);
 ?>
