@@ -11,8 +11,13 @@ The ipmitool plugin allows you to view your system sensors and events using your
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmitool-plugin.png</Icon>
-<Date>2015-12-30</Date>
+<Date>2016-01-17</Date>
 <Changes>
+###2016.01.17
+- add tablesorter as a separate package
+- fix values outside of critical showing green
+- add icons instead of switches
+- minor code changes
 ###2015.12.30
 - remove old plugin directory on install
 ###2015.12.20
