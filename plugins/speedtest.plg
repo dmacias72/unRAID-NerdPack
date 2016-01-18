@@ -97,7 +97,7 @@ The 'tablesorter' package file.
 <MD5>1e0a8d9e281cd075c175eca86aea2130</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/speedtest/speedtest.cfg">
+<FILE Name="&plgpath;/&name;.cfg">
 <INLINE>
 <![CDATA[
 SECURE="no"
