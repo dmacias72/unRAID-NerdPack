@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.16">
+<!ENTITY version   "2016.01.17">
 <!ENTITY launch    "Tools/Speedtest">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,8 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.01.17
+- remove symlink to speedtest-linux
 ###2016.01.16
 - minor diplay changes
 - add tablesorter as a separate package
