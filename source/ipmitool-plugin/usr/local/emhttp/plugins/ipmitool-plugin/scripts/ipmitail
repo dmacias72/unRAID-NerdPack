@@ -1,4 +1,5 @@
 #!/bin/bash
+
 prog="ipmievd: "
 
 exec /usr/bin/tail -n 0 -F /var/log/syslog | \
