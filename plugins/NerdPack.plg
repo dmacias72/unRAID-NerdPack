@@ -102,6 +102,15 @@ The 'tablesorter' package file.
 <MD5>139bbc7f9788339193ab9bd994365b4a</MD5>
 </FILE>
 
+<FILE Name="&plgpath;/&name;.cfg">
+<INLINE>
+<![CDATA[
+
+]]>
+</INLINE>
+</FILE>
+
+
 <!--
 The Github repo packages file.
 -->
