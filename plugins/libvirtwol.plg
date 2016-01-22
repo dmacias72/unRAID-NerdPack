@@ -3,12 +3,11 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.02">
+<!ENTITY version   "2016.01.22">
 <!ENTITY launch    "Settings/VMManager">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
-<!ENTITY pkgs 	    "/boot/packages">
 <!ENTITY plgpath   "/boot/config/plugins/&name;">
 <!ENTITY plgname	 "&name;-&version;-x86_64-1">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
@@ -21,6 +20,10 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 -->
 
 <CHANGES>
+###2016.01.22
+- update install and remove scripts
+- check if config exists
+- create a default config file
 ###2016.01.02
 - fix not starting with array
 ###2015.12.21a
@@ -52,18 +55,29 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <URL>https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
-<FILE Name="&pkgs;/libvirt-python-1.2.18-x86_64-1ponce.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libvirt-python-1.2.18-x86_64-1ponce.txz</URL>
 <MD5>4198c7784a57d7ff80fb1d53811ceb5e</MD5>
 </FILE>
-<FILE Name="&pkgs;/libpcap-1.4.0-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libpcap-1.4.0-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libpcap-1.4.0-x86_64-1.txz</URL>
 <MD5>cbe651aff5d49d1c3a5a7ad6a4262393</MD5>
 </FILE>
-<FILE Name="&pkgs;/pylibpcap-0.6.2-x86_64-1_slack.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/pylibpcap-0.6.2-x86_64-1_slack.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/pylibpcap-0.6.2-x86_64-1_slack.txz</URL>
 <MD5>2531f44126b3c05d76782c9eedba9988</MD5>
 </FILE>
+
+<FILE Name="/boot/config/domain.cfg">
+<INLINE>
+<![CDATA[
+
+WOL="disable"
+
+]]>
+</INLINE>
+</FILE>
+
 
 <!--
 The 'plugin' package file.
@@ -139,6 +153,10 @@ removepkg &plgpath;/&plgname;.txz
 rm -rf &emhttp;
 rm -f &plgpath;/&plgname;.txz
 rm -f &plgpath;/&plgname;.md5
+
+#remove installed packages
+removepkg &plgpath;/*.txz
+rm -f &plgpath;/*.txz
 
 # restore VM Manager Menu
 sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page

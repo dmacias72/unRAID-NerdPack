@@ -11,8 +11,12 @@ Wake On Lan for Libvirt. Allows you to recieve a wake on lan packet to wake or s
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=44017.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
-<Date>2016-01-02</Date>
+<Date>2016-01-22</Date>
 <Changes>
+###2016.01.22
+- update install and remove scripts
+- check if config exists
+- create a default config file
 ###2016.01.02
 - fix not starting with array
 ###2015.12.21a
