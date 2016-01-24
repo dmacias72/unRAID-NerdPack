@@ -123,11 +123,6 @@ chmod +0755 /usr/local/emhttp/plugins/&name;/scripts/*
 # add menu to VM Manager
 sed -i -- 's/OtherSettings/VMManager:1/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
 
-#restart event daemon
-&emhttp;/scripts/stop
-sleep 1
-&emhttp;/scripts/start
-
 # Cleaning old source files
 find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
 find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
