@@ -91,13 +91,21 @@ function packageQuery() {
 			else
 				Update = "<span style=\"white-space:nowrap;\"><a><i class=\"fa fa-cloud-download\"></i> update ready</a></span>";
 
+			var Downloaded = data[i].downloaded;
+			if (data[i].downloadeq != data[i].downloaded)
+				Downloaded = 'old';
+
+			var Installed = data[i].installed;
+			if (data[i].installeq != data[i].installed)
+				Installed = 'old';
+
 			$("#tblPackages tbody").append(
 			"<tr>"+
 			"<td class='package' title='"+data[i].desc+"'>"+data[i].name+"</td>"+ // package name
 			"<td>"+Update+"</td>"+ // package status
 			"<td>"+data[i].size+"</td>"+ // package size
-			"<td>"+data[i].downloaded+"</td>"+ // package installed
-			"<td>"+data[i].installed+"</td>"+ // package installed
+			"<td>"+Downloaded+"</td>"+ // package installed
+			"<td>"+Installed+"</td>"+ // package installed
 			"<td><input class='pkgcheckbox' id='"+data[i].pkgname+"' type='checkbox'>"+
 			"<input class='pkgvalue' type='hidden' id='"+data[i].pkgname+"_value' name='"+data[i].pkgnver+"' value='"+data[i].config+"'></td>"+
 			"</tr>");
