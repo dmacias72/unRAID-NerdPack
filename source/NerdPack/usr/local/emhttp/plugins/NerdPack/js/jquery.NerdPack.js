@@ -81,9 +81,10 @@ $(function(){
 });
 
 //list all available packages in a table
-function packageQuery() {
-	$("#tblPackages tbody").empty();
-	$.getJSON("/plugins/NerdPack/include/PackageQuery.php", function(data) {
+function packageQuery(force) {
+	$("#tblPackages tbody").html("<tr><td colspan=\"6\"><br><i class=\"fa fa-spinner fa-spin icon\"></i><em>Please wait, retrieving plugin information ...</em></td><tr>");
+	$.getJSON("/plugins/NerdPack/include/PackageQuery.php", {force: force}, function(data) {
+		$("#tblPackages tbody").empty();
 		for (var i in data) {
 			var Update;
 			if (data[i].downloadeq == data[i].downloaded && data[i].installeq == data[i].installed)

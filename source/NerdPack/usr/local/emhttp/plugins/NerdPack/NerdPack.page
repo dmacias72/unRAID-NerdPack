@@ -2,14 +2,6 @@ Icon="NerdPack.png"
 Menu="NetworkServices"
 Title="Nerd Pack"
 ---
-<?php
-require_once '/usr/local/emhttp/plugins/NerdPack/include/NerdPackHelpers.php';
-require_once '/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php';
-
-get_content_from_github($pkg_repo, $repo_file);
-get_content_from_github($pkg_desc, $desc_file);
-?>
-
 <link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter.css">
 <link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$display["theme"];?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
@@ -35,7 +27,7 @@ get_content_from_github($pkg_desc, $desc_file);
 	</tbody>
 </table>
 
-<button title="reset filters" type="button" class="reset">Reset</button>
+<input onclick="packageQuery(1)" value="Check for Updates" type="button"><input class="reset" value="Reset" type="button" title="reset filters">
 : <input id="btnApply" type="button" value="Apply"><input type="button" value="Done" onClick="done()">
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
