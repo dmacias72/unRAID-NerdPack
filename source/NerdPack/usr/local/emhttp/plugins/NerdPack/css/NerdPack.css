@@ -1,3 +1,9 @@
 .package {
-	cursor: pointer; 
+	cursor: pointer;
+}
+#package_form {
+	margin-top: -22px;
+}
+.switch-button-label.off {
+	color: inherit;
 }
