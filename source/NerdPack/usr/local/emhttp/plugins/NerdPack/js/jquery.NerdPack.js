@@ -1,14 +1,14 @@
 $(function(){
 	// tablesorter options
 	$("#tblPackages").tablesorter({
-		sortList: [[0,1]],
+		sortList: [[0,0]],
 		widgets: ["saveSort", "filter", "stickyHeaders"],
 		widgetOptions: {
 			stickyHeaders_filteredToTop: true,
 			filter_hideEmpty: true,
 			filter_liveSearch: true,
 			filter_saveFilters: true,
-			filter_reset: "button.reset",
+			filter_reset: ".reset",
 			filter_functions: {
 				".filter-version": true,
 				".filter-downloaded": true,
