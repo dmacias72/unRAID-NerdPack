@@ -11,8 +11,14 @@ This plugin allows installation of extra packages, mostly CLI, for advanced user
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=37541.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack.png</Icon>
-<Date>2016-01-16</Date>
+<Date>2016-01-24</Date>
 <Changes>
+###2016.01.24
+- Merged eschultz's package repo and following fixes
+- Fixed first time running warnings about missing packages.json / desc files
+- Fixed bug preventing Select All from being toggle-able
+- Fixed bug in Select All and dependent package checkboxes / race condition
+- Eliminated vertical space gap between page header and table
 ###2016.01.16a
 - add metric parser to sort units
 ###2016.01.16

@@ -3,7 +3,7 @@ $plg_path = '/boot/config/plugins/NerdPack/'; // plugin path
 $pkg_path = $plg_path.'packages/'; // package path
 
 $pkg_desc = 'https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/packages-desc';
-$pkg_repo = 'https://api.github.com/repos/eschultz/unraid6-nerdpack/contents/packages';
+$pkg_repo = 'https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages';
 
 $desc_file = $pkg_path.'packages-desc';
 $repo_file = $pkg_path.'packages.json';

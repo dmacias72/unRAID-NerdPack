@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.16a">
+<!ENTITY version   "2016.01.24">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.01.24
+- Merged eschultz's package repo and following fixes
+- Fixed first time running warnings about missing packages.json / desc files
+- Fixed bug preventing Select All from being toggle-able
+- Fixed bug in Select All and dependent package checkboxes / race condition
+- Eliminated vertical space gap between page header and table
 ###2016.01.16a
 - add metric parser to sort units
 ###2016.01.16
