@@ -27,7 +27,7 @@ Title="Nerd Pack"
 	</tbody>
 </table>
 
-<input onclick="packageQuery(1)" value="Check for Updates" type="button"><input class="reset" value="Reset" type="button" title="reset filters">
+<input onclick="packageQuery(1)" value="Check for Updates" type="button"><button class="reset" type="button" title="reset filters">Reset Filters</button>
 : <input id="btnApply" type="button" value="Apply"><input type="button" value="Done" onClick="done()">
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
