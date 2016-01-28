@@ -1,4 +1,22 @@
 $(function(){
+	// tablesorter options
+	$("#tblPackages").tablesorter({
+		sortList: [[0,0]],
+		widgets: ["saveSort", "filter", "stickyHeaders"],
+		widgetOptions: {
+			stickyHeaders_filteredToTop: true,
+			filter_hideEmpty: true,
+			filter_liveSearch: true,
+			filter_saveFilters: true,
+			filter_reset: ".reset",
+			filter_functions: {
+				".filter-version": true,
+				".filter-downloaded": true,
+				".filter-installed": true
+			}
+		}
+	});
+
 	// "uninstall package" switch and cookie
 	$("#uninstallpkg")
 		.switchButton({
@@ -21,6 +39,20 @@ $(function(){
 		})
 		.change(function () {
 			$.cookie("nerdpack_packages_delete", $(this).prop("checked") ? "--delete" : "", { expires: 3650 });
+		});
+
+	// select all packages switch
+	$("#checkall")
+		.switchButton({
+			labels_placement: "right",
+			on_label: "Select All",
+			off_label: "Select All",
+			checked: $.cookie("nerdpack_checkall") == "yes"
+		})
+		.change(function () {
+			var myval = $(this).prop("checked");
+			$.cookie("nerdpack_checkall", myval ? "yes" : "no", { expires: 3650 });
+			$("#tblPackages tbody td:visible .pkgcheckbox").switchButton({checked: myval});
 		});
 
 	// set cookie on apply button press
@@ -70,62 +102,29 @@ function packageQuery(force) {
 			"<td>"+data[i].size+"</td>"+ // package size
 			"<td>"+Downloaded+"</td>"+ // package installed
 			"<td>"+Installed+"</td>"+ // package installed
-			"<td><input class='pkgcheckbox' id='"+data[i].pkgname+"' type='checkbox'>"+
+			"<td><input class='pkgcheckbox' id='"+data[i].pkgname+"' type='checkbox' "+(data[i].config=="yes"?"checked":"")+">"+
 			"<input class='pkgvalue' type='hidden' id='"+data[i].pkgname+"_value' name='"+data[i].pkgnver+"' value='"+data[i].config+"'></td>"+
 			"</tr>");
-
-			$("#"+data[i].pkgname)
-				.switchButton({
-					labels_placement: "right",
-					on_label: "On",
-					off_label: "Off",
-					checked: data[i].config == "yes"
-				})
-				.change(function() {
-					$(this).parent().parent().find(".pkgvalue").val(this.checked ? "yes": "no");
-					if (this.checked)
-						checkDepends();
-					$("#btnApply").prop("disabled", false);
-				});
 		}
-		$("#tblPackages").trigger("update");
-		
-		// tablesorter options
-		$("#tblPackages").tablesorter({
-			sortList: [[0,0]],
-			widgets: ["saveSort", "filter", "stickyHeaders"],
-			widgetOptions: {
-				stickyHeaders_filteredToTop: true,
-				filter_hideEmpty: true,
-				filter_liveSearch: true,
-				filter_saveFilters: true,
-				filter_reset: ".reset",
-				filter_functions: {
-					".filter-version": true,
-					".filter-downloaded": true,
-					".filter-installed": true
-				}
-			}
-		});
 
-		// select all packages switch
-		$("#checkall")
+		// attach switch buttons to every package checkbox all at once
+		$(".pkgcheckbox")
 			.switchButton({
 				labels_placement: "right",
-				on_label: "Select All",
-				off_label: "Select All",
-				checked: $.cookie("nerdpack_checkall") == "yes"
+				on_label: "On",
+				off_label: "Off"
 			})
-			.change(function () {
-				var myval = $(this).prop("checked");
-				$.cookie("nerdpack_checkall", myval ? "yes" : "no", { expires: 3650 });
-				$(".pkgcheckbox").each(function() { // loop through each checkbox
-					$(this).switchButton({checked: myval});
-				});
-				$(".pkgvalue").each(function() { // loop through each value
-					$(this).val(myval ? "yes": "no");
-				});
+			.change(function() {
+				$(this).parent().parent().find(".pkgvalue").val(this.checked ? "yes": "no");
+				if (this.checked)
+					checkDepends();
+				$("#btnApply").prop("disabled", false);
 			});
+
+		// restore filters
+		var lastSearch = $("#tblPackages")[0].config.lastSearch;
+		$("#tblPackages").trigger("update");
+		$("#tblPackages").trigger("search", [lastSearch]);
 	});
 }
 
