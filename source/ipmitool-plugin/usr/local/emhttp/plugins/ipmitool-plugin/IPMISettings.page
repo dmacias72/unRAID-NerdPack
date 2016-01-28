@@ -1,17 +1,9 @@
-Icon="ipmitool.png"
-Menu="NetworkServices"
-Title="IPMI tool"
+Menu="IPMI:1"
+Title="Settings"
 ---
 <?php
+require_once '/usr/local/emhttp/plugins/ipmitool-plugin/include/ipmitool_helpers.php';
 $sName = "ipmievd";
-$ipmitool_cfg = parse_plugin_cfg("ipmitool-plugin");
-$ipmitool_service = isset($ipmitool_cfg['SERVICE']) ? $ipmitool_cfg['SERVICE'] 	: "disable";
-$ipmitool_remote = isset($ipmitool_cfg['REMOTE']) ? $ipmitool_cfg['REMOTE'] 	: "disable";
-$ipmitool_lanip = trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
-$ipmitool_ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/', $ipmitool_cfg['IPADDR']) ? $ipmitool_cfg['IPADDR'] : $ipmitool_lanip;
-$ipmitool_user = isset($ipmitool_cfg['USER']) ? $ipmitool_cfg['USER'] 		: "";
-$ipmitool_password = isset($ipmitool_cfg['PASSWORD']) ? $ipmitool_cfg['PASSWORD'] 		: "";
-$ipmitool_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
 ?>
 
 <script type="text/javascript" src="/plugins/ipmitool-plugin/js/jquery.mask.js"></script>
@@ -27,21 +19,36 @@ Enable Event Notifications:
   </select>
 
 Enable Remote Connection:
-: <select id="REMOTE" class="ipmi_run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
+: <select id="REMOTE" class="ipmitool-run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
   <?=mk_option($ipmitool_remote, "disable", "No");?>
   <?=mk_option($ipmitool_remote, "enable", "Yes");?>
   </select>
 
-<label class="ipmi_lan">IPMI IP Address:</label>
-: <input id="IPADDR" type="text" class="ipmi_lan ipmi_address" name="IPADDR" maxlength="40" value="<?=$ipmitool_ipaddr;?>" title="IPMI IP address" placeholder="" >
+<label class="ipmitool-lan">IPMI IP Address:</label>
+: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipmitool_ipaddr;?>" title="IPMI IP address" placeholder="" >
 
-<label class="ipmi_lan">IPMI User Name:</label>
-: <input id="USER" type="text" class="ipmi_lan" name="USER" maxlength="40" value="<?=$ipmitool_user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
+<label class="ipmitool-lan">IPMI User Name:</label>
+: <input id="USER" type="text" class="ipmitool-lan" name="USER" maxlength="40" value="<?=$ipmitool_user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
 
-<label class="ipmi_lan">IPMI Password:</label>
-: <input id="PASSWORD" type="password" class="ipmi_lan" name="PASSWORD" maxlength="40" value="<?=$ipmitool_password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
+<label class="ipmitool-lan">IPMI Password:</label>
+: <input id="PASSWORD" type="password" class="ipmitool-lan" name="PASSWORD" maxlength="40" value="<?=$ipmitool_password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
 
-<input id="DEFAULT" class="ipmi_run" type="button" value="Default" onClick="resetDATA(this.form);">
+Display CPU temperature:
+: <select name="CPU_TEMP">
+  <?=ipmi_get_options($ipmitool_cpu, 'Temperature', $ipmitool_options);?>
+  </select>
+
+Display Motherboard temperature:
+: <select name="MB_TEMP">
+  <?=ipmi_get_options($ipmitool_mb, 'Temperature', $ipmitool_options);?>
+  </select>
+
+Display Fan speed:
+: <select name="IPMI_FAN">
+  <?=ipmi_get_options($ipmitool_fan, 'Fan', $ipmitool_options);?>
+  </select>
+
+<input id="DEFAULT" class="ipmitool-run" type="button" value="Default" onClick="resetDATA(this.form);">
 : <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()">
 </form>
 
@@ -52,7 +59,7 @@ $(function(){
 	checkREMOTE(document.ipmitool_settings);
 	decData(document.ipmitool_settings);
 	//ip address input mask
-	$('.ipmi_address').mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation:  {'Z': {pattern: /[0-9]/, optional: true}}});
+	$('.ipmitool-ipaddr').mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation:  {'Z': {pattern: /[0-9]/, optional: true}}});
 });
 
 function resetDATA(form) {
@@ -66,10 +73,10 @@ function resetDATA(form) {
 function checkRUNNING(form) {
 	if ("<?=$ipmitool_running;?>" == "yes")
 	{
-		$(".ipmi_run").prop("disabled", true);
+		$(".ipmitool-run").prop("disabled", true);
 		form.btnApply.disabled = "disabled";
    }else{
-   	$(".ipmi_run").prop("disabled", false);
+   	$(".ipmitool-run").prop("disabled", false);
 		$("#btnApply").prop("disabled", false);
 	}
 	if (form.SERVICE.value == "enable")
@@ -85,10 +92,10 @@ function decData(form) {
 
 function checkREMOTE(form) {
 	if (form.REMOTE.selectedIndex < 1 )
-		$(".ipmi_lan").hide();
+		$(".ipmitool-lan").hide();
 	else
-   	$(".ipmi_lan").show();
-   	$(".ipmi_lan").prop("disabled", (form.SERVICE.value == "enable"));
+   	$(".ipmitool-lan").show();
+   	$(".ipmitool-lan").prop("disabled", (form.SERVICE.value == "enable"));
 }
 
 function verifyDATA(form) {
@@ -97,5 +104,4 @@ function verifyDATA(form) {
 	form.USER.value = form.USER.value.replace(/ /g,"_");
 	form.PASSWORD.value = btoa(form.PASSWORD.value);
 }
-
 </script>

@@ -1,4 +1,40 @@
 $(function(){
+	$('#tblSensor').tablesorter();
+
+	$('#tblEvent').tablesorter({
+		sortList: [[0,0]],
+		widgets: ['saveSort', 'filter', 'stickyHeaders'],
+		widgetOptions: {
+			stickyHeaders_filteredToTop: true,
+			filter_hideEmpty : true,
+			filter_liveSearch : true,
+			filter_saveFilters : true,
+			filter_reset : '.reset',
+			filter_functions: {
+				'.filter-name' : true,
+				'.filter-time' : {
+					"3 days"   : function(e, n, f, i, $r, c, data) {
+						return ($.now() - n <= 259200000); }, //3*24*60*60 3 days
+					"1 week"   : function(e, n, f, i, $r, c, data) {
+						return ($.now() - n <= 604800000); }, //7*24*60*60 1 week
+					"2 weeks"  : function(e, n, f, i, $r, c, data) {
+						return ($.now() - n <= 1209600000); }, //14*24*60*60 2 weeks
+					"1 month"  : function(e, n, f, i, $r, c, data) {
+						return ($.now() - n <= 2592000000); }, //30*24*60*60 1 month
+					"6 months" : function(e, n, f, i, $r, c, data) {
+						return ($.now() - n <= 15724800000); }, //26*7*24*60*60 6 months
+					"1 year"   : function(e, n, f, i, $r, c, data) {
+						return ($.now() - n <= 31449600000); } //52*7*24*60*60 1 year
+					}
+			}
+		}
+	})
+	.tablesorterPager({
+		container: $(".pager"),
+		fixedHeight: false,
+		size: 10
+	});
+
 	sensorArray(false);
 	eventArray();
 
@@ -27,38 +63,49 @@ function sensorRefresh() {
 
 //load ipmi sensor table
 function sensorArray(Refresh){
-  	$.ajax({
-      type: "POST",
-      dataType: "json",
-   	url: "/plugins/ipmitool-plugin/include/ipmitool_array.php",
-   	data : {options: "-vc sdr" + Options + atob(Password)},
-   	success: function(data) {
+  	$.getJSON("/plugins/ipmitool-plugin/include/ipmitool_sensors.php",
+   	{ }, function(data) {
    		$.each(data, function (i, val) {
-   			if (data[i][3] != "ns") {
-   				var Reading = data[i][1];
-   				var LowerNonRec = data[i][13];
-   				var LowerCritical = data[i][14];
-   				var LowerNonCrit = data[i][15];
-   				var UpperNonCrit = data[i][12];
-   				var UpperCritical = data[i][11];
-   				var UpperNonRec = data[i][10];
+   			if (data[i].Status != "ns") {
+   				var Reading = parseFloat(data[i].Reading);
+   				//if (data[i].Name == "+5VSB")
+   					//Reading = 6.2;
+   				var LowerNonRec = parseFloat(data[i].LowerNonRec);
+   				var LowerCritical = parseFloat(data[i].LowerCritical);
+   				var LowerNonCritical = parseFloat(data[i].LowerNonCritical);
+   				var UpperNonCritical = parseFloat(data[i].UpperNonCritical);
+   				var UpperCritical = parseFloat(data[i].UpperCritical);
+   				var UpperNonRec = parseFloat(data[i].UpperNonRec);
    				var Color = "green";
-					var Name = data[i][0].replace('+', 'plus_').replace('-', 'minus_').replace(' ', '_').replace('.', '_');
+
+   				// replace illegal characters
+					var Name = data[i].Name.replace('+', 'plus_').replace('-', 'minus_').replace(' ', '_').replace('.', '_');
 					
-   				if (data[i][6]=="Voltage"){
-   					if (parseFloat(Reading) < parseFloat(LowerNonRec) || parseFloat(Reading) > parseFloat(UpperNonRec))
+   				if (data[i].Type=="Voltage"){
+
+   					// if voltage is less than lower non-recoverable 
+   					// or voltage is greater than upper non-recoverable
+   					if (Reading < LowerNonRec || Reading > UpperNonRec)
    						Color = "red";
-   					if (parseFloat(Reading) > parseFloat(LowerNonRec) && parseFloat(Reading) < parseFloat(UpperNonRec))
+   					
+   					// if voltage is between lower non recoverable and
+   					if (Reading > LowerNonRec && Reading < UpperNonRec)
    						Color = "red";
-   					if (parseFloat(Reading) > parseFloat(LowerCritical) && parseFloat(Reading) < parseFloat(UpperCritical))
+   					if (Reading > LowerCritical && Reading < UpperCritical)
    						Color = "orange";
-   					if (parseFloat(Reading) > parseFloat(LowerNonCrit) && parseFloat(Reading) < parseFloat(UpperNonCrit))
+   					if (Reading > LowerNonCritical && Reading < UpperNonCritical)
    						Color = "green";
-   				} else if (data[i][6]=="Fan"){
-   					if (parseInt(Reading) < parseInt(LowerNonCrit))
+
+   				} else if (data[i].Type=="Fan"){
+ 
+   					// if Fan RPMs are less than lower non-critical
+   					if (Reading < LowerNonCritical || Reading < LowerCritical || Reading < LowerNonRec)
    						Color = "red";
-   				} else if (data[i][6]=="Temperature"){
-   					if (parseInt(Reading) > parseInt(UpperNonCrit))
+
+   				} else if (data[i].Type=="Temperature"){
+
+   					// if Temperature is greater than upper non-critical
+   					if (Reading > UpperNonCritical || Reading > UpperCritical || Reading > UpperNonRec)
    						Color = "red";
    				}
    				
@@ -67,53 +114,42 @@ function sensorArray(Refresh){
 					} else {
 						$("#tblSensor tbody")
 						.append("<tr id='"+Name+"'>"+
-						"<td title='"+data[i][3]+"'><img src='/plugins/ipmitool-plugin/images/green-on.png'/></td>"+ //status
-						"<td>"+data[i][0]+"</td>"+ //sensor name
-	   				"<td class='advanced'>"+ LowerNonRec   +"</td>"+
-						"<td class='advanced'>"+ LowerCritical +"</td>"+
-						"<td class='advanced'>"+ LowerNonCrit  +"</td>"+
+						"<td title='"+data[i].Status+"'><img src='/plugins/ipmitool-plugin/images/green-on.png'/></td>"+ //status
+						"<td>"+data[i].Name+"</td>"+ //sensor name
+	   				"<td class='advanced'>"+ data[i].LowerNonRec   +"</td>"+
+						"<td class='advanced'>"+ data[i].LowerCritical +"</td>"+
+						"<td class='advanced'>"+ data[i].LowerNonCritical  +"</td>"+
 						"<td class='reading "+ Color +"-text'>"+ Reading +"</td>"+ //sensor reading
-						"<td>"+data[i][2]+"</td>"+ //sensor units
-						"<td class='advanced'>"+ UpperNonCrit  +"</td>"+
-						"<td class='advanced'>"+ UpperCritical +"</td>"+
-						"<td class='advanced'>"+ UpperNonRec   +"</td>"+
+						"<td>"+data[i].Units+"</td>"+ //sensor units
+						"<td class='advanced'>"+ data[i].UpperNonCritical  +"</td>"+
+						"<td class='advanced'>"+ data[i].UpperCritical +"</td>"+
+						"<td class='advanced'>"+ data[i].UpperNonRec   +"</td>"+
 						"</tr>");
 					}
 				}
    		});
-		$("#tblSensor").trigger("update"); //update sensor table
+		$('#tblSensor').trigger('update'); //update sensor table
 
 		if ($.cookie('ipmitool_sensor_mode') == 'advanced')
 			$('.advanced').show();
 		else
 			$('.advanced').hide();		 
 
-		$('#tblSensor').tablesorter();
- 		},
-       error : function() {},
-       cache: false
-	});
+ 	});
 };
 
 //load ipmi event table
 function eventArray(){
-	$("#tblEvent tbody").empty();
-
-  	$.ajax({
-      type: "POST",
-      dataType: "json",
-   	url: "/plugins/ipmitool-plugin/include/ipmitool_array.php",
-   	data : {options: "-c sel elist" + Options + atob(Password)},
-   	success: function(data) {
+  	$.getJSON("/plugins/ipmitool-plugin/include/ipmitool_events.php",{ }, function(data) {
    		$.each(data, function (i, val) {
-   			var Status = (data[i][5] == 'Asserted') ? 'red' : 'green';
- 				$("#tblEvent tbody")
- 				.append("<tr id='"+data[i][0]+"'>"+
-				"<td title='"+data[i][5]+"'><img src='/plugins/ipmitool-plugin/images/" + Status + "-on.png'/></td>"+ //status 
-				"<td>" + data[i][0] + "</td>"+ //event id
-				"<td>" + data[i][1] + " "+data[i][2]+"</td>"+ //time stamp
-				"<td>" + data[i][3] + "</td>"+ //sensor name
-				"<td>" + data[i][4] +"</td>"+ //subject
+   			var Status = (data[i].Status == 'Asserted') ? 'red' : 'green';
+ 				$('#tblEvent tbody')
+ 				.append("<tr id='"+data[i].Event+"'>"+
+				"<td title='"+data[i].Status+"'><img src='/plugins/ipmitool-plugin/images/" + Status + "-on.png'/></td>"+ //status 
+				"<td>" + data[i].Event + "</td>"+ //event id
+				"<td>" + data[i].Datestamp + " "+data[i].Timestamp+"</td>"+ //time stamp
+				"<td>" + data[i].Sensor + "</td>"+ //sensor name
+				"<td>" + data[i].Description +"</td>"+ //Description
 				"<td><a class='delete'><i class='fa fa-trash' title='delete'></i></a>"+ //delete icon
 				"</tr>");
 
@@ -123,52 +159,14 @@ function eventArray(){
     			
    		});
 
+			//var lastSearch = $("#tblEvent")[0].config.lastSearch;
 			$("#tblEvent").trigger("update"); //update table for tablesorter
-
-			$('#tblEvent').tablesorter({
-				sortList: [[0,1]],
-				widgets: ['saveSort', 'filter', 'stickyHeaders'],
-				widgetOptions: {
-					stickyHeaders_filteredToTop: true,
-					filter_hideEmpty : true,
-					filter_liveSearch : true,
-					filter_saveFilters : true,
-					filter_reset : 'a.reset',
-					filter_functions: {
-						'.filter-time' : {
-			          	"3 days"   : function(e, n, f, i, $r, c, data) {
-			          		return ($.now() - n <= 259200000); }, //3*24*60*60 3 days
-   	  			    	"1 week"   : function(e, n, f, i, $r, c, data) {
-   	  			    		return ($.now() - n <= 604800000); }, //7*24*60*60 1 week
-	   		      	"2 weeks"  : function(e, n, f, i, $r, c, data) {
-	   		      		return ($.now() - n <= 1209600000); }, //14*24*60*60 2 weeks
-     				   	"1 month"  : function(e, n, f, i, $r, c, data) {
-     				   		return ($.now() - n <= 2592000000); }, //30*24*60*60 1 month
-     				   	"6 months" : function(e, n, f, i, $r, c, data) {
-     				   		return ($.now() - n <= 15724800000); }, //26*7*24*60*60 6 months
-     			   		"1 year"   : function(e, n, f, i, $r, c, data) {
-     			   			return ($.now() - n <= 31449600000); } //52*7*24*60*60 1 year
-	        			},
-     				  	'.filter-name' : true
-					}
-				}
-			})
-			.tablesorterPager({
-				container: $(".pager"),
-				fixedHeight: false,
-				size: 10
-			});
-
+			//$("#tblEvent").trigger("search", [lastSearch]);
+			
 			$("#allEvents").click(function() {
   				Delete('all');
 			});
-
- 		},
- 		complete: function () {
-
- 		},
-       error : function() {}
-	});
+ 	});
 };
 
 function Delete(Row) {
@@ -176,17 +174,12 @@ function Delete(Row) {
 	if (Confirm){
 		var Method = (Row == "all") ? "clear " : "delete ";
 		var EventId = (Row == "all") ? "" : Row;
-		$.ajax({
-			type : "POST",
-			url : "/plugins/ipmitool-plugin/include/delete_event.php",
-			data : {options: Method + EventId + Options + atob(Password)},
-			success: function(data) {
+		$.getJSON("/plugins/ipmitool-plugin/include/ipmi_event_delete.php", {options: Method + EventId}, function(data) {
 				if (Row == "all")
 					$("#tblEvent tbody").empty(); // empty table
 				else
 					$('#'+Row).remove(); //remove table row
-				},
-			error : function() { }
-		});
+				}
+		);
 	}
 };

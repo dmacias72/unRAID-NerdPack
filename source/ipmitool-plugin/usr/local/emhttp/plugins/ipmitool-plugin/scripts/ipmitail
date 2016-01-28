@@ -6,8 +6,15 @@ exec /usr/bin/tail -n 0 -F /var/log/syslog | \
 
 while read LINE;
 do
+
+# do not notify on ipmievd start
 [[ "$LINE" == *"Waiting for events"* ]] && continue
+
+# do not notify on remote communication failure
+[[ "$LINE" == *"Get SEL Info command failed"* ]] && continue
+
+# only notify when ipmievd: is in the system log
 [[ "$LINE" != *$prog* ]] && continue
 sleep 1 |
-exec /usr/local/emhttp/webGui/scripts/notify -s "Notice [$HOSTNAME]" -d "$(echo "$LINE" | sed -e 's/.*ipmievd: //')" -i "warning" && continue 2
+exec /usr/local/emhttp/webGui/scripts/notify -s "Notice [$HOSTNAME]" -d "$(echo "$LINE" | sed -e 's/.*$prog//')" -i "warning" && continue 2
 done

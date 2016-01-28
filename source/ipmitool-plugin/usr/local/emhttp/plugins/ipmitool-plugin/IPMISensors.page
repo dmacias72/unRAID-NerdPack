@@ -1,20 +1,10 @@
 Menu="IPMItool:1"
 Title="Sensors"
+Icon="sensorspage.png"
 ---
-<?php
-$ipmitool_cfg = parse_plugin_cfg("ipmitool-plugin");
-$ipmitool_password = "";
-$ipmitool_options = "";
-if($ipmitool_cfg['REMOTE'] == "enable") {
-	$ipmitool_options = " -I lanplus -H {$ipmitool_cfg['IPADDR']} -U {$ipmitool_cfg['USER']} -P ";
-	$ipmitool_password = $ipmitool_cfg['PASSWORD'];
-}
-$theme = $display["theme"];
-?>
-
 <link type="text/css" rel="stylesheet" href="/plugins/ipmitool-plugin/css/ipmitool-plugin.css">
 <link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter.css">
-<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$theme;?>.css">
+<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$display["theme"];?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 
 <div>
@@ -44,8 +34,3 @@ $theme = $display["theme"];
 <script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
 <script type="text/javascript" src="/plugins/tablesorter/js/pager/jquery.tablesorter.pager.js"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
-
-<script type="text/javascript">
-var Password = '<?=$ipmitool_password?>';
-var Options = '<?=$ipmitool_options?>';
-</script>
