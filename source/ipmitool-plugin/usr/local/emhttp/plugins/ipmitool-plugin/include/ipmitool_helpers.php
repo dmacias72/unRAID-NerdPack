@@ -1,75 +1,85 @@
 <?php
 /* ipmi tool variables*/
 $plugin = 'ipmitool-plugin';
-$ipmitool_cfg = parse_ini_file("/boot/config/plugins/$plugin/$plugin.cfg");
-$ipmitool_service = isset($ipmitool_cfg['SERVICE']) ? $ipmitool_cfg['SERVICE'] 	: "disable";
-$ipmitool_remote = isset($ipmitool_cfg['REMOTE']) ? $ipmitool_cfg['REMOTE'] 	: "disable";
-$ipmitool_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
-
-// get ip address of local ipmi
-$ipmitool_lanip = trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
+$cfg 		= parse_ini_file("/boot/config/plugins/$plugin/$plugin.cfg");
+$service = isset($cfg['SERVICE']) ? $cfg['SERVICE'] 	: "disable";
+$remote  = isset($cfg['REMOTE']) ? $cfg['REMOTE']  	: "disable";
+$ipmievd_running  = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /dev/null`/exe ] && echo 'yes' || echo 'no' 2> /dev/null" ));
+$running = "<span class='green'>Running</span>";
+$stopped = "<span class='orange'>Stopped</span>";
+$ipmievd_status   = ($ipmievd_running == "yes") ? $running : $stopped;
+$ipmifan_status   = ($ipmifan_running == "yes") ? $running : $stopped;
 
 // use save ip address or use local ipmi address
-$ipmitool_ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/', $ipmitool_cfg['IPADDR']) ? $ipmitool_cfg['IPADDR'] : $ipmitool_lanip;
+$ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/', $cfg['IPADDR']) ? 
+	$cfg['IPADDR'] : 
+	trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
 
-$ipmitool_cpu = isset($ipmitool_cfg['CPU_TEMP']) ? $ipmitool_cfg['CPU_TEMP'] : ""; // cpu temp display name
-$ipmitool_mb = isset($ipmitool_cfg['MB_TEMP']) ? $ipmitool_cfg['MB_TEMP'] : ""; // mb temp display name
-$ipmitool_fan = isset($ipmitool_cfg['IPMI_FAN']) ? $ipmitool_cfg['IPMI_FAN'] : ""; // fan speed display name
-$ipmitool_user = isset($ipmitool_cfg['USER']) ? $ipmitool_cfg['USER'] : ""; // user for remote access
-$ipmitool_password = isset($ipmitool_cfg['PASSWORD']) ? $ipmitool_cfg['PASSWORD'] : ""; // password for remote access
+$cpu      = isset($cfg['CPU_TEMP']) ? $cfg['CPU_TEMP'] : ""; // cpu temp display name
+$mb       = isset($cfg['MB_TEMP'])  ? $cfg['MB_TEMP']  : ""; // mb temp display name
+$fan      = isset($cfg['IPMI_FAN']) ? $cfg['IPMI_FAN'] : ""; // fan speed display name
+$user     = isset($cfg['USER'])     ? $cfg['USER']     : ""; // user for remote access
+$password = isset($cfg['PASSWORD']) ? $cfg['PASSWORD'] : ""; // password for remote access
+$sensors  = [$cpu, $mb, $fan];
 
 // options for remote access or not
-$ipmitool_options = ($remote == "enable") ? " -I lanplus -H '$ipmitool_ipaddr' -U '$ipmitool_user' -P '".
-	base64_decode($ipmitool_password)."' " : "";
+$options = ($remote == "enable") ? "-I lanplus -H '$ipaddr' -U '$user' -P '".
+	base64_decode($password)."'" : "";
 
 /* get an array of all sensors and their values */
 function ipmi_sensors($options) {
-	$cmd = "/usr/bin/ipmitool -vc sdr $options 2>/dev/null";
-	exec($cmd, $output);
+	$cmd = "/usr/bin/ipmitool -vc sdr $options -N 1 -R 1 2>/dev/null";
+	exec($cmd, $output, $return);
+
+	if ($return)
+		return [];
 
 	// key names for ipmitool sensor output
-	$sensor_keys = array('Name','Reading','Units','Status','Entity','Location','Type','Nominal',
+	$keys = ['Name','Reading','Units','Status','Entity','Location','Type','Nominal',
 	 'NormalMin','NormalMax','UpperNonRec','UpperCritical','UpperNonCritical','LowerNonRec',
-	 'LowerCritical','LowerNonCritical','MinRange','MaxRange' );
+	 'LowerCritical','LowerNonCritical','MinRange','MaxRange'];
 
-	$sensors_array = [];
+	$sensors = [];
  
-	foreach($output as $sensor){
+	foreach($output as $line){
 
 		// add sensor keys as keys to ipmitool output
-		$sensor_array = array_combine($sensor_keys, array_slice(explode(",", $sensor),0,18,true));
+		$sensor = array_combine($keys, array_slice(explode(",", $line),0,18,true));
 
 		// add sensor to array of sensors
-		$sensors_array[] = $sensor_array;	
+		$sensors[] = $sensor;
 	}
-	return $sensors_array;
+	return $sensors;
 }
 
 /* get array of events and their values */
-function ipmi_events($options){
-	$cmd = "/usr/bin/ipmitool -c sel elist $options 2>/dev/null";
-	exec($cmd, $output); 
+function ipmi_events($options=null){
+	$cmd = "/usr/bin/ipmitool -c sel elist $options -N 1 -R 1 2>/dev/null";
+	exec($cmd, $output, $return); 
+
+	if ($return)
+		return [];
 
 	// key names for ipmitool event output
-	$event_keys = array('Event','Datestamp','Timestamp','Sensor','Description','Status');
+	$keys = array('Event','Datestamp','Timestamp','Sensor','Description','Status');
 
-	$events_array = [];
+	$events = [];
 
-	foreach($output as $event){
+	foreach($output as $line){
 
 		// add event keys as keys to ipmitool output cut to match
-		$event_array = array_combine($event_keys, array_slice(explode(",", $event),0,6,true));
+		$event = array_combine($keys, array_slice(explode(",", $line),0,6,true));
 
-		$events_array[] = $event_array;
+		$events[] = $event;
 	}
-	return $events_array;
+	return $events;
 }
 
 /* get select options for a given sensor type */
 function ipmi_get_options($selected, $type, $options){
-	$sensors_array = ipmi_sensors($options);
+	$sensors = ipmi_sensors($options=null);
 	$options = "<option value='false'>No</option>\n";
-	foreach($sensors_array as $sensor){
+	foreach($sensors as $sensor){
 		if ($sensor["Type"] == $type && $sensor["Status"] != "ns"){
 			$name = $sensor["Name"];
 			$options .= "<option value='$name'";
@@ -85,14 +95,25 @@ function ipmi_get_options($selected, $type, $options){
 }
 
 /* get reading for a given sensor by name */
-function ipmi_get_reading($sensor, $options) {
+function ipmi_get_reading($names, $options=null) {
+	$readings = [];
+	$cmd = "/usr/bin/ipmitool -c sdr $options -N 1 -R 1 2>/dev/null";
+	exec($cmd, $output, $return);
 
-	$sensors_array = ipmi_sensors($options);
+	if ($return)
+		return [];
 
-	foreach($sensors_array as $sensor_array){
-		if ($sensor_array["Name"] == $sensor) {
-			return $sensor_array["Reading"];
-		}	
+	for ($i = 0; $i < sizeof($names); $i++) {
+
+		foreach($output as $sensor){
+			$sensors = explode(",", $sensor);
+		
+			if ($sensors[0] == $names[$i]) // check name
+				$readings[$names[$i]] = $sensors[1]; // reading
+		}
 	}
+	return $readings; // reading
 }
+//echo json_encode(ipmi_get_reading($sensors, $options));
+//echo json_encode(ipmi_sensors($options));
 ?>

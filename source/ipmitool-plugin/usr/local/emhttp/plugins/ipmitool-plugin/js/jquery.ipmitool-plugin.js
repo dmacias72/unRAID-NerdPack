@@ -68,8 +68,6 @@ function sensorArray(Refresh){
    		$.each(data, function (i, val) {
    			if (data[i].Status != "ns") {
    				var Reading = parseFloat(data[i].Reading);
-   				//if (data[i].Name == "+5VSB")
-   					//Reading = 6.2;
    				var LowerNonRec = parseFloat(data[i].LowerNonRec);
    				var LowerCritical = parseFloat(data[i].LowerCritical);
    				var LowerNonCritical = parseFloat(data[i].LowerNonCritical);
@@ -83,18 +81,15 @@ function sensorArray(Refresh){
 					
    				if (data[i].Type=="Voltage"){
 
-   					// if voltage is less than lower non-recoverable 
-   					// or voltage is greater than upper non-recoverable
-   					if (Reading < LowerNonRec || Reading > UpperNonRec)
-   						Color = "red";
-   					
-   					// if voltage is between lower non recoverable and
-   					if (Reading > LowerNonRec && Reading < UpperNonRec)
-   						Color = "red";
-   					if (Reading > LowerCritical && Reading < UpperCritical)
+   					// if voltage is less than lower non-critical
+   					// or voltage is greater than upper non-critical show orange
+   					if (Reading < LowerNonCritical && Reading > UpperNonCritical)
    						Color = "orange";
-   					if (Reading > LowerNonCritical && Reading < UpperNonCritical)
-   						Color = "green";
+
+   					// if voltage is less than lower critical
+   					// or voltage is greater than upper critical show red
+   					if (Reading < LowerCritical || Reading > UpperCritical)
+   						Color = "red";
 
    				} else if (data[i].Type=="Fan"){
  

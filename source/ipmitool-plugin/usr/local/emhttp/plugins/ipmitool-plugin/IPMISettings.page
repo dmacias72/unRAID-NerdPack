@@ -14,38 +14,38 @@ $sName = "ipmievd";
 
 Enable Event Notifications:
 : <select id="SERVICE" name="SERVICE" size="1" onChange="checkRUNNING(this.form);">
-  <?=mk_option($ipmitool_service, "disable", "No");?>
-  <?=mk_option($ipmitool_service, "enable", "Yes");?>
+  <?=mk_option($service, "disable", "No");?>
+  <?=mk_option($service, "enable", "Yes");?>
   </select>
 
 Enable Remote Connection:
 : <select id="REMOTE" class="ipmitool-run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
-  <?=mk_option($ipmitool_remote, "disable", "No");?>
-  <?=mk_option($ipmitool_remote, "enable", "Yes");?>
+  <?=mk_option($remote, "disable", "No");?>
+  <?=mk_option($remote, "enable", "Yes");?>
   </select>
 
 <label class="ipmitool-lan">IPMI IP Address:</label>
-: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipmitool_ipaddr;?>" title="IPMI IP address" placeholder="" >
+: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipaddr;?>" title="IPMI IP address" placeholder="" >
 
 <label class="ipmitool-lan">IPMI User Name:</label>
-: <input id="USER" type="text" class="ipmitool-lan" name="USER" maxlength="40" value="<?=$ipmitool_user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
+: <input id="USER" type="text" class="ipmitool-lan" name="USER" maxlength="40" value="<?=$user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
 
 <label class="ipmitool-lan">IPMI Password:</label>
-: <input id="PASSWORD" type="password" class="ipmitool-lan" name="PASSWORD" maxlength="40" value="<?=$ipmitool_password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
+: <input id="PASSWORD" type="password" class="ipmitool-lan" name="PASSWORD" maxlength="40" value="<?=$password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
 
 Display CPU temperature:
 : <select name="CPU_TEMP">
-  <?=ipmi_get_options($ipmitool_cpu, 'Temperature', $ipmitool_options);?>
+  <?=ipmi_get_options($cpu, 'Temperature', $options);?>
   </select>
 
 Display Motherboard temperature:
 : <select name="MB_TEMP">
-  <?=ipmi_get_options($ipmitool_mb, 'Temperature', $ipmitool_options);?>
+  <?=ipmi_get_options($mb, 'Temperature', $options);?>
   </select>
 
 Display Fan speed:
 : <select name="IPMI_FAN">
-  <?=ipmi_get_options($ipmitool_fan, 'Fan', $ipmitool_options);?>
+  <?=ipmi_get_options($fan, 'Fan', $options);?>
   </select>
 
 <input id="DEFAULT" class="ipmitool-run" type="button" value="Default" onClick="resetDATA(this.form);">
@@ -54,7 +54,9 @@ Display Fan speed:
 
 <script type="text/javascript">
 $(function(){
-	showStatus('<?=$sName;?>');
+	$('.tabs')
+		.append("<span class='status'>Fan Control: <?=$ipmifan_status;?> </span>")
+		.append("<span class='status'>Event Notification: <?=$ipmievd_status;?> </span>");
 	checkRUNNING(document.ipmitool_settings);
 	checkREMOTE(document.ipmitool_settings);
 	decData(document.ipmitool_settings);
@@ -71,7 +73,7 @@ function resetDATA(form) {
 }
 
 function checkRUNNING(form) {
-	if ("<?=$ipmitool_running;?>" == "yes")
+	if ("<?=$ipmievd_running;?>" == "yes")
 	{
 		$(".ipmitool-run").prop("disabled", true);
 		form.btnApply.disabled = "disabled";
