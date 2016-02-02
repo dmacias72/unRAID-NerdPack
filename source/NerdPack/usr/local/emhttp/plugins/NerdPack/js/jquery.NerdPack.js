@@ -95,13 +95,13 @@ function packageQuery(force) {
 			if (data[i].installeq != data[i].installed)
 				Installed = 'old';
 
-			$("#tblPackages tbody").append(
-			"<tr>"+
+			$("#tblPackages tbody").append("<tr>"+
 			"<td class='package' title='"+data[i].desc+"'>"+data[i].name+"</td>"+ // package name
 			"<td>"+Update+"</td>"+ // package status
 			"<td>"+data[i].size+"</td>"+ // package size
-			"<td>"+Downloaded+"</td>"+ // package installed
+			"<td>"+Downloaded+"</td>"+ // package downloaded
 			"<td>"+Installed+"</td>"+ // package installed
+			"<td>"+data[i].plugins+"</td>"+ // package dependents
 			"<td><input class='pkgcheckbox' id='"+data[i].pkgname+"' type='checkbox' "+(data[i].config=="yes"?"checked":"")+">"+
 			"<input class='pkgvalue' type='hidden' id='"+data[i].pkgname+"_value' name='"+data[i].pkgnver+"' value='"+data[i].config+"'></td>"+
 			"</tr>");

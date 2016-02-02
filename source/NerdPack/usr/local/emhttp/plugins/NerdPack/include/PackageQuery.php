@@ -14,6 +14,7 @@ foreach ($pkgs_github_array as $pkg_github) {
 	$pkg_nameArray = explode('-', $pkg_github['name']); // split package name into array
 
 	$pkg_name = $pkg_nameArray[0];
+
 	if (sizeof($pkg_nameArray) > 4) { //if package name has a subset get it
 		for ($ii = 1; $ii < sizeof($pkg_nameArray)-3; $ii++) {
 			$pkg_name .= '-'.$pkg_nameArray[$ii];
@@ -26,6 +27,15 @@ foreach ($pkgs_github_array as $pkg_github) {
 
 	$pkg_pattern = '/^'.$pkg_name.'.*/'; // search patter for packages
 
+	$plugins =  [];
+	exec("cd /boot/config/plugins ; find *.plg | xargs grep '${pkg_github['name']}' -sl",$plugins);
+	$pkg_plgs = "";
+	if ($plugins){
+		foreach ($plugins as $plugin){
+			$pkg_plgs .= pathinfo($plugin, PATHINFO_FILENAME)." ";
+			}
+ }
+
 	$pkg = [
 		'name' => $pkg_github['name'], // add full package name
 		'pkgname' => $pkg_name, // add package name only
@@ -33,10 +43,11 @@ foreach ($pkgs_github_array as $pkg_github) {
 		'pkgversion' => $pkg_version, // add package name with raw version
 		'size' => format_size($pkg_github['size'], 1, '?'), // add package size
 		'installed' => preg_grep($pkg_pattern, $pkgs_installed) ? 'yes' : 'no', // checks if package name is installed
-		'installeq' => in_array(pathinfo($pkg_github['name'], PATHINFO_FILENAME), $pkgs_installed) ? 'yes' : 'no', // checks if package is installed equals github exactly
+		'installeq' => in_array(pathinfo($pkg_github['name'], PATHINFO_FILENAME), $pkgs_installed) ? 'yes' : 'no', // checks if package installed equals github exactly
 		'downloaded' => preg_grep($pkg_pattern, $pkgs_downloaded) ? 'yes' : 'no', // checks if package name is downloaded
-		'downloadeq' => in_array($pkg_github['name'], $pkgs_downloaded) ? 'yes' : 'no', // checks if package is downloaded equals github exactly
+		'downloadeq' => in_array($pkg_github['name'], $pkgs_downloaded) ? 'yes' : 'no', // checks if package downloaded equals github exactly
 		'config' => isset($pkg_cfg[$pkg_nver]) ? $pkg_cfg[$pkg_nver] : 'no', // checks config for install preference
+		'plugins' => $pkg_plgs, // checks plugins dependency on package
 		'desc' => $pkgs_desc_array[$pkg_name]
 	];
 
