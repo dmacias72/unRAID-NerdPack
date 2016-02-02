@@ -29,9 +29,9 @@ Usage: $prog [options] = start daemon
 
 EOF;
 
-$shortopts = "cquv";
+$shortopts = "bc:dqv";
 $longopts = [
-	"cron",
+	"cron:",
 	"debug",
 	"help",
 	"quiet",
@@ -51,23 +51,23 @@ if (array_key_exists("version", $args)) {
 	exit(1);
 }
 
-$argcr = (array_key_exists("c", $args) || array_key_exists("cron", $args));
-$argd = (array_key_exists("d", $args) || array_key_exists("debug", $args));
-$argq = (array_key_exists("q", $args) || array_key_exists("quit", $args));
-$argu = (array_key_exists("u", $args) || array_key_exists("uninstall", $args));
+$cron = (array_key_exists("c", $args) || array_key_exists("cron", $args));
+$DEBUG = (array_key_exists("d", $args) || array_key_exists("debug", $args));
+$quit = (array_key_exists("q", $args) || array_key_exists("quit", $args));
+$background = (array_key_exists("b", $args) || array_key_exists("background", $args));
 $argv = (array_key_exists("v", $args) || array_key_exists("verbose", $args));
 
 // ipmitool raw 0x3a 0x01 0xAA 0xBB 0xCC 0xDD 0xEE 0xFF 0xGG 0xHH
 //ipmitool raw 0x3a 0x01 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
 // 0x00 = smartfan mode
 // 0x01 - 0x64  = 1% - 100%
-$asrock_array = [
-'CPU_FAN1' => 'AA',
-'CPU_FAN2' => 'BB',
-'REAR_FAN1' => 'CC',
-'REAR_FAN2' => 'DD',
-'FRNT_FAN1' => 'EE',
-'FRNT_FAN2' => 'FF'
+$asrock = [
+  'CPU_FAN1'  => 'AA',
+  'CPU_FAN2'  => 'BB',
+  'REAR_FAN1' => 'CC',
+  'REAR_FAN2' => 'DD',
+  'FRNT_FAN1' => 'EE',
+  'FRNT_FAN2' => 'FF'
 ];
 
 function debug($m){
@@ -79,7 +79,7 @@ function debug($m){
   }
 }
 
-$background_args = "";
+/*$background_args = "";
 if(isset($argv)){
   for ($i=0; $i <= count($argv); $i++) { 
     switch ($argv[$i]) {
@@ -94,20 +94,15 @@ if(isset($argv)){
         $DEBUG = TRUE;
         $background_args .= " ${argv[$i]}";
       break;
-      case '-h':
-      case '--help':
-      echo $usage;
-      exit(0);
-      # Especific switches:
     }
   }
-}
+}*/
 
 # Deal with cron
-if ($cron) && is_numeric($cron) && !$argq){
+if ($cron) && is_numeric($cron) && !$quit){
   exec("crontab -l 2>/dev/null", $crontab);
   $crontab = array_unique($crontab);
-  if (!$argq){
+  if (!$quit){
     $entry = sprintf("*/%s * * * *  ${service}${background_args} 1> /dev/null 2>&1", $cron);
     if (! preg_grep("#${service}#", $crontab)){
       $crontab[] = $entry;
@@ -118,7 +113,7 @@ if ($cron) && is_numeric($cron) && !$argq){
     }
   }
   unset($crontab);
-} else if ($argq){
+} else if ($quit){
   exec("crontab -l 2>/dev/null", $crontab);
   $crontab = array_unique($crontab);
   if (preg_grep("#${service}#", $crontab)){
@@ -133,9 +128,9 @@ if ($cron) && is_numeric($cron) && !$argq){
 
 if (is_file($lockfile)){
   $lock_pid = file($lockfile, FILE_IGNORE_NEW_LINES)[0];
-  $pid_running=preg_replace("/\s+/", "", shell_exec("ps -p ${lock_pid}| grep ${lock_pid}"));
-  if (!$pid_running){
-    if (!$argq){
+  $pid = preg_replace("/\s+/", "", shell_exec("ps -p ${lock_pid}| grep ${lock_pid}"));
+  if (!$pid){
+    if (!$quit){
       file_put_contents($lockfile, getmypid());
     } else {
       echo "$lock_pid is not currently running";
@@ -143,19 +138,19 @@ if (is_file($lockfile)){
       exit(0);
     }
   } else {
-    if ($argq){
-      syslog(LOG_INFO, "killing daemon with PID [${lock_pid}]");
+    if ($quit){
+      syslog(LOG_INFO, "killing daemon with PID [$lock_pid]");
       exec("kill $lock_pid");
       unlink($lockfile);
       if (function_exists('at_exit')) at_exit();
       exit(0);
     } else {
-      echo "$prog is already running [${lock_pid}]".PHP_EOL;
+      echo "$prog is already running [$lock_pid]".PHP_EOL;
       exit(0);
     }
   }
 } else {
-  if($argq){
+  if($quit){
     echo "$prog not currently running".PHP_EOL;
     exit(0);
   } else {

@@ -3,7 +3,6 @@ Title="Settings"
 ---
 <?php
 require_once '/usr/local/emhttp/plugins/ipmitool-plugin/include/ipmitool_helpers.php';
-$sName = "ipmievd";
 ?>
 
 <script type="text/javascript" src="/plugins/ipmitool-plugin/js/jquery.mask.js"></script>
@@ -13,19 +12,19 @@ $sName = "ipmievd";
 <input type="hidden" id="command" name="#command" value="" />
 
 Enable Event Notifications:
-: <select id="SERVICE" name="SERVICE" size="1" onChange="checkRUNNING(this.form);">
-  <?=mk_option($service, "disable", "No");?>
-  <?=mk_option($service, "enable", "Yes");?>
+: <select id="IPMIEVD" name="IPMIEVD" size="1" onChange="checkIPMIEVD(this.form);">
+  <?=mk_option($ipmievd, "disable", "No");?>
+  <?=mk_option($ipmievd, "enable", "Yes");?>
   </select>
 
 Enable Remote Connection:
-: <select id="REMOTE" class="ipmitool-run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
+: <select id="REMOTE" class="ipmievd-run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
   <?=mk_option($remote, "disable", "No");?>
   <?=mk_option($remote, "enable", "Yes");?>
   </select>
 
 <label class="ipmitool-lan">IPMI IP Address:</label>
-: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipaddr;?>" title="IPMI IP address" placeholder="" >
+: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipaddr;?>" title="IPMI IP address" placeholder="" ><label class='ipmitool-lan'><?=$conn_check;?></label>
 
 <label class="ipmitool-lan">IPMI User Name:</label>
 : <input id="USER" type="text" class="ipmitool-lan" name="USER" maxlength="40" value="<?=$user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
@@ -35,20 +34,23 @@ Enable Remote Connection:
 
 Display CPU temperature:
 : <select name="CPU_TEMP">
-  <?=ipmi_get_options($cpu, 'Temperature', $options);?>
+		<option value='false'>None</option>
+		<?=ipmi_get_options($sensors, 'Temperature', $cpu);?>
   </select>
 
 Display Motherboard temperature:
 : <select name="MB_TEMP">
-  <?=ipmi_get_options($mb, 'Temperature', $options);?>
-  </select>
+		<option value='false'>None</option>	
+		<?=ipmi_get_options($sensors, 'Temperature', $mb);?>
+	</select>
 
 Display Fan speed:
 : <select name="IPMI_FAN">
-  <?=ipmi_get_options($fan, 'Fan', $options);?>
-  </select>
+		<option value='false'>None</option>
+		<?=ipmi_get_options($sensors, 'Fan', $fan);?>
+	</select>
 
-<input id="DEFAULT" class="ipmitool-run" type="button" value="Default" onClick="resetDATA(this.form);">
+<input id="DEFAULT" class="ipmievd-run" type="button" value="Default" onClick="resetDATA(this.form);">
 : <input id="btnApply" type="submit" value="Apply" onClick="verifyDATA(this.form)"><input type="button" value="Done" onClick="done()">
 </form>
 
@@ -57,7 +59,7 @@ $(function(){
 	$('.tabs')
 		.append("<span class='status'>Fan Control: <?=$ipmifan_status;?> </span>")
 		.append("<span class='status'>Event Notification: <?=$ipmievd_status;?> </span>");
-	checkRUNNING(document.ipmitool_settings);
+	checkIPMIEVD(document.ipmitool_settings);
 	checkREMOTE(document.ipmitool_settings);
 	decData(document.ipmitool_settings);
 	//ip address input mask
@@ -72,16 +74,16 @@ function resetDATA(form) {
 	form.submit();
 }
 
-function checkRUNNING(form) {
-	if ("<?=$ipmievd_running;?>" == "yes")
+function checkIPMIEVD(form) {
+	if ("<?=$ipmievd_running;?>" == true)
 	{
-		$(".ipmitool-run").prop("disabled", true);
+		$(".ipmievd-run").prop("disabled", true);
 		form.btnApply.disabled = "disabled";
    }else{
-   	$(".ipmitool-run").prop("disabled", false);
+   	$(".ipmievd-run").prop("disabled", false);
 		$("#btnApply").prop("disabled", false);
 	}
-	if (form.SERVICE.value == "enable")
+	if (form.IPMIEVD.value == "enable")
 		form.command.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/start";
 	else {
 		form.command.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/stop";
@@ -97,11 +99,11 @@ function checkREMOTE(form) {
 		$(".ipmitool-lan").hide();
 	else
    	$(".ipmitool-lan").show();
-   	$(".ipmitool-lan").prop("disabled", (form.SERVICE.value == "enable"));
+   	$(".ipmitool-lan").prop("disabled", (form.IPMIEVD.value == "enable"));
 }
 
 function verifyDATA(form) {
-	form.SERVICE.value = form.SERVICE.value.replace(/ /g,"_");
+	form.IPMIEVD.value = form.IPMIEVD.value.replace(/ /g,"_");
 	form.REMOTE.value = form.REMOTE.value.replace(/ /g,"_");
 	form.USER.value = form.USER.value.replace(/ /g,"_");
 	form.PASSWORD.value = btoa(form.PASSWORD.value);

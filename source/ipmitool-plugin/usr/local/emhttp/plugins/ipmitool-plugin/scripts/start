@@ -1,17 +1,15 @@
 #!/bin/sh
 # read our configuration
-prog="ipmievd"
-prog2="ipmitail"
-IPMIEVD="/usr/sbin/$prog"
-IPMITAIL="/usr/local/emhttp/plugins/ipmitool-plugin/scripts/$prog2"
-LOCKFILE="/var/lock/$prog"
-PIDFILE="/var/run/$prog.pid0"
+DAEMON="/usr/sbin/ipmievd"
+IPMITAIL="/usr/local/emhttp/plugins/ipmitool-plugin/scripts/ipmitail"
+LOCKFILE="/var/lock/ipmievd"
+PIDFILE="/var/run/ipmievd.pid0"
 CONFIG="/boot/config/plugins/ipmitool-plugin/ipmitool-plugin.cfg"
 OPTIONS=""
 
 if [ -e $CONFIG ]; then
 	source $CONFIG
-	if [ $SERVICE == "enable" ]; then
+	if [ $IPMIEVD == "enable" ]; then
 		# no-op if already running
 		if [ ! -r $PIDFILE ]; then
 			if [ $REMOTE == "enable" ]; then
@@ -19,7 +17,7 @@ if [ -e $CONFIG ]; then
 			fi
   			sleep 1
 
-	  		nohup $IPMIEVD sel $OPTIONS > /dev/null 2>&1 | logger -tipmitool &
+	  		nohup $DAEMON sel $OPTIONS > /dev/null 2>&1 | logger -tipmitool &
 	  		touch $LOCKFILE
 		  	TIMER=0
 			while [ ! -e $PIDFILE ]; do

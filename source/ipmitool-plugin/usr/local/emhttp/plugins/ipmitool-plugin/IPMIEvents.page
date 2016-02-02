@@ -6,7 +6,7 @@ Title="Event Log"
 		<thead>
 			<tr>
 				<th class="sorter-false filter-false"> Status </th>
-				<th class="sorter-metric filter-false"> Event ID </th>
+				<th class="sorter-digit filter-false"> Event ID </th>
 				<th class="filter-time" data-placeholder="by time"> Time Stamp </th>
 				<th class="filter-name" data-placeholder="by name"> Sensor Name </th>
 				<th class="filter-desc" data-placeholder="Search..."> Description </th>

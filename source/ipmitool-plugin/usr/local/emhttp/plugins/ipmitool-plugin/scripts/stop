@@ -1,27 +1,27 @@
 #!/bin/sh
-prog="ipmievd"
-prog2="ipmitail"
-LOCKFILE="/var/lock/$prog"
-PIDFILE="/var/run/$prog.pid0"
+DAEMON="ipmievd"
+TAIL="ipmitail"
+LOCKFILE="/var/lock/$DAEMON"
+PIDFILE="/var/run/$DAEMON.pid0"
 
 # no-op if not running
 if [ -r $PIDFILE ]; then
 TIMER=0
-while `killall $prog 2>/dev/null`; do
+while `killall $DAEMON 2>/dev/null`; do
 	sleep 1
 	TIMER=$((TIMER+1))
 	if [ $TIMER -ge 30 ]; then
-		killall -9 $prog
+		killall -9 $DAEMON
 		sleep 1
 		break
 	fi
 done
 TIMER=0
-while `killall $prog2 2>/dev/null`; do
+while `killall $TAIL 2>/dev/null`; do
 	sleep 1
 	TIMER=$((TIMER+1))
 	if [ $TIMER -ge 30 ]; then
-		killall -9 $prog2
+		killall -9 $TAIL
 		sleep 1
 		break
 	fi

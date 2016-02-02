@@ -6,7 +6,7 @@ function ipmi_temp($reading, $unit, $dot) {
 }
 
 if ($cpu || $mb || $fan){
-	$readings = ipmi_get_reading($sensors, $options);
+	$readings = ipmi_get_reading([$cpu, $mb, $fan], $options);
 	$temps = [];
 
 	if ($readings[$cpu])

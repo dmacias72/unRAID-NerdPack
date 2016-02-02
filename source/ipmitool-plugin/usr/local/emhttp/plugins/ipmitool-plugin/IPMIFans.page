@@ -1,113 +1,248 @@
 Menu="IPMI:2"
 Title="Fan Control"
 ---
-<?PHP
-/* Copyright 2015, Bergware International.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License version 2,
- * as published by the Free Software Foundation.
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * Plugin development contribution by gfjardim
- */
-?>
-<?
-$plugin = "ipmitool-plugin";
-$cfg    = parse_plugin_cfg($plugin);
-$sName  = "autofan";
-$fName  = "/usr/local/emhttp/plugins/$plugin/scripts/$sName";
+<form markdown="1" name="ipmifan_settings" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="ipmitool-plugin/ipmitool-plugin.cfg" />
+<input type="hidden" id="command" name="#command" value="" />
 
-function temp_val($val) {
-  global $display;
-  return $display['unit']=='C' ? $val : round(9/5*$val+32);
-}
-function scan_dir($dir, $type = "") {
-  $out = array();
-  foreach (array_slice(scandir($dir), 2) as $entry){
-    $sep   = (preg_match("/\/$/", $dir)) ? "" : "/";
-    $out[] = $dir.$sep.$entry ;
-  }
-  return $out;
-}
-function list_pwm() {
-  $out = array();
-  exec("find /sys/devices -type f -iname 'pwm[0-9]' -exec dirname \"{}\" +|uniq", $chips);
-  foreach ($chips as $chip) {
-    $name = is_file("$chip/name") ? file_get_contents("$chip/name") : "";
-    foreach (preg_grep("/pwm\d+$/", scan_dir($chip)) as $pwm) {
-      $out[] = array('chip'=>$name, 'name'=>end(split('/',$pwm)), 'sensor'=>$pwm);
-    }
-  }
-  return $out;
-}
-?>
-<script>
-function detectFan() {
-  var pwm = $("select[name=controller] option:selected").val();
-  if (pwm) {
-    $("input[name=fan]").val('Please wait...');
-    $("#fan").val('Detecting ...');
-    $.get('/plugins/<?=$plugin;?>/include/SystemFan.php',{op:'detect', pwm:pwm},function(data) {
-      $("input[name=fan]").val(data);
-      $("#fan").val('Detect');
-    });
-  }
-}
-function detectFanLow() {
-  var pwm = $("select[name=controller] option:selected").val();
-  var fan = $("input[name=fan]").val();
-  if (pwm && fan) {
-    $("input[name=pwm]").val('Please wait...');
-    $("#pwm").val('Detecting ...');
-    $.get('/plugins/<?=$plugin;?>/include/SystemFan.php',{op:'pwm',pwm:pwm,fan:fan},function(data) {
-      $("input[name=pwm]").val(data);
-      $("#pwm").val('Detect');
-    });
-  }
-}
-$(function() {
-  //showStatus('<?=$sName?>');
-});
-</script>
-
-<form markdown="1" method="POST" action="/update.php" target="progressFrame">
-<input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
-<input type="hidden" name="#include" value="plugins/<?=$plugin?>/include/update.autofan.php">
-<input type="hidden" name="#prefix" value="controller=c&fan=f&pwm=l&low=t&high=T&interval=m">
-<span class="bitstream" style="float:right;margin-right:12px"><?=exec("$fName -V")?></span>
-
-Fan control function:
+IPMI Fan Control:
 : <select name="service" size="1">
-  <?=mk_option($cfg['service'], "0", "Disabled")?>
-  <?=mk_option($cfg['service'], "1", "Enabled")?>
+  <?=mk_option($cfg['service'], "0", "No")?>
+  <?=mk_option($cfg['service'], "1", "Yes")?>
   </select>
 
-PWM controller:
-: <select name="controller" size="1">
-  <?=mk_option($cfg['controller'], "", "None")?>
-  <?foreach (list_pwm() as $pwm):?>
-  <?=mk_option($cfg['controller'], $pwm['sensor'], "{$pwm['chip']} - {$pwm['name']}")?>
-  <?endforeach;?>
-  </select>
+&nbsp;
 
-PWM fan:
-: <input type="text" name="fan" value="<?=$cfg['fan']?>" placeholder="Click DETECT"><input type="button" value="Detect" onclick="detectFan();" id="fan" style="margin-top:0">
+<?php if ($fans[0]): ?>
 
-Minimun PWM value:
-: <input type="text" name="pwm" value="<?=$cfg['pwm']?>" placeholder="Click DETECT"><input type="button" value="Detect" onclick="detectFanLow();" id="pwm" style="margin-top:0">
+<?=$fans[0];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[0];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
 
-Low temperature threshold (&deg;<?=$display['unit']?>):
-: <input type="number" min="0" max="300" name="low" value="<?=temp_val($cfg['low'])?>" class="narrow">
+<?=$fans[0];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[0];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
 
-High temperature threshold (&deg;<?=$display['unit']?>):
-: <input type="number" min="0" max="300" name="high" value="<?=temp_val($cfg['high'])?>" class="narrow">
+<?=$fans[0];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[0];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
 
-Refresh interval (minutes):
-: <input type="text" name="interval" value="<?=$cfg['interval']?>" class="narrow">
+&nbsp;
 
-<input type="submit" name="#default" value="Default">
-: <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()">
+<?php endif; ?>
+
+<?php if ($fans[1]): ?>
+
+<?=$fans[1];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[1];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[1];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[1];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[1];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[1];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[2]): ?>
+
+<?=$fans[2];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[2];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[2];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[2];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[2];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[2];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[3]): ?>
+
+<?=$fans[3];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[3];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[3];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[3];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[3];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[3];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[4]): ?>
+
+<?=$fans[4];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[4];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[4];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[4];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[4];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[4];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[5]): ?>
+
+<?=$fans[5];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[5];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[5];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[5];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[5];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[5];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[6]): ?>
+
+<?=$fans[6];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[6];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[6];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[6];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[6];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[6];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[7]): ?>
+
+<?=$fans[7];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[7];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[7];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[7];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[7];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[7];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[8]): ?>
+
+<?=$fans[8];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[8];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[8];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[8];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[8];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[8];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+&nbsp;
+
+<?php endif; ?>
+
+<?php if ($fans[9]): ?>
+
+<?=$fans[9];?> temperature sensor:
+: <select name="<?='FAN_'.$fans[9];?>">
+		<option value='0'>Auto</option>
+		<?=ipmi_get_options($sensors, 'Temperature');?>
+		<option value='HDD'>HDD Temperatures</option>
+	</select>
+
+<?=$fans[9];?> Low temperature threshold:
+: <select name="<?='FAN_'.$fans[9];?>_LOW">
+		<option value='0'>Auto</option>
+	</select>
+
+<?=$fans[9];?> High temperature threshold:
+: <select name="<?='FAN_'.$fans[9];?>_HIGH">
+		<option value='0'>Auto</option>
+	</select>
+
+<?php endif; ?>
+
+&nbsp;
+
+<input id="FAN_DEFAULT" class="ipmifan-run" type="button" value="Default" onClick="resetFANDATA(this.form);">
+: <input id="btnFANApply" type="submit" value="Apply" onClick="verifyFANDATA(this.form)"><input type="button" value="Done" onClick="done()">
 </form>
