@@ -88,7 +88,9 @@ function ipmi_events($options=null){
 }
 
 /* get select options for a given sensor type */
-function ipmi_get_options($sensors, $type, $selected=null){
+function ipmi_get_options($sensors, $type, $selected=null, $hdd=null){
+	if ($hdd)
+		$sensors[] = ['Name' => 'HDD Temperature', 'Type' => 'Temperature', 'Status' => 'ok'];
 	$options = "";
 	foreach($sensors as $sensor){
 		if ($sensor["Type"] == $type && $sensor["Status"] != "ns"){
@@ -104,6 +106,25 @@ function ipmi_get_options($sensors, $type, $selected=null){
 	}
 	return $options;
 }
+
+// get options for high or low temp thresholds
+function temp_get_options($range, $selected=null){
+	$temps = [20,25,30,35,40,45,50,55,60,65,70,75,80];
+	if ($range == 'HIGH')
+	  rsort($temps);
+ $options = "";
+ foreach($temps as $temp){
+			$options .= "<option value='$temp'";
+
+			// set saved option as selected
+			if ($selected == $temp)
+				$options .= " selected";
+
+		$options .= ">$temp</option>";
+
+ 	}
+ 	return $options;
+	}
 
 /* get reading for a given sensor by name */
 function ipmi_get_reading($names, $options=null) {
@@ -133,4 +154,5 @@ function ipmi_get_fans($sensors){
 	}
 	return $fans;
 }
+
 ?>

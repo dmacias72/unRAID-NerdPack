@@ -9,7 +9,7 @@ require_once '/usr/local/emhttp/plugins/ipmitool-plugin/include/ipmitool_helpers
 
 <form markdown="1" name="ipmitool_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="ipmitool-plugin/ipmitool-plugin.cfg" />
-<input type="hidden" id="command" name="#command" value="" />
+<input type="hidden" id="COMMAND" name="#command" value="" />
 
 Enable Event Notifications:
 : <select id="IPMIEVD" name="IPMIEVD" size="1" onChange="checkIPMIEVD(this.form);">
@@ -45,7 +45,7 @@ Display Motherboard temperature:
 	</select>
 
 Display Fan speed:
-: <select name="IPMI_FAN">
+: <select name="DISP_FAN">
 		<option value='false'>None</option>
 		<?=ipmi_get_options($sensors, 'Fan', $fan);?>
 	</select>
@@ -60,6 +60,7 @@ $(function(){
 		.append("<span class='status'>Fan Control: <?=$ipmifan_status;?> </span>")
 		.append("<span class='status'>Event Notification: <?=$ipmievd_status;?> </span>");
 	checkIPMIEVD(document.ipmitool_settings);
+	//checkIPMIFAN(document.ipmifan_settings);
 	checkREMOTE(document.ipmitool_settings);
 	decData(document.ipmitool_settings);
 	//ip address input mask
@@ -71,6 +72,9 @@ function resetDATA(form) {
 	form.IPADDR.value = "";
 	form.USER.value = "";
 	form.PASSWORD.value = "";
+	form.CPU_TEMP.selectedIndex = 0;
+	form.MB_TEMP.selectedIndex = 0;
+	form.DISP_FAN.selectedIndex = 0;
 	form.submit();
 }
 
@@ -84,9 +88,9 @@ function checkIPMIEVD(form) {
 		$("#btnApply").prop("disabled", false);
 	}
 	if (form.IPMIEVD.value == "enable")
-		form.command.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/start";
+		form.COMMAND.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/start";
 	else {
-		form.command.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/stop";
+		form.COMMAND.value = "/usr/local/emhttp/plugins/ipmitool-plugin/scripts/stop";
 	}
 }
 
@@ -108,4 +112,5 @@ function verifyDATA(form) {
 	form.USER.value = form.USER.value.replace(/ /g,"_");
 	form.PASSWORD.value = btoa(form.PASSWORD.value);
 }
+
 </script>
