@@ -115,7 +115,7 @@ removepkg &plgPATH;/*.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz
 rm -f &plgPATH;/*.md5
-rm -f &gitTAR;
+rm -f &plgPATH;/&gitTAR;
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
