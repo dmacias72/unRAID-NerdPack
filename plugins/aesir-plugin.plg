@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "aesir-plugin">
 <!ENTITY author    "dmacias72, Kode">
-<!ENTITY version   "2016.02.05">
+<!ENTITY version   "2016.02.06">
 <!ENTITY launch    "Settings/Aesir">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,9 @@ This Plugin installs and controls Aesir webGUI for unRaid 6.1+  All dependencies
 -->
 
 <CHANGES>
+###2016.02.06
+- fix dockers not visible when running other than root
+- remove user selection
 ###2016.02.05
 - initial commit
 </CHANGES>
