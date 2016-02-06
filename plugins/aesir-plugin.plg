@@ -6,10 +6,11 @@
 <!ENTITY version   "2016.02.06">
 <!ENTITY launch    "Settings/Aesir">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master">
+<!ENTITY gitTAR    "aesir-master.tar.gz">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME	 "&name;-&version;-x86_64-1">
 <!ENTITY http		 "/srv/www/Aesir">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
 ]>
@@ -22,6 +23,7 @@ This Plugin installs and controls Aesir webGUI for unRaid 6.1+  All dependencies
 
 <CHANGES>
 ###2016.02.06
+- fix events not executable 
 - fix dockers not visible when running other than root
 - remove user selection
 ###2016.02.05
@@ -32,17 +34,17 @@ This Plugin installs and controls Aesir webGUI for unRaid 6.1+  All dependencies
 <!--
 git from github as tarball
 -->
-<FILE Name="&plgpath;/aesir-master.tar.gz">
+<FILE Name="&plgPATH;/&gitTAR">
 <URL>"https://api.github.com/repos/linuxserver/Aesir/tarball/master"</URL>
 </FILE>
 
-<FILE Name="&plgpath;/&name;.cfg">
+<FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
 SERVICE="disable"
 DOCROOT="/mnt/cache/appdata/Aesir"
 PORT="8088"
-RUNAS="nobody"
+RUNAS="root"
 ]]>
 </INLINE>
 </FILE>
@@ -50,15 +52,15 @@ RUNAS="nobody"
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -74,23 +76,23 @@ if [[ ${version:0:3} == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz
-  rm &plgpath;/&plgname;.md5
+  rm &plgPATH;/&plgNAME;.txz
+  rm &plgPATH;/&plgNAME;.md5
   exit 1
 else
-	upgradepkg --install-new &plgpath;/&plgname;.txz
+	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 fi
 
 # Update file permissions of plugin scripts
 chmod +0755 &emhttp;/scripts/*
 
 # Cleaning old source files
-find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -109,11 +111,11 @@ The 'remove' script.
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
 /usr/local/emhttp/plugins/&name;/scripts/stop
-removepkg &plgpath;/*.txz
+removepkg &plgPATH;/*.txz
 rm -rf &emhttp;
-rm -f &plgpath;/*.txz
-rm -f &plgpath;/*.md5
-
+rm -f &plgPATH;/*.txz
+rm -f &plgPATH;/*.md5
+rm -f &gitTAR;
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
@@ -133,7 +135,7 @@ CFGFILE=/boot/config/plugins/aesir-plugin/aesir-plugin.cfg
 [ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep DOCROOT` ] && echo "DOCROOT=\"/mnt/cache/appdata/Aesir\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"8088\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"root\"" >> "$CFGFILE"
 rm /tmp/aesir-plugin-chkconf
 ]]>
 </INLINE>
