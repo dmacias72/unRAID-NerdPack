@@ -1,10 +1,7 @@
 Menu="IPMI:1"
 Title="Settings"
 ---
-<?php
-require_once '/usr/local/emhttp/plugins/ipmitool-plugin/include/ipmitool_helpers.php';
-?>
-
+<?php require_once '/usr/local/emhttp/plugins/ipmitool-plugin/include/ipmitool_helpers.php'; ?>
 <script type="text/javascript" src="/plugins/ipmitool-plugin/js/jquery.mask.js"></script>
 
 <form markdown="1" name="ipmitool_settings" method="POST" action="/update.php" target="progressFrame">
@@ -35,19 +32,19 @@ Enable Remote Connection:
 Display CPU temperature:
 : <select name="CPU_TEMP">
 		<option value='false'>None</option>
-		<?=ipmi_get_options($sensors, 'Temperature', $cpu);?>
+		<?=ipmi_get_options($sensors, 'Temperature', $cpu_temp);?>
   </select>
 
 Display Motherboard temperature:
 : <select name="MB_TEMP">
 		<option value='false'>None</option>	
-		<?=ipmi_get_options($sensors, 'Temperature', $mb);?>
+		<?=ipmi_get_options($sensors, 'Temperature', $mb_temp);?>
 	</select>
 
 Display Fan speed:
-: <select name="DISP_FAN">
+: <select name="FAN_DISP">
 		<option value='false'>None</option>
-		<?=ipmi_get_options($sensors, 'Fan', $fan);?>
+		<?=ipmi_get_options($sensors, 'Fan', $fan_disp);?>
 	</select>
 
 <input id="DEFAULT" class="ipmievd-run" type="button" value="Default" onClick="resetDATA(this.form);">
@@ -74,7 +71,7 @@ function resetDATA(form) {
 	form.PASSWORD.value = "";
 	form.CPU_TEMP.selectedIndex = 0;
 	form.MB_TEMP.selectedIndex = 0;
-	form.DISP_FAN.selectedIndex = 0;
+	form.FAN_DISP.selectedIndex = 0;
 	form.submit();
 }
 
