@@ -19,9 +19,9 @@ $ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[
 	$cfg['IPADDR'] : 
 	trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
 
-$cpu      = isset($cfg['CPU_TEMP']) ? $cfg['CPU_TEMP'] : ""; // cpu temp display name
-$mb       = isset($cfg['MB_TEMP'])  ? $cfg['MB_TEMP']  : ""; // mb temp display name
-$fan      = isset($cfg['IPMI_FAN']) ? $cfg['IPMI_FAN'] : ""; // fan speed display name
+$cpu_temp = isset($cfg['CPU_TEMP']) ? $cfg['CPU_TEMP'] : ""; // cpu temp display name
+$mb_temp  = isset($cfg['MB_TEMP'])  ? $cfg['MB_TEMP']  : ""; // mb temp display name
+$fan_disp = isset($cfg['FAN_DISP']) ? $cfg['FAN_DISP'] : ""; // fan speed display name
 $user     = isset($cfg['USER'])     ? $cfg['USER']     : ""; // user for remote access
 $password = isset($cfg['PASSWORD']) ? $cfg['PASSWORD'] : ""; // password for remote access
 
