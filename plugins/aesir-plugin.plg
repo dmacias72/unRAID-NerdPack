@@ -1,0 +1,139 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "aesir-plugin">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2016.02.05">
+<!ENTITY launch    "Settings/Aesir">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY plgpath   "/boot/config/plugins/&name;">
+<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY http		 "/srv/www/Aesir">
+<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
+
+<!--
+This Plugin installs and controls Aesir webGUI for unRaid 6.1+  All dependencies are installed as needed and is controlable from the webgui.
+-->
+
+<CHANGES>
+###2016.02.05
+- initial commit
+</CHANGES>
+
+
+<!--
+git from github as tarball
+-->
+<FILE Name="&plgpath;/aesir-master.tar.gz">
+<URL>"https://api.github.com/repos/linuxserver/Aesir/tarball/master"</URL>
+</FILE>
+
+<FILE Name="&plgpath;/&name;.cfg">
+<INLINE>
+<![CDATA[
+SERVICE="disable"
+DOCROOT="/mnt/cache/appdata/Aesir"
+PORT="8088"
+RUNAS="nobody"
+]]>
+</INLINE>
+</FILE>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
+  exit 1
+else
+	upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
+
+# Update file permissions of plugin scripts
+chmod +0755 &emhttp;/scripts/*
+
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2016, &author;, Kode"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+/usr/local/emhttp/plugins/&name;/scripts/stop
+removepkg &plgpath;/*.txz
+rm -rf &emhttp;
+rm -f &plgpath;/*.txz
+rm -f &plgpath;/*.md5
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2016, &author;, Kode"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<FILE Name="/tmp/aesir-plugin-chkconf" Run="/bin/bash">
+<INLINE>
+<![CDATA[
+#!/bin/sh
+# This will check each entry in the config so nothing is missing, and if missing, sets to default
+CFGFILE=/boot/config/plugins/aesir-plugin/aesir-plugin.cfg
+[ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep DOCROOT` ] && echo "DOCROOT=\"/mnt/cache/appdata/Aesir\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"8088\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
+rm /tmp/aesir-plugin-chkconf
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>
