@@ -34,7 +34,7 @@ This Plugin installs and controls Aesir webGUI for unRaid 6.1+  All dependencies
 <!--
 git from github as tarball
 -->
-<FILE Name="&plgPATH;/&gitTAR">
+<FILE Name="&plgPATH;/&gitTAR;">
 <URL>"https://api.github.com/repos/linuxserver/Aesir/tarball/master"</URL>
 </FILE>
 
