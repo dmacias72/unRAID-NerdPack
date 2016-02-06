@@ -1,4 +1,4 @@
-Menu="NetworkServices"
+Menu="OtherSettings"
 Icon="ipmitool.png"
 Title="IPMI tool"
 Type="xmenu"
