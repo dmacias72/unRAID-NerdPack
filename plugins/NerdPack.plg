@@ -183,7 +183,7 @@ fi
 
 # Update file permissions of scripts
 chmod +0755 &emhttp;/scripts/* \
-  &emhttp;/events/*
+  &emhttp;/event/*
 
 # Cleaning old source files
 find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
@@ -221,4 +221,3 @@ echo ""
 </FILE>
 
 </PLUGIN>
-
