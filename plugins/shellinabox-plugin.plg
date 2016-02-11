@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "shellinabox-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.02.10">
+<!ENTITY version   "2016.02.11">
 <!ENTITY launch    "Settings/Shellinabox">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -20,6 +20,9 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
+###2016.02.11
+- fix: chmod error
+- fix: shutdown not saving
 ###2016.02.10
 - remove array event scripts and move to rc script
 - start and stop with system not array
