@@ -3,13 +3,13 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "shellinabox-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.07c">
+<!ENTITY version   "2016.02.10">
 <!ENTITY launch    "Settings/Shellinabox">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname	 "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME	 "&name;-&version;-x86_64-1">
 <!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
 ]>
 
@@ -20,6 +20,13 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
+###2016.02.10
+- remove array event scripts and move to rc script
+- start and stop with system not array
+- add: choice for command line screenshot
+- add: choice to backup settings in root directory on shutdown
+- add: backup restore on reboot e.g. mc settings, bash history
+- add: selection of all users of group users for runas
 ###2016.01.07c
 - add option to disable SSL
 ###2016.01.07b
@@ -33,7 +40,9 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 - default config file
 ###2016.01.06
 - change package path to plugin directory
-- fix Tool/Command Line page misspelled cfg file and defaulting to port 8088 instead of 4200
+- fix Tool/Command Line page 
+- fix misspelled cfg file 
+- fix default port 8088 to 4200
 ###2015.12.30
 - remove old plugin directory on install
 ###2015.12.21
@@ -64,19 +73,21 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 </CHANGES>
 
 
-<FILE Name="&plgpath;/shellinabox-2.19-x86_64-1sl.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/shellinabox-2.19-x86_64-1sl.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/shellinabox-2.19-x86_64-1sl.txz</URL>
 <MD5>96f21406d18181f469e732795d2965e8</MD5>
 </FILE>
-<FILE Name="&plgpath;/linux-pam-1.1.8-x86_64-1gds.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/linux-pam-1.1.8-x86_64-1gds.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/linux-pam-1.1.8-x86_64-1gds.txz</URL>
 <MD5>f5d4e99dc0b65f4d6b3bacf479c9c6e2</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/&name;.cfg">
+<FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
 SERVICE="disable"
+SSL="disable"
+SCREEN="disable"
 IPADDR="disable"
 PORT="4200"
 RUNAS="nobody"
@@ -88,15 +99,15 @@ CERT="certificate.pem"
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -112,36 +123,39 @@ if [[ ${version:0:3} == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
-  echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz
-  rm &plgpath;/&plgname;.md5
-  exit 1
+	echo "Wrong 'plugin' package md5 hash."
+	rm &plgPATH;/&plgNAME;.txz
+	rm &plgPATH;/&plgNAME;.md5
+	exit 1
 else
-  #remove old plugin name directory
-  if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
- 	  rm -rf  /usr/local/emhttp/plugins/shellinabox
-  fi
-  upgradepkg --install-new &plgpath;/&plgname;.txz
+	#remove old plugin name directory
+	if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
+		rm -rf  /usr/local/emhttp/plugins/shellinabox
+	fi
+
+	# upgrade package
+	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+
+ # start shellinabox daemon
+	/etc/rc.d/rc.shellinaboxd restore
+
+ # Cleaning old source files
+ find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+ find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+ echo ""
+ echo "-----------------------------------------------------------"
+ echo " &name; has been installed."
+ echo " This plugin requires Dynamix webGui to operate"
+ echo " Copyright 2016, &author;"
+ echo " Version: &version;"
+ echo "-----------------------------------------------------------"
+ echo ""
+
 fi
-
-# Update file permissions of scripts
-chmod +0755 &emhttp;/scripts/*
-
-# Cleaning old source files
-find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
-
-echo ""
-echo "-----------------------------------------------------------"
-echo " &name; has been installed."
-echo " This plugin requires Dynamix webGui to operate"
-echo " Copyright 2016, &author;"
-echo " Version: &version;"
-echo "-----------------------------------------------------------"
-echo ""
 </INLINE>
 </FILE>
 
@@ -150,11 +164,14 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-/usr/local/emhttp/plugins/&name;/scripts/stop
-removepkg &plgpath;/*.txz
+
+/etc/rc.d/rc.shellinaboxd shutdown
+
+removepkg &plgPATH;/*.txz
 rm -rf &emhttp;
-rm -f &plgpath;/*.txz
-rm -f &plgpath;/*.md5
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5 \
+  /etc/rc.d/rc.shellinaboxd
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -173,6 +190,8 @@ echo ""
 # This will check each entry in the config so nothing is missing, and if missing, sets to default
 CFGFILE=/boot/config/plugins/shellinabox-plugin/shellinabox-plugin.cfg
 [ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep SCREEN` ] && echo "SCREEN=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep SSL` ] && echo "SSL=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep IPADDR` ] && echo "IPADDR=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"4200\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
