@@ -4129,8 +4129,17 @@ infoDisplay () {
 	# Info Variable Setting #
 	#########################
 	if [[ "$distro" == "unRAID" ]]; then
-						source /var/local/emhttp/var.ini
- fi
+		if [ -e /var/local/emhttp/var.ini ]; then
+			 source /var/local/emhttp/var.ini
+		else
+			fsState="n/a"
+			mdNumDisks="n/a"
+			mdResync="0"
+			mdResyncPos="0"
+			cacheNumDevices="n/a"
+			fsNumUnmountable="n/a"
+		fi
+ 	fi
 	if [[ "${distro}" == "Android" ]]; then
 		myhostname=$(echo -e "${labelcolor}${hostname}"); out_array=( "${out_array[@]}" "$myhostname" )
 		mydistro=$(echo -e "$labelcolor OS:$textcolor $distro $distro_ver"); out_array=( "${out_array[@]}" "$mydistro" )
