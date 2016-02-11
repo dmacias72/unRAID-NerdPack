@@ -1,0 +1,126 @@
+#!/bin/sh
+# start/stop/shutdown/restart shellinabox daemon:
+
+PROG="shellinaboxd"
+SHELLINABOXD="/usr/sbin/$PROG"
+LOCKFILE="/var/lock/$PROG"
+PIDFILE="/var/run/$PROG.pid"
+PROFILE="/root/.bash_profile"
+STYLES="/usr/local/emhttp/plugins/shellinabox-plugin/styles"
+PLGPATH="/boot/config/plugins/shellinabox-plugin"
+CONFIG="$PLGPATH/shellinabox-plugin.cfg"
+USER_CSS="Color:+$STYLES/color.css,Monochrome:-$STYLES/monochrome.css;White:+$STYLES/white-on-black.css,Black:-$STYLES/black-on-white.css,Blue:-$STYLES/blue-on-black.css,Green:-$STYLES/green-on-black.css,Pink:-$STYLES/pink-on-black.css,Purple:-$STYLES/purple-on-black.css,Red:-$STYLES/red-on-black.css,Yellow:-$STYLES/yellow-on-black.css"
+
+# read our configuration
+[ -e "$CONFIG" ] && source $CONFIG
+
+# add screenfetch to bash profile
+if [ "$SCREEN" == "enable" ]; then
+	if ! grep "/usr/sbin/screenfetch" $PROFILE >/dev/null 2>&1
+		#append command to file
+		then echo -e "\n/usr/sbin/screenfetch" >> $PROFILE
+	else
+		#uncomment command
+		sed -e '/\/usr\/sbin\/screenfetch/s/^#//g' -i $PROFILE
+	fi
+else
+	#comment out command
+	sed -e '/\/usr\/sbin\/screenfetch/ s/^#*/#/' -i $PROFILE
+fi
+
+# Start shellinaboxd:
+shellinaboxd_start() {
+	# no-op if already running
+	if [[ "$SERVICE" == "enable"  &&  ! -r "$PIDFILE" ]]; then
+
+		SSL_CONFIG=""
+		[ $SSL == "disable" ] && SSL_CONFIG="--disable-ssl"
+
+		echo "starting shellinaboxd..."
+		sleep 1
+		nohup /usr/sbin/$PROG --user=$RUNAS --background=$PIDFILE --port=$PORT --cert=$PLGPATH --user-css=$USER_CSS $SSL_CONFIG > /dev/null 2>&1 | logger -t$PROG &
+			touch $LOCKFILE
+			TIMER=0
+			while [ ! -e $PIDFILE ]; do
+				sleep 1
+				let TIMER=$TIMER+1
+   	   	if [ $TIMER -gt 5 ]; then
+      	  		echo -n "$PIDFILE not created"
+	         	break
+			fi
+		done
+	else
+		echo "shellinaboxd is running"
+	fi
+}
+
+# Stop shellinaboxd:
+shellinaboxd_stop() {
+	# no-op if not running
+	if [ -r "$PIDFILE" ]; then
+		echo "stopping shellinaboxd..."
+
+		TIMER=0
+		while `killall $PROG 2>/dev/null`; do
+			sleep 1
+			TIMER=$((TIMER+1))
+			if [ $TIMER -ge 30 ]; then
+				killall -9 $PROG
+				sleep 1
+				break
+			fi
+	 done
+		rm -f $LOCKFILE && rm -f $PIDFILE
+	else
+		echo "shellinaboxd is stopped"
+	fi
+}
+
+# Restart shellinaboxd:
+shellinaboxd_restart() {
+	shellinaboxd_stop
+	sleep 1
+	shellinaboxd_start
+}
+
+# Restore shellinaboxd:
+shellinaboxd_restore() {
+	if [ "$BACKUP" == "enable" ]; then	
+		# backup home directory
+		echo "restoring home directory..."
+		tar -zxf $PLGPATH/home_directory.tar.gz -p -C / > /dev/null 2>&1
+		sleep 1
+	fi
+	shellinaboxd_start
+}
+
+# Shutdown shellinaboxd:
+shellinaboxd_shutdown() {
+	if [ "$BACKUP" == "enable" ]; then	
+		# backup home directory
+		echo "saving home directory..."
+		tar -zcf $PLGPATH/home_directory.tar.gz -p -C / root > /dev/null 2>&1
+		sleep 1
+	fi
+	shellinaboxd_stop
+}
+
+case "$1" in
+'start')
+  shellinaboxd_start
+  ;;
+'stop')
+  shellinaboxd_stop
+  ;;
+'shutdown')
+  shellinaboxd_shutdown
+  ;;
+'restore')
+  shellinaboxd_restore
+  ;;
+'restart')
+  shellinaboxd_restart
+  ;;
+*)
+  echo "usage rc.shellinaboxd: start|stop|shutdown|restore|restart"
+esac
