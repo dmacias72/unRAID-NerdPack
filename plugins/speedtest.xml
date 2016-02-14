@@ -11,8 +11,17 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2016-01-17</Date>
+<Date>2016-02-14</Date>
 <Changes>
+###2016.02.14
+- fix: move delete all outside icon tag
+- fix: no quotes on table row id
+- add: animation to table row delete
+- move: tablesorter to document ready
+- add: function to save filters on page refresh
+- add: charts: line, area, vertical, horizontal
+- date format to fixed yyyy-mm-dd hh:mm day for sorting and charts
+- update tablesorter
 ###2016.01.17
 - remove symlink to speedtest-linux
 ###2016.01.16
