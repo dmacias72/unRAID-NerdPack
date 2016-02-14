@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.17">
+<!ENTITY version   "2016.02.14">
 <!ENTITY launch    "Tools/Speedtest">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,15 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.02.14
+- fix: move delete all outside icon tag
+- fix: no quotes on table row id
+- add: animation to table row delete
+- move: tablesorter to document ready
+- add: function to save filters on page refresh
+- add: charts: line, area, vertical, horizontal
+- date format to fixed yyyy-mm-dd hh:mm day for sorting and charts
+- update tablesorter
 ###2016.01.17
 - remove symlink to speedtest-linux
 ###2016.01.16
@@ -77,13 +86,13 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <!--
 The 'tablesorter' package file.
 -->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.01.16-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2016.01.16-x86_64-1.txz</URL>
-<MD5>139bbc7f9788339193ab9bd994365b4a</MD5>
+<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.02.12-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/archive/tablesorter-2016.02.12-x86_64-1.txz</URL>
+<MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
 </FILE>
 
 <FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/python-2.7.9-x86_64-1.txz</URL>
+<URL>&gitURL;/packages/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 <FILE Name="&pkgs;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
