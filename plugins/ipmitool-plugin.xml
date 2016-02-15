@@ -13,6 +13,8 @@ The ipmitool plugin allows you to view your system sensors and events using your
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmitool-plugin.png</Icon>
 <Date>2016-02-15</Date>
 <Changes>
+###2016.02.15a
+- fix: array combine error for sensors with non uniform data
 ###2016.02.15
 - update tablesorter
 - add: fan control page and status
