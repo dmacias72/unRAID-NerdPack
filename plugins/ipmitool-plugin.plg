@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.02.15">
+<!ENTITY version   "2016.01.17">
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -142,16 +142,6 @@ else
 echo "loading ipmi drivers..."
 modprobe ipmi_si
 modprobe ipmi_devintf
-
-# Start scripts if enabled
-<![CDATA[
-echo "starting ipmievd..."
-/etc/rc.d/rc.ipmievd start >/dev/null 2>&1 < /dev/null &
-sleep 1
-echo "starting ipmitail..."
-setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
-sleep 1
-]]>
 
 # Cleaning old source files
 find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
