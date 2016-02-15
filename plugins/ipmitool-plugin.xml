@@ -11,8 +11,18 @@ The ipmitool plugin allows you to view your system sensors and events using your
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmitool-plugin.png</Icon>
-<Date>2016-01-17</Date>
+<Date>2016-02-15</Date>
 <Changes>
+###2016.02.15
+- update tablesorter
+- add: fan control page and status
+- fan control Not functional yet
+- add: settings for temps and fan display
+- add: temp and fans readings to footer
+- move event daemon start and stop functions to rc scripts
+- remove daemon start and stop with array
+- move daemon start process to plugin install
+- move daemon stop process to rc.local_shutdown
 ###2016.01.17
 - add tablesorter as a separate package
 - fix values outside of critical showing green

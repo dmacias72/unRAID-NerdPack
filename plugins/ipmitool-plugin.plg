@@ -3,21 +3,31 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.17">
+<!ENTITY version   "2016.02.15">
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY pkg       "ipmitool-1.8.13-x86_64-1_slack.txz">
 <!ENTITY md5       "3301f21f0d66160877f90ffc3278703b">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.02.15
+- update tablesorter
+- add: fan control page and status
+- fan control Not functional yet
+- add: settings for temps and fan display
+- add: temp and fans readings to footer
+- move event daemon start and stop functions to rc scripts
+- remove daemon start and stop with array
+- move daemon start process to plugin install
+- move daemon stop process to rc.local_shutdown
 ###2016.01.17
 - add tablesorter as a separate package
 - fix values outside of critical showing green
@@ -59,22 +69,22 @@
 <!--
 The 'tablesorter' package file.
 -->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.01.16-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2016.01.16-x86_64-1.txz</URL>
-<MD5>139bbc7f9788339193ab9bd994365b4a</MD5>
+<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.02.12-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/archive/tablesorter-2016.02.12-x86_64-1.txz</URL>
+<MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
 </FILE>
 
 <!--
 This plugin uses ipmitool to display sensor readings
 -->
 
-<FILE Name="&plgpath;/&pkg;" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/&pkg;" Run="upgradepkg --install-new">
 <URL>&pkgURL;/&pkg;</URL>
 <MD5>&md5;</MD5>
 </FILE>
 
 
-<FILE Name="&plgpath;/&name;.cfg">
+<FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
 SERVICE="disable"
@@ -89,15 +99,15 @@ PASSWORD="="
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -118,33 +128,34 @@ if [ -d /usr/local/emhttp/plugins/ipmitool ]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz \
-     &plgpath;/&plgname;.md5
+  rm &plgPATH;/&plgNAME;.txz \
+     &plgPATH;/&plgNAME;.md5
   exit 1
 else
-  upgradepkg --install-new &plgpath;/&plgname;.txz
-fi
-
-# Update file permissions of scripts
-chmod +0755 &emhttp;/scripts/*
+  upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
 # Load impi drivers
 echo "loading ipmi drivers..."
 modprobe ipmi_si
 modprobe ipmi_devintf
 
-#restart event daemon
-&emhttp;/scripts/stop
+# Start scripts if enabled
+<![CDATA[
+echo "starting ipmievd..."
+/etc/rc.d/rc.ipmievd start >/dev/null 2>&1 < /dev/null &
 sleep 1
-&emhttp;/scripts/start
+echo "starting ipmitail..."
+setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
+sleep 1
+]]>
 
 # Cleaning old source files
-find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -154,6 +165,8 @@ echo " Copyright 2015, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
+
+fi
 </INLINE>
 </FILE>
 
@@ -162,11 +175,17 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-&emhttp;/scripts/stop
-removepkg &plgpath;/&plgname;.txz \
-          &plgpath;/&pkg;
-rm -rf &emhttp; \
-   -rf &plgpath;
+#stop daemon
+/etc/rc.d/rc.ipmievd stop
+sleep 1
+/etc/rc.d/rc.ipmitail stop
+sleep 1
+
+removepkg &plgPATH;/*.txz
+rm -rf &emhttp;
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
+   
 
 echo "unloading ipmi drivers..."
 modprobe -r ipmi_si
