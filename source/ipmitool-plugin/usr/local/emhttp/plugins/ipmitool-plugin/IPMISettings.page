@@ -16,35 +16,35 @@ Enable Event Notifications:
 
 Enable Remote Connection:
 : <select id="REMOTE" class="ipmievd-run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
-  <?=mk_option($remote, "disable", "No");?>
-  <?=mk_option($remote, "enable", "Yes");?>
+  <?=mk_option($ipmi_remote, "disable", "No");?>
+  <?=mk_option($ipmi_remote, "enable", "Yes");?>
   </select>
 
 <label class="ipmitool-lan">IPMI IP Address:</label>
-: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipaddr;?>" title="IPMI IP address" placeholder="" ><label class='ipmitool-lan'><?=$conn_check;?></label>
+: <input id="IPADDR" type="text" class="ipmitool-lan ipmitool-ipaddr" name="IPADDR" maxlength="40" value="<?=$ipmi_ipaddr;?>" title="IPMI IP address" placeholder="" ><label class='ipmitool-lan'><?=$ipmi_conn_check;?></label>
 
 <label class="ipmitool-lan">IPMI User Name:</label>
-: <input id="USER" type="text" class="ipmitool-lan" name="USER" maxlength="40" value="<?=$user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
+: <input id="USER" type="text" class="ipmitool-lan" name="USER" maxlength="40" value="<?=$ipmi_user;?>" title="username for remote access IPMI" placeholder="username for remote access" >
 
 <label class="ipmitool-lan">IPMI Password:</label>
-: <input id="PASSWORD" type="password" class="ipmitool-lan" name="PASSWORD" maxlength="40" value="<?=$password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
+: <input id="PASSWORD" type="password" class="ipmitool-lan" name="PASSWORD" maxlength="40" value="<?=$ipmi_password;?>" title="password for remote access IPMI" placeholder="password for remote access" >
 
 Display CPU temperature:
 : <select name="CPU_TEMP">
 		<option value='false'>None</option>
-		<?=ipmi_get_options($sensors, 'Temperature', $cpu_temp);?>
+		<?=ipmi_get_options($ipmi_sensors, 'Temperature', $ipmi_cpu_temp);?>
   </select>
 
 Display Motherboard temperature:
 : <select name="MB_TEMP">
 		<option value='false'>None</option>	
-		<?=ipmi_get_options($sensors, 'Temperature', $mb_temp);?>
+		<?=ipmi_get_options($ipmi_sensors, 'Temperature', $ipmi_mb_temp);?>
 	</select>
 
 Display Fan speed:
 : <select name="FAN_DISP">
 		<option value='false'>None</option>
-		<?=ipmi_get_options($sensors, 'Fan', $fan_disp);?>
+		<?=ipmi_get_options($ipmi_sensors, 'Fan', $ipmi_fan_disp);?>
 	</select>
 
 <input id="DEFAULT" class="ipmievd-run" type="button" value="Default" onClick="resetDATA(this.form);">

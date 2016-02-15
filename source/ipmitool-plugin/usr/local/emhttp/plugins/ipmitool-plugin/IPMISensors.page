@@ -32,5 +32,5 @@ Icon="sensorspage.png"
 
 <script type="text/javascript" src="/plugins/ipmitool-plugin/js/jquery.ipmitool-plugin.js"></script>
 <script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
-<script type="text/javascript" src="/plugins/tablesorter/js/pager/jquery.tablesorter.pager.js"></script>
+<script type="text/javascript" src="/plugins/tablesorter/js/extras/jquery.tablesorter.pager.min.js"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>

@@ -1,41 +1,41 @@
 <?php
 /* ipmi tool variables*/
 $plugin = 'ipmitool-plugin';
-$cfg 		= parse_ini_file("/boot/config/plugins/$plugin/$plugin.cfg");
-$ipmievd = isset($cfg['IPMIEVD']) ? $cfg['IPMIEVD'] 	: "disable";
-$ipmifan = isset($cfg['IPMIFAN']) ? $cfg['IPMIFAN'] 	: "disable";
-$remote  = isset($cfg['REMOTE'])  ? $cfg['REMOTE']  	: "disable";
+$ipmi_cfg 		= parse_ini_file("/boot/config/plugins/$plugin/$plugin.cfg");
+$ipmievd = isset($ipmi_cfg['IPMIEVD']) ? $ipmi_cfg['IPMIEVD'] 	: "disable";
+$ipmifan = isset($ipmi_cfg['IPMIFAN']) ? $ipmi_cfg['IPMIFAN'] 	: "disable";
+$ipmi_remote  = isset($ipmi_cfg['REMOTE'])  ? $ipmi_cfg['REMOTE']  	: "disable";
 
 //check running status
 $ipmievd_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmievd.pid0 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ));
 $ipmifan_running = trim(shell_exec( "[ -f /proc/`cat /var/run/ipmifan.pid 2> /dev/null`/exe ] && echo 1 || echo 0 2> /dev/null" ));
-$running = "<span class='green'>Running</span>";
-$stopped = "<span class='orange'>Stopped</span>";
-$ipmievd_status = ($ipmievd_running) ? $running : $stopped;
-$ipmifan_status = ($ipmifan_running) ? $running : $stopped;
+$ipmi_running = "<span class='green'>Running</span>";
+$ipmi_stopped = "<span class='orange'>Stopped</span>";
+$ipmievd_status = ($ipmievd_running) ? $ipmi_running : $ipmi_stopped;
+$ipmifan_status = ($ipmifan_running) ? $ipmi_running : $ipmi_stopped;
 
 // use save ip address or use local ipmi address
-$ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/', $cfg['IPADDR']) ? 
-	$cfg['IPADDR'] : 
+$ipmi_ipaddr = preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}$/', $ipmi_cfg['IPADDR']) ? 
+	$ipmi_cfg['IPADDR'] : 
 	trim(shell_exec("/usr/bin/ipmitool lan print | grep 'IP Address  ' | sed -n -e 's/^.*: //p'"));
 
-$cpu_temp = isset($cfg['CPU_TEMP']) ? $cfg['CPU_TEMP'] : ""; // cpu temp display name
-$mb_temp  = isset($cfg['MB_TEMP'])  ? $cfg['MB_TEMP']  : ""; // mb temp display name
-$fan_disp = isset($cfg['FAN_DISP']) ? $cfg['FAN_DISP'] : ""; // fan speed display name
-$user     = isset($cfg['USER'])     ? $cfg['USER']     : ""; // user for remote access
-$password = isset($cfg['PASSWORD']) ? $cfg['PASSWORD'] : ""; // password for remote access
+$ipmi_cpu_temp = isset($ipmi_cfg['CPU_TEMP']) ? $ipmi_cfg['CPU_TEMP'] : ""; // cpu temp display name
+$ipmi_mb_temp  = isset($ipmi_cfg['MB_TEMP'])  ? $ipmi_cfg['MB_TEMP']  : ""; // mb temp display name
+$ipmi_fan_disp = isset($ipmi_cfg['FAN_DISP']) ? $ipmi_cfg['FAN_DISP'] : ""; // fan speed display name
+$ipmi_user     = isset($ipmi_cfg['USER'])     ? $ipmi_cfg['USER']     : ""; // user for remote access
+$ipmi_password = isset($ipmi_cfg['PASSWORD']) ? $ipmi_cfg['PASSWORD'] : ""; // password for remote access
 
 // options for remote access or not
-$options = ($remote == "enable") ? "-I lanplus -H '$ipaddr' -U '$user' -P '".
-	base64_decode($password)."'" : "";
+$ipmi_options = ($ipmi_remote == "enable") ? "-I lanplus -H '$ipmi_ipaddr' -U '$ipmi_user' -P '".
+	base64_decode($ipmi_password)."'" : "";
 
 // Get sensor info and check connection if remote enabled
-$sensors = ipmi_sensors($options);
-$fans = ipmi_get_fans($sensors);
+$ipmi_sensors = ipmi_sensors($ipmi_options);
+$ipmi_fans = ipmi_get_fans($ipmi_sensors);
 
-if($remote == "enable"){
-	$conn = ($sensors) ? true : false;
-	$conn_check = ($conn) ? "Connection successful" : "Connection failed";
+if($ipmi_remote == "enable"){
+	$ipmi_conn = ($ipmi_sensors) ? true : false;
+	$ipmi_conn_check = ($ipmi_conn) ? "Connection successful" : "Connection failed";
 }
 
 /* get an array of all sensors and their values */

@@ -1,36 +1,4 @@
 #!/bin/sh
-# read our configuration
-DAEMON="/usr/sbin/ipmievd"
-IPMITAIL="/usr/local/emhttp/plugins/ipmitool-plugin/scripts/ipmitail"
-LOCKFILE="/var/lock/ipmievd"
-PIDFILE="/var/run/ipmievd.pid0"
-CONFIG="/boot/config/plugins/ipmitool-plugin/ipmitool-plugin.cfg"
-OPTIONS=""
-
-if [ -e $CONFIG ]; then
-	source $CONFIG
-	if [ $IPMIEVD == "enable" ]; then
-		# no-op if already running
-		if [ ! -r $PIDFILE ]; then
-			if [ $REMOTE == "enable" ]; then
-				OPTIONS="-I lanplus -H $IPADDR -U $USER -P $(echo $PASSWORD | base64 --decode)"
-			fi
-  			sleep 1
-
-	  		nohup $DAEMON sel $OPTIONS > /dev/null 2>&1 | logger -tipmitool &
-	  		touch $LOCKFILE
-		  	TIMER=0
-			while [ ! -e $PIDFILE ]; do
-			sleep 1
-		  		let TIMER=$TIMER+1
-		  		if [ $TIMER -gt 5 ]; then
- 	   			echo -n "$PIDFILE not created"
-  	   	   	break
-   			fi
-	  		done
-  			if [ -r $PIDFILE ]; then
-   	 	nohup $IPMITAIL >/dev/null 2>&1 < /dev/null &
-			fi
-		fi
-	fi
-fi
+/etc/rc.d/rc.ipmievd start
+sleep 1
+/etc/rc.d/rc.ipmitail start

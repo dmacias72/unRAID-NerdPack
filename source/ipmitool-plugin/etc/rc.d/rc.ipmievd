@@ -1,0 +1,81 @@
+#!/bin/sh
+# start/stop/restart ipmievd daemon:
+PROG="ipmievd"
+DAEMON="/usr/sbin/$PROG"
+LOCKFILE="/var/lock/$PROG"
+PIDFILE="/var/run/$PROG.pid0"
+CONFIG="/boot/config/plugins/ipmitool-plugin/ipmitool-plugin.cfg"
+OPTIONS=""
+
+# read our configuration
+[ -e "$CONFIG" ] && source "$CONFIG"
+
+# Start ipmievd:
+ipmievd_start() {
+	# no-op if already running
+	if [[ ! -r "$PIDFILE" && "$IPMIEVD" == "enable" ]]; then
+		if [ $REMOTE == "enable" ]; then
+			OPTIONS="-I lanplus -H $IPADDR -U $USER -P $(echo $PASSWORD | base64 --decode)"
+		fi
+		echo "starting $PROG..."
+	  	sleep 1
+
+		nohup	$DAEMON sel $OPTIONS > /dev/null 2>&1 | logger -tipmitool &
+		touch $LOCKFILE
+	  	TIMER=0
+		while [ ! -e $PIDFILE ]; do
+			sleep 1
+	  		let TIMER=$TIMER+1
+  			if [ $TIMER -gt 5 ]; then
+  				echo -n "$PIDFILE not created"
+  	   		break
+			fi
+		done
+	else
+		echo "$PROG is running   "
+	fi
+}
+
+# Stop ipmievd:
+ipmievd_stop() {
+	# no-op if not running
+	if [ -r $PIDFILE ]; then
+	#stop ipmievd
+	echo "stopping $PROG..."
+
+	TIMER=0
+	while `killall $PROG 2>/dev/null`; do
+		sleep 1
+		TIMER=$((TIMER+1))
+		if [ $TIMER -ge 30 ]; then
+			killall -9 $PROG
+			sleep 1
+			break
+		fi
+	done
+	rm -f $LOCKFILE && rm -f $PIDFILE
+	else
+		echo "$PROG is stopped   "
+	fi
+}
+
+# Restart ipmievd:
+ipmievd_restart() {
+	ipmievd_stop
+	sleep 1
+	ipmievd_start
+}
+
+case "$1" in
+'start')
+  ipmievd_start
+  ;;
+'stop')
+  ipmievd_stop
+  ;;
+'restart')
+  ipmievd_restart
+  ;;
+*)
+  echo "usage rc.ipmievd: start|stop|restart"
+esac

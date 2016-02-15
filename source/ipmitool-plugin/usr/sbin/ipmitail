@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DAEMON="ipmievd: "
+LASTMSG="Waiting for events"
+exec /usr/bin/tail -n 0 -F /var/log/syslog | \
+
+while read LINE;
+do
+
+# do not notify on ipmievd start
+[[ "$LINE" == *"Reading sensors"* ]] && continue
+
+[[ "$LINE" == *"Waiting for events"* ]] && continue
+
+# do not notify on remote communication failure
+[[ "$LINE" == *"Get SEL Info command failed"* ]] && continue
+
+# only notify when ipmievd: is in the system log
+[[ "$LINE" != *$DAEMON* ]] && continue
+MESSAGE=$(echo "$LINE" | sed -e 's/.*$DAEMON//')
+sleep 1 |
+exec /usr/local/emhttp/webGui/scripts/notify -s "Notice [$HOSTNAME]" -d "$MESSAGE" -i "warning" && continue 2
+done
