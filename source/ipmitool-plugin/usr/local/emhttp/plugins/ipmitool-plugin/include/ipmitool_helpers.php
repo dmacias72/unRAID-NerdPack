@@ -52,11 +52,15 @@ function ipmi_sensors($options) {
 	 'LowerCritical','LowerNonCrit','MinRange','MaxRange'];
 
 	$sensors = [];
- 
+
 	foreach($output as $line){
 
 		// add sensor keys as keys to ipmitool output
-		$sensor = array_combine($keys, array_slice(explode(",", $line),0,18,true));
+		$sensor_raw = explode(",", $line);
+		$size_raw = sizeof($sensor_raw);
+		$sensor = ($size_raw < 18) ? []:
+		  /*array_combine(array_slice($keys,0,$size_raw,true), $sensor_raw)*/
+			 array_combine($keys, array_slice($sensor_raw,0,18,true));
 
 		// add sensor to array of sensors
 		$sensors[] = $sensor;
@@ -154,5 +158,5 @@ function ipmi_get_fans($sensors){
 	}
 	return $fans;
 }
-
+//echo json_encode($ipmi_sensors);
 ?>
