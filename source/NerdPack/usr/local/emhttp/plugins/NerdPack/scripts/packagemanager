@@ -120,5 +120,5 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
 		logger("$pkg_name package up to date", $argq);
 }
 
-logger('All packages processed   ');
+logger('All packages processed...');
 ?>
