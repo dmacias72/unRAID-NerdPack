@@ -29,11 +29,12 @@ foreach ($pkgs_github_array as $pkg_github) {
 
 	$plugins =  [];
 	exec("cd /boot/config/plugins ; find *.plg | xargs grep '${pkg_github['name']}' -sl",$plugins);
-	$pkg_plgs = "";
+	$pkg_plgs = '--';
 	if ($plugins){
 		foreach ($plugins as $plugin){
-			$pkg_plgs .= pathinfo($plugin, PATHINFO_FILENAME)." ";
+			$pkg_plgs .= pathinfo($plugin, PATHINFO_FILENAME).', ';
 			}
+		$pkg_plgs =	substr($pkg_plgs, 2, -2);
  }
 
 	$pkg = [

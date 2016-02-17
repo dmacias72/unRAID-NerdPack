@@ -64,9 +64,9 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
 	if ($plugins){
 		$plg_msg = "$pkg_name used by plugin: ";
 		foreach ($plugins as $plugin){
-			$plg_msg .= pathinfo($plugin, PATHINFO_FILENAME)." ";
+			$plg_msg .= pathinfo($plugin, PATHINFO_FILENAME).", ";
 			}
-			logger($plg_msg);
+			logger(substr($plg_msg, 0, -2));
 	}
 
 	if ($pkg_pref == 'yes') {
@@ -116,8 +116,10 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
 		shell_exec($pkg_cmd);
 		//$output = shell_exec($pkg_cmd);
 		//logger($output);
-	} else
-		logger("$pkg_name package up to date", $argq);
+	} else {
+		if ($pkg_pref == 'yes')
+		 logger("$pkg_name package up to date", $argq);
+		 }
 }
 
 logger('All packages processed...');
