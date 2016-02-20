@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "shellinabox-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.02.11a">
+<!ENTITY version   "2016.02.20">
 <!ENTITY launch    "Settings/Shellinabox">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -20,6 +20,8 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
+###2016.02.20
+- fix: update plugin ovewriting home directory with saved 
 ###2016.02.11a
 - fix screenfetch error if emhttp/var.ini were not ready
 ###2016.02.11
@@ -145,7 +147,7 @@ else
 	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
  # start shellinabox daemon
-	/etc/rc.d/rc.shellinaboxd restore
+/etc/rc.d/rc.shellinaboxd startup
 
  # Cleaning old source files
  find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
@@ -169,14 +171,13 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-
+# stop shellinabox daemon
 /etc/rc.d/rc.shellinaboxd shutdown
 
 removepkg &plgPATH;/*.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
-  &plgPATH;/*.md5 \
-  /etc/rc.d/rc.shellinaboxd
+  &plgPATH;/*.md5
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -195,11 +196,11 @@ echo ""
 # This will check each entry in the config so nothing is missing, and if missing, sets to default
 CFGFILE=/boot/config/plugins/shellinabox-plugin/shellinabox-plugin.cfg
 [ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep SCREEN` ] && echo "SCREEN=\"disable\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep SSL` ] && echo "SSL=\"disable\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep IPADDR` ] && echo "IPADDR=\"disable\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"4200\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep SCREEN`  ] && echo "SCREEN=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep SSL`     ] && echo "SSL=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep IPADDR`  ] && echo "IPADDR=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep ^PORT`   ] && echo "PORT=\"4200\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep RUNAS`   ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
 rm /tmp/shellinabox-chkconf
 ]]>
 </INLINE>

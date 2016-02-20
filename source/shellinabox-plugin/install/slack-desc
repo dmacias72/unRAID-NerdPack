@@ -10,9 +10,9 @@ shellinabox-plugin: Shell In A Box unRAID 6.1+ Plugin
 shellinabox-plugin:
 shellinabox-plugin: Shell In A Box implements a web server that can export arbitrary
 shellinabox-plugin: command line tools to a web based terminal emulator. A Command Line
-shellinabox-plugin: tool is created under the Tools menu.
-shellinabox-plugin: 
-shellinabox-plugin: 
+shellinabox-plugin: tool is created under the Tools menu. Backup and restore user home
+shellinabox-plugin: directory on system shutdown and start. Also includes screenfetch for
+shellinabox-plugin: command line screenshots
 shellinabox-plugin: 
 shellinabox-plugin: dmacias72/unRAID
 shellinabox-plugin: https://github.com/dmacias72/unRAID-plugins
