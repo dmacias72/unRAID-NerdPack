@@ -1,5 +1,5 @@
 #!/bin/sh
-# start/stop/shutdown/restart shellinabox daemon:
+# start/stop/startup/shutdown/backup/restore/restart shellinabox daemon:
 
 PROG="shellinaboxd"
 SHELLINABOXD="/usr/sbin/$PROG"
@@ -83,31 +83,53 @@ shellinaboxd_restart() {
 	shellinaboxd_start
 }
 
-# Restore shellinaboxd:
+# Restore home directory
 shellinaboxd_restore() {
-	if [ "$BACKUP" == "enable" ]; then	
-		# backup home directory
+	if [[ "$BACKUP" == "enable" && ! -e "/root/.bash_history" ]]; then	
+		# restore home directory
 		echo "restoring home directory..."
-		tar -zxf $PLGPATH/home_directory.tar.gz -p -C / > /dev/null 2>&1
 		sleep 1
+		tar -zxf $PLGPATH/home_directory.tar.gz -p -C / > /dev/null 2>&1
+	else
+		echo "Backup is not enabled or home directory is not clean"
 	fi
-	shellinaboxd_start
 }
 
-# Shutdown shellinaboxd:
-shellinaboxd_shutdown() {
+# Backup home directory:
+shellinaboxd_backup() {
 	if [ "$BACKUP" == "enable" ]; then	
 		# backup home directory
 		echo "saving home directory..."
-		tar -zcf $PLGPATH/home_directory.tar.gz -p -C / root > /dev/null 2>&1
 		sleep 1
+		tar -zcf $PLGPATH/home_directory.tar.gz -p -C / root > /dev/null 2>&1
+	else
+		echo "Backup is not enabled"
 	fi
+}
+
+# Start and restore for system boot:
+shellinaboxd_startup() {
+	shellinaboxd_restore
+	sleep 1
+	shellinaboxd_start
+}
+
+# Shutdown and backup for system shutdown or reboot:
+shellinaboxd_shutdown() {
+	shellinaboxd_backup
+	sleep 1
 	shellinaboxd_stop
 }
 
 case "$1" in
+'backup')
+  shellinaboxd_backup
+  ;;
 'start')
   shellinaboxd_start
+  ;;
+'startup')
+  shellinaboxd_startup
   ;;
 'stop')
   shellinaboxd_stop
@@ -122,5 +144,5 @@ case "$1" in
   shellinaboxd_restart
   ;;
 *)
-  echo "usage rc.shellinaboxd: start|stop|shutdown|restore|restart"
+  echo "usage rc.shellinaboxd: start|stop|startup|shutdown|backup|restore|restart"
 esac
