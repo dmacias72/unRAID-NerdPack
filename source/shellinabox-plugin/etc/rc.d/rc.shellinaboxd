@@ -91,7 +91,7 @@ shellinaboxd_restore() {
 		sleep 1
 		tar -zxf $PLGPATH/home_directory.tar.gz -p -C / > /dev/null 2>&1
 	else
-		echo "Backup is not enabled or home directory is not clean"
+		echo "Backup is not enabled or home directory is not new"
 	fi
 }
 
