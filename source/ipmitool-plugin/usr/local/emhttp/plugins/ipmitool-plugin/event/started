@@ -1,9 +1,0 @@
-#!/bin/bash
-CFGFILE="/boot/config/plugins/ipmitool-plugin/ipmitool-plugin.cfg"
-SERVICE="disable"
-if [ -f $CFGFILE ]; then
-	source $CFGFILE
-	if [ $SERVICE = enable ]; then
-		/usr/local/emhttp/plugins/ipmitool-plugin/scripts/start
-	fi
-fi
