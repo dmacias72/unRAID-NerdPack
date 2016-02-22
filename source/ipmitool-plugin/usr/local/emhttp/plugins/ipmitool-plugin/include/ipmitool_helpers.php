@@ -26,21 +26,23 @@ $ipmi_user     = isset($ipmi_cfg['USER'])     ? $ipmi_cfg['USER']     : ""; // u
 $ipmi_password = isset($ipmi_cfg['PASSWORD']) ? $ipmi_cfg['PASSWORD'] : ""; // password for remote access
 
 // options for remote access or not
-$ipmi_options = ($ipmi_remote == "enable") ? "-I lanplus -H '$ipmi_ipaddr' -U '$ipmi_user' -P '".
-	base64_decode($ipmi_password)."'" : "";
+$ipmi_options = ($ipmi_remote == "enable") ? " -I lanplus -N 1 -R 1 -H '$ipmi_ipaddr' -U '$ipmi_user' -P '".
+	base64_decode($ipmi_password)."' " : " "; // N seconds R retries
 
-// Get sensor info and check connection if remote enabled
+//$ipmi_options = ($ipmi_remote == "enable") ? " --hostname='$ipmi_ipaddr' --username='$ipmi_user' --password='".
+//	base64_decode($ipmi_password)."' --session-timeout=1000 --retransmission-timeout=500 " : " ";
+
+// Get sensor info and check connection 
 $ipmi_sensors = ipmi_sensors($ipmi_options);
 $ipmi_fans = ipmi_get_fans($ipmi_sensors);
+$ipmi_conn = ($ipmi_sensors) ? true : false;
 
-if($ipmi_remote == "enable"){
-	$ipmi_conn = ($ipmi_sensors) ? true : false;
-	$ipmi_conn_check = ($ipmi_conn) ? "Connection successful" : "Connection failed";
-}
-
+$ipmi_board = trim(shell_exec("ipmitool fru print $options | grep -m 1  'Product' | awk -F ':' '{print $2}'"));
+//$ipmi_board = "ipmi-fru | grep 'Board Manufacturer' | awk -F ':' '{print $2}'";
 /* get an array of all sensors and their values */
 function ipmi_sensors($options) {
-	$cmd = "/usr/bin/ipmitool -vc sdr $options -N 1 -R 1 2>/dev/null"; // N seconds R retries
+	$cmd = "/usr/bin/ipmitool -vc sdr $options 2>/dev/null";
+//	$cmd= "/usr/sbin/ipmi-sensors --output-sensor-thresholds --comma-separated-output --output-sensor-state --ignore-not-available-sensors --non-abbreviated-units";
 	exec($cmd, $output, $return);
 
 	if ($return)
@@ -48,8 +50,8 @@ function ipmi_sensors($options) {
 
 	// key names for ipmitool sensor output
 	$keys = ['Name','Reading','Units','Status','Entity','Location','Type','Nominal',
-	 'NormalMin','NormalMax','UpperNonRec','UpperCritical','UpperNonCrit','LowerNonRec',
-	 'LowerCritical','LowerNonCrit','MinRange','MaxRange'];
+	 'NormalMin','NormalMax','UpperNR','UpperC','UpperNC','LowerNR',
+	 'LowerC','LowerNC','MinRange','MaxRange'];
 
 	$sensors = [];
 
@@ -70,7 +72,7 @@ function ipmi_sensors($options) {
 
 /* get array of events and their values */
 function ipmi_events($options=null){
-	$cmd = "/usr/bin/ipmitool -c sel elist $options -N 1 -R 1 2>/dev/null"; // N seconds R retries
+	$cmd = "/usr/bin/ipmitool -c sel elist $options 2>/dev/null";
 	exec($cmd, $output, $return); 
 
 	if ($return)
@@ -133,7 +135,7 @@ function temp_get_options($range, $selected=null){
 /* get reading for a given sensor by name */
 function ipmi_get_reading($names, $options=null) {
 	$readings = [];
-	$cmd = "/usr/bin/ipmitool -c sdr $options -N 1 -R 1 2>/dev/null"; // N seconds R retries
+	$cmd = "/usr/bin/ipmitool -c sdr $options 2>/dev/null";
 	exec($cmd, $output, $return);
 
 	if ($return)
