@@ -43,13 +43,17 @@ $(function(){
 		labels_placement: "left",
 		on_label: 'Advanced View',
   		off_label: 'Basic View',
-  		checked: $.cookie('ipmitool_sensor_mode') == 'advanced'
+  		checked: ($.cookie('ipmitool_sensor_mode') == 'advanced')
 	});
 
 	//set cookie and toggle advanced columns	
 	$('.advancedview').change(function () {
-		$('.advanced').toggle('slow');
-		$.cookie('ipmitool_sensor_mode', $('.advancedview').prop('checked') ? 'advanced' : 'basic', { expires: 3650 });
+		var myval = $(this).prop("checked");
+		$.cookie('ipmitool_sensor_mode', myval ? "advanced" : "basic", { expires: 3650 });
+		if (myval)
+			$('.advanced').show('slow');
+		else
+			$('.advanced').hide('slow');
 	});
 
 	sensorRefresh();
@@ -68,12 +72,12 @@ function sensorArray(Refresh){
    		$.each(data, function (i, val) {
    			if (data[i].Status != "ns") {
    				var Reading = parseFloat(data[i].Reading);
-   				var LowerNonRec = parseFloat(data[i].LowerNonRec);
-   				var LowerCritical = parseFloat(data[i].LowerCritical);
-   				var LowerNonCrit = parseFloat(data[i].LowerNonCrit);
-   				var UpperNonCrit = parseFloat(data[i].UpperNonCrit);
-   				var UpperCritical = parseFloat(data[i].UpperCritical);
-   				var UpperNonRec = parseFloat(data[i].UpperNonRec);
+   				var LowerNR = parseFloat(data[i].LowerNR);
+   				var LowerC = parseFloat(data[i].LowerC);
+   				var LowerNC = parseFloat(data[i].LowerNC);
+   				var UpperNC = parseFloat(data[i].UpperNC);
+   				var UpperC = parseFloat(data[i].UpperC);
+   				var UpperNR = parseFloat(data[i].UpperNR);
    				var Color = "green";
 
    				// replace invalid characters
@@ -83,42 +87,42 @@ function sensorArray(Refresh){
 
    					// if voltage is less than lower non-critical
    					// or voltage is greater than upper non-critical show critical
-   					if (Reading < LowerNonCrit && Reading > UpperNonCrit)
+   					if (Reading < LowerNC && Reading > UpperNC)
    						Color = "orange";
 
    					// if voltage is less than lower critical
    					// or voltage is greater than upper critical show non-recoverable
-   					if (Reading < LowerCritical || Reading > UpperCritical)
+   					if (Reading < LowerC || Reading > UpperC)
    						Color = "red";
 
    				} else if (data[i].Type=="Fan"){
  
    					// if Fan RPMs are less than lower non-critical
-   					if (Reading < LowerNonCrit || Reading < LowerCritical || Reading < LowerNonRec)
+   					if (Reading < LowerNC || Reading < LowerC || Reading < LowerNR)
    						Color = "red";
 
    				} else if (data[i].Type=="Temperature"){
 
    					// if Temperature is greater than upper non-critical
-   					if (Reading > UpperNonCrit || Reading > UpperCritical || Reading > UpperNonRec)
+   					if (Reading > UpperNC || Reading > UpperC || Reading > UpperNR)
    						Color = "red";
    				}
    				
    				if (Refresh) {
-						$("#" + Name + " td.reading").html("<font color='"+ Color + "'>" + Reading + "</font>");
+						$("#"+Name+" td.reading").html("<font color='"+ Color + "'>"+Reading+"</font>");
 					} else {
 						$("#tblSensor tbody")
 						.append("<tr id='"+Name+"'>"+
 						"<td title='"+data[i].Status+"'><img src='/plugins/ipmitool-plugin/images/green-on.png'/></td>"+ //status
 						"<td>"+data[i].Name+"</td>"+ //sensor name
-	   				"<td class='advanced'>"+ data[i].LowerNonRec   +"</td>"+
-						"<td class='advanced'>"+ data[i].LowerCritical +"</td>"+
-						"<td class='advanced'>"+ data[i].LowerNonCrit  +"</td>"+
+	   				"<td class='advanced'>"+ data[i].LowerNR +"</td>"+
+						"<td class='advanced'>"+ data[i].LowerC +"</td>"+
+						"<td class='advanced'>"+ data[i].LowerNC +"</td>"+
 						"<td class='reading'>"+ "<font color='"+ Color + "'>" + Reading + "</font></td>"+ //sensor reading
 						"<td>"+data[i].Units+"</td>"+ //sensor units
-						"<td class='advanced'>"+ data[i].UpperNonCrit  +"</td>"+
-						"<td class='advanced'>"+ data[i].UpperCritical +"</td>"+
-						"<td class='advanced'>"+ data[i].UpperNonRec   +"</td>"+
+						"<td class='advanced'>"+ data[i].UpperNC +"</td>"+
+						"<td class='advanced'>"+ data[i].UpperC +"</td>"+
+						"<td class='advanced'>"+ data[i].UpperNR +"</td>"+
 						"</tr>");
 					}
 				}
