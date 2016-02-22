@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmitool-plugin">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.02.15a">
+<!ENTITY version   "2016.02.22">
 <!ENTITY launch    "Tools/IPMItool">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -18,6 +18,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.02.22
+- fix: advanced changed to fixed instead of toggle
 ###2016.02.15a
 - fix: array combine error for sensors with non uniform data
 ###2016.02.15
