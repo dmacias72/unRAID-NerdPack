@@ -6,17 +6,23 @@ Title="Fan Control"
 <input type="hidden" id="FANCMD" name="#command" value="" />
 
 IPMI Fan Control: 
-: <select name="IPMIFAN" size="1">
-  <?=mk_option($ipmifan, "disable", "No")?>
-  <?=mk_option($ipmifan, "enable", "Yes")?>
-  </select><label><font class="red"><b>NOT FUNTIONAL YET</b></font></label>
+:  <select name="IPMIFAN" size="1">
+	<?=mk_option($ipmifan, "disable", "No")?>
+	<?=mk_option($ipmifan, "enable", "Yes")?>
+	</select><label><font class="red"><b>NOT FUNTIONAL YET</b></font></label>
+
+Motherboard Manufacturer: 
+:  <select name="IPMIBOARD" size="1">
+	<?=mk_option($ipmi_board, "ASRock", "ASRock")?>
+	<?=mk_option($ipmi_board, "", "Other")?>
+	</select>
 
 &nbsp;
 
 <?php if ($ipmi_fans[0]): ?>
 
 <?=$ipmi_fans[0];?> temperature sensor:
-: <select name="FAN_<?=$ipmi_fans[0];?>">
+:  <select name="FAN_<?=$ipmi_fans[0];?>">
 		<option value='0'>Auto</option>
 		<?=ipmi_get_options($ipmi_sensors, 'Temperature', $ipmi_cfg['FAN_'.$ipmi_fans[0]], true);?>
 	</select>
