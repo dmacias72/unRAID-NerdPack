@@ -14,7 +14,7 @@ Enable Event Notifications:
   <?=mk_option($ipmievd, "enable", "Yes");?>
   </select>
 
-Enable Remote Connection:
+Enable Network Connection:
 : <select id="REMOTE" class="ipmievd-run" name="REMOTE" title="" size="1" onChange="checkREMOTE(this.form);">
   <?=mk_option($ipmi_remote, "disable", "No");?>
   <?=mk_option($ipmi_remote, "enable", "Yes");?>
