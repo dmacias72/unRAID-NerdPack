@@ -28,7 +28,7 @@ foreach ($pkgs_github_array as $pkg_github) {
 	$pkg_pattern = '/^'.$pkg_name.'.*/'; // search patter for packages
 
 	$plugins =  [];
-	exec("cd /boot/config/plugins ; find *.plg | xargs grep '${pkg_github['name']}' -sl",$plugins);
+	exec("cd /boot/config/plugins ; find *.plg | xargs grep '${pkg_name}-${pkg_version}' -sl",$plugins);
 	$pkg_plgs = '--';
 	if ($plugins){
 		foreach ($plugins as $plugin){
