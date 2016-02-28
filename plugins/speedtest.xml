@@ -11,8 +11,18 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2016-02-25</Date>
+<Date>2016-02-28</Date>
 <Changes>
+###2016.02.28
+- fix: chart and table sync on changes
+- fix: filters save
+- fix: page refresh after manual test
+- fix: various minor css and code 
+- add settings icon
+- removed stacked charts
+- add: persistent chart selection cookie
+- tested working on clean install OSX 10.11 and Safari 9.0
+- tested working on upgrade to OSX 10.11.3 and Safari 9.03
 ###2016.02.25
 - fix: chart filter cookie
 - fix: after deletion of row next image not shown
