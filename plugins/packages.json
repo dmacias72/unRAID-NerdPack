@@ -48,6 +48,22 @@
     }
   },
   {
+    "name": "cksfv-1.3.14-x86_64-1_slack.txz",
+    "path": "packages/cksfv-1.3.14-x86_64-1_slack.txz",
+    "sha": "b3feb58612170946df1806605db6a04ae99f45e2",
+    "size": 22968,
+    "url": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/cksfv-1.3.14-x86_64-1_slack.txz?ref=master",
+    "html_url": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/cksfv-1.3.14-x86_64-1_slack.txz",
+    "git_url": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/b3feb58612170946df1806605db6a04ae99f45e2",
+    "download_url": "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/packages/cksfv-1.3.14-x86_64-1_slack.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/cksfv-1.3.14-x86_64-1_slack.txz?ref=master",
+      "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/b3feb58612170946df1806605db6a04ae99f45e2",
+      "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/cksfv-1.3.14-x86_64-1_slack.txz"
+    }
+  },
+  {
     "name": "cpio-2.11-x86_64-2.txz",
     "path": "packages/cpio-2.11-x86_64-2.txz",
     "sha": "3748afb5d8663b1127b52e11b578c3a46d01104b",
@@ -61,6 +77,22 @@
       "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/cpio-2.11-x86_64-2.txz?ref=master",
       "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/3748afb5d8663b1127b52e11b578c3a46d01104b",
       "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/cpio-2.11-x86_64-2.txz"
+    }
+  },
+  {
+    "name": "fdupes-1.51-x86_64-3_slack.txz",
+    "path": "packages/fdupes-1.51-x86_64-3_slack.txz",
+    "sha": "812721209a7d3757556247edb70889e1f104db54",
+    "size": 17484,
+    "url": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/fdupes-1.51-x86_64-3_slack.txz?ref=master",
+    "html_url": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/fdupes-1.51-x86_64-3_slack.txz",
+    "git_url": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/812721209a7d3757556247edb70889e1f104db54",
+    "download_url": "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/packages/fdupes-1.51-x86_64-3_slack.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/fdupes-1.51-x86_64-3_slack.txz?ref=master",
+      "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/812721209a7d3757556247edb70889e1f104db54",
+      "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/fdupes-1.51-x86_64-3_slack.txz"
     }
   },
   {
@@ -144,6 +176,22 @@
     }
   },
   {
+    "name": "jhead-3.00-x86_64-1_slack.txz",
+    "path": "packages/jhead-3.00-x86_64-1_slack.txz",
+    "sha": "31e169a0030c70e35aaf5d7261fca85a675207e6",
+    "size": 48832,
+    "url": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/jhead-3.00-x86_64-1_slack.txz?ref=master",
+    "html_url": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/jhead-3.00-x86_64-1_slack.txz",
+    "git_url": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/31e169a0030c70e35aaf5d7261fca85a675207e6",
+    "download_url": "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/packages/jhead-3.00-x86_64-1_slack.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/jhead-3.00-x86_64-1_slack.txz?ref=master",
+      "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/31e169a0030c70e35aaf5d7261fca85a675207e6",
+      "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/jhead-3.00-x86_64-1_slack.txz"
+    }
+  },
+  {
     "name": "kbd-1.15.3-x86_64-2.txz",
     "path": "packages/kbd-1.15.3-x86_64-2.txz",
     "sha": "554072a6a13787ebc6bf8686142f7b608564a641",
@@ -205,6 +253,22 @@
       "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/neon-0.29.6-x86_64-2.txz?ref=master",
       "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/d90ec6d2b0f64423235cc959c1727514ff258323",
       "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/neon-0.29.6-x86_64-2.txz"
+    }
+  },
+  {
+    "name": "nload-0.7.4-x86_64-1_slack.txz",
+    "path": "packages/nload-0.7.4-x86_64-1_slack.txz",
+    "sha": "163badb089b8924c1d0b0471c66ab79d5fe52164",
+    "size": 59996,
+    "url": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/nload-0.7.4-x86_64-1_slack.txz?ref=master",
+    "html_url": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/nload-0.7.4-x86_64-1_slack.txz",
+    "git_url": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/163badb089b8924c1d0b0471c66ab79d5fe52164",
+    "download_url": "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/packages/nload-0.7.4-x86_64-1_slack.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/nload-0.7.4-x86_64-1_slack.txz?ref=master",
+      "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/163badb089b8924c1d0b0471c66ab79d5fe52164",
+      "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/nload-0.7.4-x86_64-1_slack.txz"
     }
   },
   {
@@ -381,6 +445,22 @@
       "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/vim-7.4.898-x86_64-1.txz?ref=master",
       "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/a49d1f0b016313de223276054dd29654c3057bcc",
       "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/vim-7.4.898-x86_64-1.txz"
+    }
+  },
+  {
+    "name": "virtualenv-13.1.2-x86_64-1_slack.txz",
+    "path": "packages/virtualenv-13.1.2-x86_64-1_slack.txz",
+    "sha": "046ba000585e63674d640de4c6a214cfef2cad00",
+    "size": 1593076,
+    "url": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/virtualenv-13.1.2-x86_64-1_slack.txz?ref=master",
+    "html_url": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/virtualenv-13.1.2-x86_64-1_slack.txz",
+    "git_url": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/046ba000585e63674d640de4c6a214cfef2cad00",
+    "download_url": "https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/packages/virtualenv-13.1.2-x86_64-1_slack.txz",
+    "type": "file",
+    "_links": {
+      "self": "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/virtualenv-13.1.2-x86_64-1_slack.txz?ref=master",
+      "git": "https://api.github.com/repos/dmacias72/unRAID-plugins/git/blobs/046ba000585e63674d640de4c6a214cfef2cad00",
+      "html": "https://github.com/dmacias72/unRAID-plugins/blob/master/packages/virtualenv-13.1.2-x86_64-1_slack.txz"
     }
   }
 ]
