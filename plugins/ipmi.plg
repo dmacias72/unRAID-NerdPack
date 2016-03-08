@@ -1,0 +1,213 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "ipmi">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2016.03.08">
+<!ENTITY launch    "Settings/IPMI">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
+<!ENTITY pkg       "freeipmi-1.4.11-x86_64-2.txz">
+<!ENTITY md5       "e1060f57c3e5418503aeb6a45615bbe1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
+
+<CHANGES>
+###2016.02.22
+- fix: advanced changed to fixed instead of toggle
+###2016.02.15a
+- fix: array combine error for sensors with non uniform data
+###2016.02.15
+- update tablesorter
+- add: fan control page and status
+- fan control Not functional yet
+- add: settings for temps and fan display
+- add: temp and fans readings to footer
+- move event daemon start and stop functions to rc scripts
+- remove daemon start and stop with array
+- move daemon start process to plugin install
+- move daemon stop process to rc.local_shutdown
+###2016.01.17
+- add tablesorter as a separate package
+- fix values outside of critical showing green
+- add icons instead of switches
+- minor code changes
+###2015.12.30
+- remove old plugin directory on install
+###2015.12.20
+- fixed "Waiting for events" triggering notification on system start
+- reorganize events page
+- add switchbuttons
+- move from UnRAID OS to System Information under Tools menu
+- add unRAID version check
+###2015.12.14
+- make sure and remove old plugin
+###2015.12.11
+- change repo
+- change install and remove method
+###2015.11.17
+- fix permissions for events
+###2015.11.10b
+- deleted wrong page file
+###2015.11.10
+- stop event monitoring on plugin removal
+###2015.11.09
+- minor bug fixes
+###2015.11.08
+- add settings page
+- add event notifications
+- add remote IPMI access
+###2015.08.15
+- update for unRAID 6.1-rc+ only
+###2015.05.07a
+- fix bug
+###2015.05.07
+- initial unRAID 6 release.
+</CHANGES>
+
+<!--
+The 'tablesorter' package file.
+-->
+<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.02.12-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/archive/tablesorter-2016.02.12-x86_64-1.txz</URL>
+<MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
+</FILE>
+
+<!--
+This plugin uses freeipmi to display sensor readings
+-->
+
+<FILE Name="&plgPATH;/&pkg;" Run="upgradepkg --install-new">
+<URL>&pkgURL;/&pkg;</URL>
+<MD5>&md5;</MD5>
+</FILE>
+
+
+<FILE Name="&plgPATH;/&name;.cfg">
+<INLINE>
+<![CDATA[
+SERVICE="disable"
+IPMIPOLL="disable"
+NETWORK="disable"
+LOCAL="disable"
+IPADDR=""
+USER=""
+PASSWORD="="
+]]>
+</INLINE>
+</FILE>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash" Method="install">
+<INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+if [[ ${version:0:3} == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+#remove old plugin name directory
+if [ -d /usr/local/emhttp/plugins/ipmitool ]; then
+	rm -rf  /usr/local/emhttp/plugins/ipmitool
+fi
+if [ -d /usr/local/emhttp/plugins/ipmitool-plugin ]; then
+	rm -rf  /usr/local/emhttp/plugins/ipmitool-plugin
+fi
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgPATH;/&plgNAME;.txz \
+     &plgPATH;/&plgNAME;.md5
+  exit 1
+else
+  upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+
+# Load impi drivers
+echo "loading ipmi drivers..."
+modprobe ipmi_si
+modprobe ipmi_devintf
+
+# Start scripts if enabled
+<![CDATA[
+echo "starting ipmiseld..."
+/etc/rc.d/rc.ipmiseld start >/dev/null 2>&1 < /dev/null &
+sleep 1
+echo "starting ipmitail..."
+setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
+sleep 1
+]]>
+
+# Cleaning old source files
+find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2015, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+
+fi
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+#stop daemon
+/etc/rc.d/rc.ipmiseld stop
+sleep 1
+/etc/rc.d/rc.ipmitail stop
+sleep 1
+
+removepkg &plgPATH;/*.txz
+rm -rf &emhttp;
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
+   
+
+echo "unloading ipmi drivers..."
+modprobe -r ipmi_si
+modprobe -r ipmi_devintf
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
