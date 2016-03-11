@@ -7,3 +7,10 @@
 .switch-button-label.off {
 	color: inherit;
 }
+.uptodate {
+		color:#44B012;
+		white-space:nowrap;
+}
+.updateready {
+		white-space:nowrap;
+}
