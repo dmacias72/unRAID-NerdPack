@@ -101,6 +101,7 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 SERVICE="disable"
 SSL="disable"
 SCREEN="disable"
+BACKUP="disable"
 IPADDR="disable"
 PORT="4200"
 RUNAS="nobody"
@@ -199,19 +200,20 @@ echo ""
 </INLINE>
 </FILE>
 
-<FILE Name="/tmp/shellinabox-chkconf" Run="/bin/bash">
+<FILE Name="/tmp/cmdline-chkconf" Run="/bin/bash">
 <INLINE>
 <![CDATA[
 #!/bin/sh
 # This will check each entry in the config so nothing is missing, and if missing, sets to default
-CFGFILE=/boot/config/plugins/shellinabox-plugin/shellinabox-plugin.cfg
+CFGFILE=/boot/config/plugins/cmdline/cmdline.cfg
 [ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep SCREEN`  ] && echo "SCREEN=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep BACKUP`  ] && echo "BACKUP=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep SSL`     ] && echo "SSL=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep IPADDR`  ] && echo "IPADDR=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep ^PORT`   ] && echo "PORT=\"4200\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep RUNAS`   ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
-rm /tmp/shellinabox-chkconf
+rm /tmp/cmdline-chkconf
 ]]>
 </INLINE>
 </FILE>
