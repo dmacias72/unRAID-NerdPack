@@ -162,10 +162,6 @@ else
 	if [ -d $OLDPLG ]; then
 		rm -rf  $OLDPLG
 	fi
-	if	[ -f $OLDPLG.plg ]; then
-		rm -rf  $OLDPLG.plg
-		rm -f /var/log/plugins/shellinabox-plugin.plg
-	fi
 	
 	# upgrade package
 	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
