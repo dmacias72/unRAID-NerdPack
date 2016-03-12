@@ -1,10 +1,10 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "shellinabox-plugin">
+<!ENTITY name      "cmdline">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.02.20">
-<!ENTITY launch    "Settings/Shellinabox">
+<!ENTITY version   "2016.03.11">
+<!ENTITY launch    "Settings/CommandLineSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
@@ -20,6 +20,12 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
+###2016.03.11
+- add connect button on settings page
+- add setting button on tools page
+- rename plugin to cmdline since it is more than just shellinabox
+- fix: conform screenfetch OS: to 80 columns (remove brackets)
+- condense and restructure code
 ###2016.02.20
 - fix: update plugin ovewriting home directory with saved 
 ###2016.02.11a
@@ -95,6 +101,7 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 SERVICE="disable"
 SSL="disable"
 SCREEN="disable"
+BACKUP="disable"
 IPADDR="disable"
 PORT="4200"
 RUNAS="nobody"
@@ -138,11 +145,28 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
 	rm &plgPATH;/&plgNAME;.md5
 	exit 1
 else
-	#remove old plugin name directory
+	#remove old plugin and move old files
+	OLDPLG="/boot/config/plugins/shellinabox-plugin"
 	if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
 		rm -rf  /usr/local/emhttp/plugins/shellinabox
 	fi
-
+	if [ -d /usr/local/emhttp/plugins/shellinabox-plugin ]; then
+		rm -rf  /usr/local/emhttp/plugins/shellinabox-plugin
+	fi
+	if [ -f $OLDPLG/shellinabox-plugin.cfg ]; then
+		mv -f $OLDPLG/shellinabox-plugin.cfg &plgPATH;/cmdline.cfg
+	fi
+	if [ -f $OLDPLG/home_directory.tar.gz ]; then 
+		mv -f $OLDPLG/home_directory.tar.gz &plgPATH;/home_directory.tar.gz
+	fi
+	if [ -d $OLDPLG ]; then
+		rm -rf  $OLDPLG
+	fi
+	if	[ -f $OLDPLG.plg ]; then
+		rm -rf  $OLDPLG.plg
+		rm -f /var/log/plugins/shellinabox-plugin.plg
+	fi
+	
 	# upgrade package
 	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
@@ -189,19 +213,20 @@ echo ""
 </INLINE>
 </FILE>
 
-<FILE Name="/tmp/shellinabox-chkconf" Run="/bin/bash">
+<FILE Name="/tmp/cmdline-chkconf" Run="/bin/bash">
 <INLINE>
 <![CDATA[
 #!/bin/sh
 # This will check each entry in the config so nothing is missing, and if missing, sets to default
-CFGFILE=/boot/config/plugins/shellinabox-plugin/shellinabox-plugin.cfg
+CFGFILE=/boot/config/plugins/cmdline/cmdline.cfg
 [ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep SCREEN`  ] && echo "SCREEN=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep BACKUP`  ] && echo "BACKUP=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep SSL`     ] && echo "SSL=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep IPADDR`  ] && echo "IPADDR=\"disable\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep ^PORT`   ] && echo "PORT=\"4200\"" >> "$CFGFILE"
 [ ! `cat "$CFGFILE" | grep RUNAS`   ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
-rm /tmp/shellinabox-chkconf
+rm /tmp/cmdline-chkconf
 ]]>
 </INLINE>
 </FILE>
