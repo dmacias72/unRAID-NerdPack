@@ -94,9 +94,9 @@ This plugin uses freeipmi to display sensor readings
 <MD5>e1060f57c3e5418503aeb6a45615bbe1</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/libgcrypt-1.6.5-x86_64-1.txz" Run="upgradepkg --install-new">
-<URL>&pkgURL;/libgcrypt-1.6.5-x86_64-1.txz</URL>
-<MD5>2dda7d79b8e4c6e567ba7f5f52b2513c</MD5>
+<FILE Name="&plgPATH;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz</URL>
+<MD5>636607a48bd342760289913bb7f34b54</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
