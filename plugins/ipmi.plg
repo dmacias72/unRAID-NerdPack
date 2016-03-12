@@ -8,8 +8,6 @@
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
-<!ENTITY pkg       "freeipmi-1.4.11-x86_64-2.txz">
-<!ENTITY md5       "e1060f57c3e5418503aeb6a45615bbe1">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
 <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
@@ -82,11 +80,15 @@ The 'tablesorter' package file.
 This plugin uses freeipmi to display sensor readings
 -->
 
-<FILE Name="&plgPATH;/&pkg;" Run="upgradepkg --install-new">
-<URL>&pkgURL;/&pkg;</URL>
-<MD5>&md5;</MD5>
+<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-2.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/freeipmi-1.4.11-x86_64-2.txz</URL>
+<MD5>e1060f57c3e5418503aeb6a45615bbe1</MD5>
 </FILE>
 
+<FILE Name="&plgPATH;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz</URL>
+<MD5>636607a48bd342760289913bb7f34b54<img src="cmdline.png" alt="" /></MD5>
+</FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
@@ -98,6 +100,13 @@ LOCAL="disable"
 IPADDR=""
 USER=""
 PASSWORD="="
+IPMISELD="disable"
+DISP_TEMP1="0"
+DISP_TEMP2="0"
+DISP_FAN1="0"
+DISP_FAN2="0"
+IPMIFAN="disable"
+IPMIBOARD=""
 ]]>
 </INLINE>
 </FILE>
@@ -128,14 +137,6 @@ if [[ ${version:0:3} == 6.0 ]]; then
   exit 1
 fi
 
-#remove old plugin name directory
-if [ -d /usr/local/emhttp/plugins/ipmitool ]; then
-	rm -rf  /usr/local/emhttp/plugins/ipmitool
-fi
-if [ -d /usr/local/emhttp/plugins/ipmitool-plugin ]; then
-	rm -rf  /usr/local/emhttp/plugins/ipmitool-plugin
-fi
-
 # Verify and install plugin package
 sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
 sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
@@ -145,26 +146,34 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
      &plgPATH;/&plgNAME;.md5
   exit 1
 else
+	#remove old plugin name directory
+	if [ -d /usr/local/emhttp/plugins/ipmitool ]; then
+		rm -rf  /usr/local/emhttp/plugins/ipmitool
+	fi
+	if [ -d /usr/local/emhttp/plugins/ipmitool-plugin ]; then
+		rm -rf  /usr/local/emhttp/plugins/ipmitool-plugin
+	fi
+
   upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
-# Load impi drivers
-echo "loading ipmi drivers..."
-modprobe ipmi_si
-modprobe ipmi_devintf
+	# Load impi drivers
+	echo "loading ipmi drivers..."
+	modprobe ipmi_si
+	modprobe ipmi_devintf
 
-# Start scripts if enabled
-<![CDATA[
-echo "starting ipmiseld..."
-/etc/rc.d/rc.ipmiseld start >/dev/null 2>&1 < /dev/null &
-sleep 1
-echo "starting ipmitail..."
-setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
-sleep 1
-]]>
+	# Start scripts if enabled
+	<![CDATA[
+	echo "starting ipmiseld..."
+	/etc/rc.d/rc.ipmiseld start >/dev/null 2>&1 < /dev/null &
+	sleep 1
+	echo "starting ipmitail..."
+	setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
+	sleep 1
+	]]>
 
-# Cleaning old source files
-find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+	# Cleaning old source files
+	find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+	find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
