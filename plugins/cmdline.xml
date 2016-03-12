@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Containers>
 <Plugin>True</Plugin>
-<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/shellinabox-plugin.plg</PluginURL>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/cmdline.plg</PluginURL>
 <PluginAuthor>dmacias72</PluginAuthor>
 <Beta>False</Beta>
 <Category>Tools:System</Category>
