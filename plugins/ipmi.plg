@@ -146,15 +146,15 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
      &plgPATH;/&plgNAME;.md5
   exit 1
 else
-	#remove old plugin name directory
-	if [ -d /usr/local/emhttp/plugins/ipmitool ]; then
-		rm -rf  /usr/local/emhttp/plugins/ipmitool
+	#remove old plugin
+	if [ -f /boot/config/plugins/ipmitool-plugin.plg ]; then
+		plugin remove ipmitool-plugin.plg
 	fi
 	if [ -d /usr/local/emhttp/plugins/ipmitool-plugin ]; then
 		rm -rf  /usr/local/emhttp/plugins/ipmitool-plugin
 	fi
-
-  upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+	
+	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
 	# Load impi drivers
 	echo "loading ipmi drivers..."
