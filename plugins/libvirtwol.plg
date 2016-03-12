@@ -3,8 +3,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.01.22">
-<!ENTITY launch    "Settings/VMManager">
+<!ENTITY version   "2016.03.12">
+<!ENTITY launch    "Settings/VMSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL	 "&gitURL;/source/packages">
@@ -20,6 +20,12 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 -->
 
 <CHANGES>
+###2016.03.12
+- add dual package support for 6.1 and 6.2+
+- add python 2.7.11 for 6.2+
+- add libvirt python 1.3.1 for 6.2+
+- move settings to php file and include in vm settings
+- move all permissions on scripts to plugin package install
 ###2016.01.22
 - update install and remove scripts
 - check if config exists
@@ -51,14 +57,26 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 </CHANGES>
 
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>https://raw.githubusercontent.com/eschultz/unraid6-nerdpack/master/packages/python-2.7.9-x86_64-1.txz</URL>
+<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz">
+<URL>&gitURL;/packages/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
-<FILE Name="&plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz" Run="upgradepkg --install-new">
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.11-x86_64-2.txz">
+<URL>&gitURL;/source/packages/python-2.7.11-x86_64-2.txz</URL>
+<MD5>5ff7e4c8a7ef742fbf12a6ae25914df7</MD5>
+</FILE>
+
+<FILE Name="&plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz">
 <URL>&pkgURL;/libvirt-python-1.2.18-x86_64-1ponce.txz</URL>
 <MD5>4198c7784a57d7ff80fb1d53811ceb5e</MD5>
 </FILE>
+
+<FILE Name="&plgpath;/libvirt-python-1.3.1-x86_64-1ponce.txz">
+<URL>&pkgURL;/libvirt-python-1.3.1-x86_64-1ponce.txz</URL>
+<MD5>9a64e4941dd9c7fa3b9c8bf244c9a2d3</MD5>
+</FILE>
+
 <FILE Name="&plgpath;/libpcap-1.4.0-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libpcap-1.4.0-x86_64-1.txz</URL>
 <MD5>cbe651aff5d49d1c3a5a7ad6a4262393</MD5>
@@ -71,13 +89,10 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <FILE Name="/boot/config/domain.cfg">
 <INLINE>
 <![CDATA[
-
 WOL="disable"
-
 ]]>
 </INLINE>
 </FILE>
-
 
 <!--
 The 'plugin' package file.
@@ -114,18 +129,35 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   rm &plgpath;/&plgname;.md5
   exit 1
 else
-  upgradepkg --install-new &plgpath;/&plgname;.txz
-fi
+	if [[ ${version:0:3} == 6.1 ]]; then
+		echo "\nInstalling dependencies for unRAID 6.1"
+		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz
+		upgradepkg --install-new &plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz
+	fi
 
-# Update file permissions of scripts
-chmod +0755 /usr/local/emhttp/plugins/&name;/scripts/*
+	if [[ ${version:0:3} == 6.2 ]]; then
+		echo "\nInstalling dependencies for unRAID 6.2"
+		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/python-2.7.11-x86_64-2.txz
+		upgradepkg --install-new &plgpath;/libvirt-python-1.3.1-x86_64-1ponce.txz
 
-# add menu to VM Manager
-sed -i -- 's/OtherSettings/VMManager:1/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
+		# restore VM Manager Menu
+		sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
 
-# Cleaning old source files
-find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+	fi
+
+	upgradepkg --install-new &plgpath;/&plgname;.txz
+
+	#restart event daemon
+	<![CDATA[
+	/usr/local/emhttp/plugins/libvirtwol/scripts/stop >/dev/null 2>&1 < /dev/null &
+	sleep 1
+	echo "starting libvirtwol..."
+	setsid /usr/local/emhttp/plugins/libvirtwol/scripts/start >/dev/null 2>&1 < /dev/null &
+	]]>
+
+	# Cleaning old source files
+	find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+	find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -135,6 +167,7 @@ echo " Copyright 2016, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
+fi
 </INLINE>
 </FILE>
 
@@ -154,7 +187,7 @@ removepkg &plgpath;/*.txz
 rm -f &plgpath;/*.txz
 
 # restore VM Manager Menu
-sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
+#sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
 
 echo ""
 echo "-----------------------------------------------------------"
