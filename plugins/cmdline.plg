@@ -162,8 +162,8 @@ else
 	if [ -d $OLDPLG ]; then
 		rm -rf  $OLDPLG
 	fi
-	if	[ -f $OLDPLG.plg ]; then
-		rm -rf  $OLDPLG.plg
+	if	[ -e /boot/config/plugins/shellinabox-plugin.plg ]; then
+		rm -rf  /boot/config/plugins/shellinabox-plugin.plg
 		rm -f /var/log/plugins/shellinabox-plugin.plg
 	fi
 	
