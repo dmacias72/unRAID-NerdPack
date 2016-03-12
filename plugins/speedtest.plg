@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.02.28">
+<!ENTITY version   "2016.03.12">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,9 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.03.12
+- fix install python 2.7.11 for unRAID 6.2+
+- fix install python 2.7.9 for unRAID 6.1
 ###2016.02.28
 - fix: chart and table sync on changes
 - fix: filters save
@@ -115,10 +118,16 @@ The 'tablesorter' package file.
 <MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz">
 <URL>&gitURL;/packages/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.11-x86_64-2.txz">
+<URL>&gitURL;/source/packages/python-2.7.11-x86_64-2.txz</URL>
+<MD5>5ff7e4c8a7ef742fbf12a6ae25914df7</MD5>
+</FILE>
+
 <FILE Name="&pkgs;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
 <URL>&pkgURL;/pyOpenSSL-0.15.1-x86_64-1_slack.txz</URL>
 <MD5>b422874df919df6baa10774bd2ddc2cc</MD5>
@@ -163,6 +172,14 @@ source /etc/unraid-version
 if [[ ${version:0:3} == 6.0 ]]; then
   echo "unRAID version 6.1 or higher is required"
   exit 1
+fi
+
+if [[ ${version:0:3} == 6.1 ]]; then
+  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz
+fi
+
+if [[ ${version:0:3} == 6.2 ]]; then
+  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/python-2.7.11-x86_64-2.txz
 fi
 
 # Verify and install plugin package
