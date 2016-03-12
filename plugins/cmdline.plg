@@ -147,12 +147,24 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
 else
 	#remove old plugin and move old files
 	OLDPLG="/boot/config/plugins/shellinabox-plugin"
-	[ -d /usr/local/emhttp/plugins/shellinabox ] && rm -rf  /usr/local/emhttp/plugins/shellinabox
-	[ -d /usr/local/emhttp/plugins/shellinabox-plugin ] && rm -rf  /usr/local/emhttp/plugins/shellinabox-plugin
-	[ -f $OLDPLG/shellinabox-plugin.cfg ] && mv -f $OLDPLG/shellinabox-plugin.cfg &plgPATH;/cmdline.cfg
-	[ -f $OLDPLG/home_directory.tar.gz ] && mv -f $OLDPLG/home_directory.tar.gz &plgPATH;/home_directory.tar.gz
-	[ -d "$OLDPLG" ] &&	rm -rf  $OLDPLG
-	[ -f $OLDPLG.plg ] && rm -rf  $OLDPLG.plg
+	if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
+		rm -rf  /usr/local/emhttp/plugins/shellinabox
+	fi
+	if [ -d /usr/local/emhttp/plugins/shellinabox-plugin ]; then
+		rm -rf  /usr/local/emhttp/plugins/shellinabox-plugin
+	fi
+	if [ -f $OLDPLG/shellinabox-plugin.cfg ]; then
+		mv -f $OLDPLG/shellinabox-plugin.cfg &plgPATH;/cmdline.cfg
+	fi
+	if [ -f $OLDPLG/home_directory.tar.gz ]; then 
+		mv -f $OLDPLG/home_directory.tar.gz &plgPATH;/home_directory.tar.gz
+	fi
+	if [ -d "$OLDPLG" ]; then
+		rm -rf  $OLDPLG
+	fi
+	if	[ -f $OLDPLG.plg ]; then
+		rm -rf  $OLDPLG.plg
+	fi
 
 	# upgrade package
 	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
