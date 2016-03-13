@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.03.12">
+<!ENTITY version   "2016.03.13">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,11 +16,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.03.13
+- add test button for sending sample notification events
+- move ID column to advanced
+- fix temp units not showing in footer
+- add backup switch to backup events when clearing them
 ###2016.03.12
 - converted to using freeipmi instead of ipmitool
 - add support for multiple ipmi hosts local, network or both together
 - add an extra fan display so you have 2 temp and 2 fan in footer
-- fix duplicate reading of sensors
+- add different warning levels based on event state
+- fix race condition on reading of sensors and events
 - add highlights and filters to tables
 - add settings button to readings page and reading button to settings page
 - add polling time to event monitoring
