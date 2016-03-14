@@ -81,13 +81,16 @@ function packageQuery(force) {
 	$('#tblPackages tbody').html("<tr><td colspan='6'><br><i class='fa fa-spinner fa-spin icon'></i><em>Please wait, retrieving plugin information ...</em></td><tr>");
 	$.getJSON('/plugins/NerdPack/include/PackageQuery.php', {force: force}, function(packages) {
 		$('#tblPackages tbody').empty();
+			var Ready;
   var len = packages.length, i = 0;
   for (i; i < len; i++) {
 			var Update;
-			if (packages[i].downloadeq == packages[i].downloaded && packages[i].installeq == packages[i].installed)
+			if (packages[i].downloadeq == packages[i].downloaded && packages[i].installeq == packages[i].installed){
 				Update = "<span><i class='uptodate fa fa-check'></i> up-to-date </span>";
-			else
+			}else{
 				Update = "<span ><a><i class='updateready fa fa-cloud-download'></i> update ready </a></span>";
+				Ready = true;
+				}
 
 			var Downloaded = packages[i].downloaded;
 			if (packages[i].downloadeq != packages[i].downloaded)
@@ -108,6 +111,8 @@ function packageQuery(force) {
 			"<input class='pkgvalue' type='hidden' id='"+packages[i].pkgname+"_value' name='"+packages[i].pkgnver+"' value='"+packages[i].config+"'></td>"+
 			"</tr>");
 		}
+		if (Ready)
+			$('#btnApply').prop('disabled', false);
 
 		// attach switch buttons to every package checkbox all at once
 		$('.pkgcheckbox')

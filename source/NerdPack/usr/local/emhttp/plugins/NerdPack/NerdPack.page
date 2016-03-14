@@ -8,6 +8,7 @@ Title="Nerd Pack"
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/NerdPack.css">
 
 <form markdown="1" id="package_form" name="package_settings" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" id="include" name="#include" value="/plugins/NerdPack/include/ClearConfig.php"/>
 
 <table class="tablesorter hover-highlight" id="tblPackages">
 	<thead>
