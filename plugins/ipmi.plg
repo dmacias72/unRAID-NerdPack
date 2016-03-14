@@ -98,9 +98,9 @@ The 'tablesorter' package file.
 This plugin uses freeipmi to display sensor readings
 -->
 
-<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-2.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-3.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/freeipmi-1.4.11-x86_64-2.txz</URL>
-<MD5>e1060f57c3e5418503aeb6a45615bbe1</MD5>
+<MD5>6c7839886f7c7b0cc4947aaf6199d60e</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz" Run="upgradepkg --install-new">
