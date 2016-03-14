@@ -21,6 +21,8 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.03.14
+- update package locations
 ###2016.03.12
 - fix install python 2.7.11 for unRAID 6.2+
 - fix install python 2.7.9 for unRAID 6.1
@@ -118,13 +120,13 @@ The 'tablesorter' package file.
 <MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz">
-<URL>&gitURL;/packages/python-2.7.9-x86_64-1.txz</URL>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python-2.7.9-x86_64-1.txz">
+<URL>&gitURL;/packages/6.1/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/python-2.7.11-x86_64-2.txz">
-<URL>&gitURL;/source/packages/python-2.7.11-x86_64-2.txz</URL>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.11-x86_64-2.txz">
+<URL>&gitURL;/packages/6.2/python-2.7.11-x86_64-2.txz</URL>
 <MD5>5ff7e4c8a7ef742fbf12a6ae25914df7</MD5>
 </FILE>
 
@@ -169,17 +171,19 @@ The 'install' script.
 <INLINE>
 #Verify unRAID Version
 source /etc/unraid-version
-if [[ ${version:0:3} == 6.0 ]]; then
+VER=${version:0:3}
+
+if [[ $VER == 6.0 ]]; then
   echo "unRAID version 6.1 or higher is required"
   exit 1
 fi
 
-if [[ ${version:0:3} == 6.1 ]]; then
-  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/python-2.7.9-x86_64-1.txz
+if [[ $VER == 6.1 ]]; then
+  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.9-x86_64-1.txz
 fi
 
 if [[ ${version:0:3} == 6.2 ]]; then
-  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/python-2.7.11-x86_64-2.txz
+  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.11-x86_64-2.txz
 fi
 
 # Verify and install plugin package
