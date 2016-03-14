@@ -11,8 +11,11 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-03-13</Date>
+<Date>2016-03-14</Date>
 <Changes>
+###2016.03.14
+- update freeipmi package
+- fix virtual machines not auto starting due to /etc/init.d directory created by freeipmi package
 ###2016.03.13
 - add test button for sending sample notification events
 - move ID column to advanced
