@@ -27,6 +27,7 @@ foreach ($pkgs_github_array as $pkg_github) {
 
 	$pkg_pattern = '/^'.$pkg_name.'.*/'; // search patter for packages
 
+	// check all plugins for package dependency
 	$plugins =  [];
 	exec("cd /boot/config/plugins ; find *.plg | xargs grep '${pkg_name}-${pkg_version}' -sl",$plugins);
 	$pkg_plgs = '--';
@@ -35,7 +36,20 @@ foreach ($pkgs_github_array as $pkg_github) {
 			$pkg_plgs .= pathinfo($plugin, PATHINFO_FILENAME).', ';
 			}
 		$pkg_plgs =	substr($pkg_plgs, 2, -2);
- }
+ 	}
+
+	// get package preference from config file
+	$pkg_set = "no";
+	foreach ($pkg_cfg as $pkg_key => $pkg_line) {
+		if (preg_match('/^'.$pkg_name.'.*/',$pkg_key)){
+			if(sizeof(array_diff(split('-', $pkg_key), split('-', $pkg_name))) < 2 ){
+				$pkg_set = $pkg_line;
+				break;
+			}
+		}
+	}
+	
+	//isset($pkg_cfg[$pkg_nver]) ? $pkg_cfg[$pkg_nver] : 'no'
 
 	$pkg = [
 		'name' => $pkg_github['name'], // add full package name
@@ -47,8 +61,8 @@ foreach ($pkgs_github_array as $pkg_github) {
 		'installeq' => in_array(pathinfo($pkg_github['name'], PATHINFO_FILENAME), $pkgs_installed) ? 'yes' : 'no', // checks if package installed equals github exactly
 		'downloaded' => preg_grep($pkg_pattern, $pkgs_downloaded) ? 'yes' : 'no', // checks if package name is downloaded
 		'downloadeq' => in_array($pkg_github['name'], $pkgs_downloaded) ? 'yes' : 'no', // checks if package downloaded equals github exactly
-		'config' => isset($pkg_cfg[$pkg_nver]) ? $pkg_cfg[$pkg_nver] : 'no', // checks config for install preference
-		'plugins' => $pkg_plgs, // checks plugins dependency on package
+		'config' => $pkg_set, // install preference
+		'plugins' => $pkg_plgs, // plugins dependency on package
 		'desc' => $pkgs_desc_array[$pkg_name]
 	];
 

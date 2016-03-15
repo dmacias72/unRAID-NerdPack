@@ -54,7 +54,7 @@ logger('Processing Packages...');
 foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each package
 	$pkg_cmd = '';
 	$pkg_name = str_replace('_', '.', $pkg_name); // replace "_" with "." in package names
-	$pkg_pattern = '/^'.$pkg_name.'.*/'; // search patter for packages
+	$pkg_pattern = '/^'.$pkg_name.'.*/'; // search pattern for packages
 	$pkg_install_status = preg_grep($pkg_pattern, $pkgs_installed); // check install status
 	$pkg_download_status = preg_grep($pkg_pattern, $pkgs_downloaded); // check package download status
 	
