@@ -49,8 +49,6 @@ foreach ($pkgs_github_array as $pkg_github) {
 		}
 	}
 	
-	//isset($pkg_cfg[$pkg_nver]) ? $pkg_cfg[$pkg_nver] : 'no'
-
 	$pkg = [
 		'name' => $pkg_github['name'], // add full package name
 		'pkgname' => $pkg_name, // add package name only
