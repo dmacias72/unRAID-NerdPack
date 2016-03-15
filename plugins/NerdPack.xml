@@ -11,8 +11,14 @@ This plugin allows installation of extra packages, mostly CLI, for advanced user
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=37541.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack.png</Icon>
-<Date>2016-02-23</Date>
+<Date>2016-03-15</Date>
 <Changes>
+	###2016.03.15
+- enable apply button if update ready
+- fix: remove old package settings from config after package update
+- create separate package repos  for 6.1 and 6.2
+- update plugin for unRAID 6.2 compatibility
+- update packages for 6.2
 ###2016.02.23
 - fix: search for a partial match of packages used in other plugins
 ###2016.02.17
