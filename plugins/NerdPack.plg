@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.03.14">
+<!ENTITY version   "2016.02.23">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,9 +16,6 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016.03.14
-- update plugin for unRAID 6.2 compatibility
-- update packages for 6.2
 ###2016.02.23
 - fix: search for a partial match of packages used in other plugins
 ###2016.02.17
@@ -141,11 +138,10 @@ The 'tablesorter' package file.
 
 <!--
 The Github repo packages file.
-
+-->
 <FILE Name="&plgpath;/packages/packages.json">
 <URL>&gitURL;/plugins/packages.json</URL>
 </FILE>
--->
 
 <!--
 The package description file.
@@ -175,8 +171,7 @@ The 'install' script.
 <INLINE>
 #Verify unRAID Version
 source /etc/unraid-version
-VER=${version:0:3}
-if [[ $VER == 6.0 ]]; then
+if [[ ${version:0:3} == 6.0 ]]; then
   echo "unRAID version 6.1 or higher is required"
   exit 1
 fi
@@ -185,26 +180,23 @@ fi
 sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
 sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
-	echo "Wrong 'plugin' package md5 hash."
-	rm &plgpath;/&plgname;.txz \
-		&plgpath;/&plgname;.md5
-	exit 1
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz \
+     &plgpath;/&plgname;.md5
+  exit 1
 else
-	if [ ! -d &plgpath;/packages/$VER ]; then
-		mkdir &plgpath;/packages/$VER
-	fi
+  upgradepkg --install-new &plgpath;/&plgname;.txz
+fi
 
-	if [[ ${version:0:3} == 6.1 ]]; then
-		mv  &plgpath;/packages/*txz  &plgpath;/packages/6.1
-	fi
+if [ ! -d &plgpath;/packages ]; then
+	mkdir &plgpath;/packages
+fi
 
-	upgradepkg --install-new &plgpath;/&plgname;.txz
+/usr/sbin/packagemanager
 
-	/usr/sbin/packagemanager
-
-	# Cleaning old source files
-	find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-	find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+# Cleaning old source files
+find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -214,7 +206,6 @@ echo " Copyright 2016, &author;, eschultz"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
-fi
 </INLINE>
 </FILE>
 
