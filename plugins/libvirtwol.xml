@@ -7,12 +7,14 @@
 <Category>Tools:System</Category>
 <Name>Virtual Machine Wake On Lan</Name>
 <Description>
-Wake On Lan for Libvirt. Allows you to recieve a wake on lan packet to wake or start up kvm virtual machines. 
+Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to wake or start up kvm virtual machines. 
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=44017.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
-<Date>2016-03-14</Date>
+<Date>2016-03-19</Date>
 <Changes>
+###2016.03.19
+- add wake on lan to advanced view
 ###2016.03.14
 - update package locations
 ###2016.03.12
