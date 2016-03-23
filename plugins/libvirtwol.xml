@@ -11,8 +11,10 @@ Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to 
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=44017.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
-<Date>2016-03-19</Date>
+<Date>2016-03-23</Date>
 <Changes>
+###2016.03.23
+- remove libpcap from 6.2 install	
 ###2016.03.19
 - add wake on lan to advanced view
 ###2016.03.14
