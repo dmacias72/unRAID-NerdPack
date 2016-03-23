@@ -21,7 +21,7 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 
 <CHANGES>
 ###2016.03.23
-- remove libpcap from 6.2 install
+- remove libpcap
 ###2016.03.19
 - add wake on lan to advanced view
 ###2016.03.14
@@ -83,10 +83,6 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <MD5>9a64e4941dd9c7fa3b9c8bf244c9a2d3</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/libpcap-1.4.0-x86_64-1.txz">
-<URL>&pkgURL;/libpcap-1.4.0-x86_64-1.txz</URL>
-<MD5>cbe651aff5d49d1c3a5a7ad6a4262393</MD5>
-</FILE>
 <FILE Name="&plgpath;/pylibpcap-0.6.2-x86_64-1_slack.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/pylibpcap-0.6.2-x86_64-1_slack.txz</URL>
 <MD5>2531f44126b3c05d76782c9eedba9988</MD5>
@@ -141,7 +137,6 @@ else
 		echo "\nInstalling dependencies for unRAID 6.1"
 		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.9-x86_64-1.txz
 		upgradepkg --install-new &plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz
-		upgradepkg --install-new &plgpath;/libpcap-1.4.0-x86_64-1.txz
 	fi
 
 	if [[ $VER == 6.2 ]]; then
