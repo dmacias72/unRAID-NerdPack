@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "cmdline">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.03.11">
+<!ENTITY version   "2016.03.24">
 <!ENTITY launch    "Settings/CommandLineSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -20,6 +20,10 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
+###2016.03.24
+- update shellinabox to unofficial 2.20
+- fix: https when ssl is enabled
+- remove linux-pam package
 ###2016.03.11
 - add connect button on settings page
 - add setting button on tools page
@@ -66,7 +70,7 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 ###2015.10.23
 - fix "no version information" log errors
 ###2015.09.20
-- update shellinabox packages to 2.19 (revision e30c33d)
+- update shellinabox packages to unofficial 2.19 (revision e30c33d)
 - fix color styles
 ###2015.09.07
 - fix start and stop scripts
@@ -86,13 +90,9 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 </CHANGES>
 
 
-<FILE Name="&plgPATH;/shellinabox-2.19-x86_64-1sl.txz" Run="upgradepkg --install-new">
-<URL>&pkgURL;/shellinabox-2.19-x86_64-1sl.txz</URL>
-<MD5>96f21406d18181f469e732795d2965e8</MD5>
-</FILE>
-<FILE Name="&plgPATH;/linux-pam-1.1.8-x86_64-1gds.txz" Run="upgradepkg --install-new">
-<URL>&pkgURL;/linux-pam-1.1.8-x86_64-1gds.txz</URL>
-<MD5>f5d4e99dc0b65f4d6b3bacf479c9c6e2</MD5>
+<FILE Name="&plgPATH;/shellinabox-2.20-x86_64-2.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/shellinabox-2.20-x86_64-2.txz</URL>
+<MD5>59ed3289a33c40fecf95c8da658a8bd8</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
