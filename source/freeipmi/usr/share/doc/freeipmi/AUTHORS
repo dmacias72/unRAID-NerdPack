@@ -1,0 +1,57 @@
+Maintainer: 
+Albert Chu <chu11@llnl.gov>
+
+Developers:
+Albert Chu <chu11@llnl.gov>
+Anand Babu <ab@zresearch.com>
+Anand Avati <avati@zresearch.com>
+Balamurugan <bala@zresearch.com>
+Ian Zimmerman <itz@buug.org>
+Raghavendra <raghavendra@zresearch.com>
+
+Patch Contributions:
+Dmitry Frolov <frolov@riss-telecom.ru>
+Ingo van Lil <inguin@gmx.de>
+Levi Pearson <lpearson@lnxi.com>
+Tom Zimmerman <tzimmerman@lnxi.com>
+Phil Knirsch <pknirsch@redhat.com>
+Jan Forch <Jan.Forch@sun.com>
+Fillod Stephane <stephane.fillod@grassvalley.com>
+Holger Liebig <holger.liebig@ts.fujitsu.com>
+Dan Lukes <dan+freeipmi@obluda.cz>
+Arnaud Quette <arnaud.quette@free.fr>
+Diego Elio Pettenò <flameeyes@flameeyes.eu>
+Kaiwang Chen <kaiwang.chen@gmail.com>
+Jan Safranek <jsafrane@redhat.com>
+Thomas Renninger <trenn@suse.de>
+Dave Love <fx@gnu.org>
+Dan Lukes <dan+freeipmi@obluda.cz>
+Shashi Dande <Shashi.Dande@hp.com>
+Markus Blank-Burian <burian@muenster.de>
+David Binderman <dcb314@hotmail.com>
+Denys Vlasenko <dvlasenk@redhat.com>
+Ales Ledvinka <aledvink@redhat.com>
+Klaus Kaempf <kkaempf@suse.de>
+Dick Detweiler <Dick.Detweiler@Emerson.com>
+Dave Walker <DaveWalker@ubuntu.com>,
+Claudio Cesar Sanchez Tejeda <demonccc@gmail.com>
+Mark Rusk <mark.rusk@hp.com>
+And probably others ...
+
+Package Maintainers:
+Dmitry Frolov <frol@nov.net> - FreeBSD
+Phil Knirsch <pknirsch@redhat.com> - Redhat & Fedora
+Jan Safranek <jsafrane@redhat.com> - Redhat & Fedora
+Yaroslav Halchenko <debian@onerussian.com> - Debian
+
+Contrib Contributions:
+Kaiwang Chen <kaiwang.chen@gmail.com>
+
+Web Site:
+Anand Babu <ab@zresearch.com>
+
+Evaluation/Testing/Reverse Engineering:
+Joseph Ruscio <ruscio@californiadigital.com>
+Shuichi Ihara <ihara@sun.com>
+Ryan Cox <ryan_cox@byu.edu>
+and others ...

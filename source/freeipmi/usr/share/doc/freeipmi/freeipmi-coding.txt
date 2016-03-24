@@ -1,0 +1,272 @@
+FreeIPMI Coding
+
+by 
+
+Albert Chu
+chu11@llnl.gov
+Last Updated: February 8, 2012
+
+These are some short descriptions on coding style, API style, other
+thoughts for those interested in developing for FreeIPMI.
+
+1) Code Style
+-------------
+
+The GNU coding style was selected for FreeIPMI.  Please try to follow
+the coding style used in the rest of FreeIPMI.  Here's a short example
+that covers the generics of the GNU coding style.
+
+int
+main(int argc, char **argv)
+{
+  int a = 0;
+  int b = 1;
+
+  if (a == 1)
+    printf("yoda\n");
+
+  if (a == 5
+      || b == 1)
+    {
+      printf("foobar\n");
+      printf("xyzzy\n");
+    }
+
+  while (a++ < 5)
+    printf("lala\n");
+
+  while (b++ < 7)
+    {
+      printf("blah\n");
+      printf("garble\n");
+    }
+}
+
+2) Parameter Checking
+---------------------
+
+Please carefully check the input parameters on the inputs your
+program and/or functions take.  Minor parsing issues can lead to
+catastrophic mistakes in IPMI.
+
+For example, suppose you have a --power-control option that takes a
+number to represent a type of operation (on, off, etc.).  Suppose a
+user inputs "--power-control=foobar". The "foobar" will be read as a
+'0' by strtoul().  If not properly checked, the '0' can be passed to
+the IPMI Chassis Control command, which uses the '0' to power off a
+node.
+
+In programs, when appropriate, output error messages to the user
+indicating that how and why the inputted parameters were incorrect.
+
+3) Code Consistency
+-------------------
+
+Please keep your code as consistent as possible to other code in
+FreeIPMI.  That includes code indenting style, brace style, API style,
+and naming convention (which is discussed in more detail below).
+
+Although there may be situations that a particular API style or naming
+convention will make things easier for you and your code (such as
+shortening the name of a function, decreasing the number of parameters
+you need to pass to a function via a struct, etc.), we ask that your
+code be consistent so that it does not confuse other developers.
+
+If there is a distinct technical reason that you must use a different
+API style, please bring it up with the FreeIPMI authors.
+
+For example, pretty much all of the "fill" functions in libfreeipmi
+take the exact parameters they need to fill the fiid object which is
+passed along as a parameter.  All parameters are passed by value, not
+by a pointer or other method (e.g. object, struct, etc.).
+
+Exceptions do exist.  For example, fill_cmd_chassis_identify() takes
+parameters passed by pointer instead of passed by value.  The reason
+is that both fields are optional and need not be filled according to
+the IPMI specification.  The pointer gives the caller the ability to
+set values (by passing a valid pointer) or not (by passing NULL).
+
+4) Libfreeipmi naming/function parameter conventions
+----------------------------------------------------
+
+The naming style in libfreeipmi was developed primarily for the
+purpose of readability when code is being compared to the IPMI
+specification.
+
+Due to the size of the IPMI spec, there will be a lot of code.  In
+earlier versions of FreeIPMI, there was confusion on where code was
+located, what parameters were called, how parameters should be input,
+etc. due to different people using different abbreviations styles,
+putting functions out of order with the spec, in different files,
+using/not-using different bitmasks, etc.  The code has been auditted
+and cleaned up since then.
+
+So when adding new functions/templates/parameters/files/etc. to
+libfreeipmi, please name them consistently to the rest of the
+libfreeipmi library and the IPMI specification.
+
+This includes:
+- naming functions/templates/parameters/files based on the spec
+- in most cases, not abbreviating any words (or using consistent
+  abbreviations in the rest of the library, check first!)
+- matching parameter lists to the templates and in the same order
+- ordering functions/templates/parameters/files/etc. consistently with the spec.
+
+For example: 
+
+ipmi-messaging-support-cmds.c
+
+is the file for messaging support commands, chapter 22 of the IPMI 2.0 spec.
+
+tmpl_cmd_get_channel_authentication_capabilities_rq
+tmpl_cmd_get_channel_authentication_capabilities_rs
+
+are the templates for the Get Channel Authentication Capapilities
+command.
+
+fiid_template_t tmpl_cmd_get_channel_authentication_capabilities_rq =
+  {
+    { 8, "cmd", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 4, "channel_number", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 3, "reserved1", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1, "get_ipmi_v2.0_extended_data", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 4, "maximum_privilege_level", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 4, "reserved2", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 0, "", 0}
+  };
+
+fiid_template_t tmpl_cmd_get_channel_authentication_capabilities_rs =
+  {
+    { 8,  "cmd", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED | FIID_FIELD_MAKES_PACKET_SUFFICIENT},
+    { 8,  "comp_code", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED | FIID_FIELD_MAKES_PACKET_SUFFICIENT},
+    { 8,  "channel_number", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.none", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.md2", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.md5", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.reserved1", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.straight_password_key", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.oem_prop", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.reserved2", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_type.ipmi_v2.0_extended_capabilities_available", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_status.anonymous_login", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_status.null_username", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_status.non_null_username", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_status.user_level_authentication", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_status.per_message_authentication", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "authentication_status.k_g", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 2,  "authentication_status.reserved", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "channel_supports_ipmi_v1.5_connections", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 1,  "channel_supports_ipmi_v2.0_connections", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 6,  "reserved", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 24, "oem_id", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 8,  "oem_auxiliary_data", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    { 0, "", 0}
+  };
+
+The fields listed in the templates above directly match table 22-15,
+the Get Channel Authentication Capabilities request and response
+commands.
+
+int fill_cmd_get_channel_authentication_capabilities (uint8_t channel_number,
+                                                      uint8_t maximum_privilege_level,
+                                                      fiid_obj_t obj_cmd_rq);
+
+The function above matches the naming and takes exactly the parameters
+needed by the Get Channel Authentication Capabilities request
+template.
+
+The coding conditions specified above may lead to function names or
+function parameters names that exceed the 80 column mark or having
+very long parameter lists.  We accept this annoyance (or poor coding
+style, we admit it), as we consider matching the specification as a
+more important need in libfreeipmi.
+
+For example: 
+
+int
+fill_cmd_set_lan_configuration_parameters_authentication_type_enables (uint8_t channel_number,
+                                                                       uint8_t callback_level_none,
+                                                                       uint8_t callback_level_md2,
+                                                                       uint8_t callback_level_md5,
+                                                                       uint8_t callback_level_straight_password,
+                                                                       uint8_t callback_level_oem_proprietary,
+                                                                       uint8_t user_level_none,
+                                                                       uint8_t user_level_md2,
+                                                                       uint8_t user_level_md5,
+                                                                       uint8_t user_level_straight_password,
+                                                                       uint8_t user_level_oem_proprietary,
+                                                                       uint8_t operator_level_none,
+                                                                       uint8_t operator_level_md2,
+                                                                       uint8_t operator_level_md5,
+                                                                       uint8_t operator_level_straight_password,
+                                                                       uint8_t operator_level_oem_proprietary,
+                                                                       uint8_t admin_level_none,
+                                                                       uint8_t admin_level_md2,
+                                                                       uint8_t admin_level_md5,
+                                                                       uint8_t admin_level_straight_password,
+                                                                       uint8_t admin_level_oem_proprietary,
+                                                                       uint8_t oem_level_none,
+                                                                       uint8_t oem_level_md2,
+                                                                       uint8_t oem_level_md5,
+                                                                       uint8_t oem_level_straight_password,
+                                                                       uint8_t oem_level_oem_proprietary,
+                                                                       fiid_obj_t obj_cmd_rq);
+
+The function name and parameters look pretty long and terrible.  But
+the names and fields exactly match the get authentication type enables
+fields listed in Table 23-4.  There should be very little difficulty
+understanding what this funciton does, how it should be called, and
+what the parameters are if you are reading along with the spec.
+
+Because we want the code to match the IPMI spec as closely as
+possible, we currently accept the code inefficiencies (due to large
+stacks of parameters) that come with having long parameters lists and
+the atrocities of having gigantic 25+ parameter function calls in
+code.
+
+5) Compilation and Development Notes
+------------------------------------
+
+Normally, to build and develop from the source tree you need to run:
+
+./autogen.sh
+./configure
+make
+
+out of the directory you are in.
+
+The following configure options can help you with many development
+issues:
+
+--enable-debug
+
+This option will turn on compilation of debugging symbols.  More
+warnings may also be enabled when compiling.
+
+In addition, this option may enable a few "workarounds" to allow for
+easier development of code.  Most notably, inband drivers may look in
+additional locations for an ipckey, so that inband development can be
+done in a local directory without a full installation.
+
+Generally speaking, if developing out of a local tree, you'll almost
+always want to enable this flag.
+
+--enable-profile
+
+If --enable-debug is enabled, this option will turn on compilation
+with profiling data.
+
+--enable-trace
+
+Compile tracing information into a significant portion of FreeIPMI
+code.  This will result in significant amounts of extra information to
+be output.
+
+--enable-rawdumps
+
+Some users may be more familiar with raw IPMI packet dumps instead of
+the detailed field identified dumps that normally occur when running
+tools with --debug.  In this case, --enable-rawdumps, will inform
+FreeIPMI to also output packets in raw form.
+
+

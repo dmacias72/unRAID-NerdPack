@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Checks ipmi nodes by RMCP ping/pong
+# Mon 12 Dec 2011 kaiwang.chen@gmail.com
+
+PACKETS=3
+
+while getopts ":H:w:c:p:" opt
+do
+  case $opt in 
+  H)
+    HOST=$OPTARG
+    ;;
+  w)
+    WARNING=$OPTARG
+    ;;
+  c)
+    CRITICAL=$OPTARG
+    ;;
+  p)
+    PACKETS=$OPTARG
+    ;;
+  \?)
+    echo "RMCPPING UNKNOWN - invalid option -$OPTARG"
+    exit 3
+    ;;
+  :)
+    echo "RMCPPING UNKNOWN - Option -$OPTARG requires an argument."
+    exit 3
+    ;;
+  esac
+done
+
+[[ "$HOST"x == x ]] && {
+  echo "RMCPPING UNKNOWN - which ipmi node to ping"
+  exit 3
+}
+
+PROG=/usr/sbin/rmcpping 
+[[ -x $PROG ]] || {
+  echo "RMCPPING UNKNOWN - check $PROG executable"
+  exit 3
+}
+
+LOSS=`$PROG -c $PACKETS $HOST | sed -n '/packet loss/{s/^.*, \([0-9]*\)[.][0-9]*% packet loss$/\1/;p}'`
+
+[[ "$WARNING"x == "x" || "$CRITICAL"x == "x" ]] && {
+  echo "RMCPPING UNKNOWN - Packet loss $LOSS%"
+  exit 3
+}
+WARNING=`echo $WARNING|sed s/%//`
+CRITICAL=`echo $CRITICAL|sed s/%//`
+
+if [[ $LOSS -ge $CRITICAL ]]
+then
+  echo "RMCPPING CRITICAL - Packet loss $LOSS%"
+  exit 2
+elif [[ $LOSS -ge $WARNING ]]
+then
+  echo "RMCPPING WARNING - Packet loss $LOSS%"
+  exit 1
+else
+  echo "RMCPPING OK - Packet loss $LOSS%"
+  exit 0
+fi

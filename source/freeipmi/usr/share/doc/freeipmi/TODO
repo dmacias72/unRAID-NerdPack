@@ -1,0 +1,398 @@
+*** - priority for future major release
+XXX - priority for future minor release
+ooo - priority code cleanup that should be done
+
+branches to merge
+-----------------
+
+to test
+-------
+ipmi-oem get/set bmc services for intels2600jf
+
+FreeIPMI FAQ/documentation
+--------------------------
+
+FreeIPMI general
+----------------
+- oem extensions
+  - test/check handle firmware versions
+  - document firmware versions in docs/ or mans/?
+- build system
+  - single Makefile, so parallel build faster?
+- consider moving #defines to #enums globally for easier debugging w/
+  gdb
+- event handling api/mechanism
+- loop/try again on NODE_BUSY errors (***)
+  - treat more like network busy than error?
+  - option for alternate behavior?
+- update text documents to texinfo (ooo)
+- OEM extensions generalized
+  - generalize "+" syntax in ipmipower to all FreeIPMI tools?
+  - or use extra option?
+- audit/cleanup memsets, use sizeof() when appropriate
+
+FreeIPMI new stuff
+------------------
+- ASF - maybe support base protocol stuff like rmcp?
+- picmg hpm/hpmi.1 standard - defines ipmi firmware update stuff
+  - http://www.picmg.org/v2internal/specifications.htm
+- pmbus.org
+  - doable via FreeIPMI?  Can pass through Smbus to PmBus to do power control monitoring?
+- server simulator
+  - support testing at scale
+  - test larger set of corner cases, possibilities, workarounds, etc. 
+  - different SDR combos
+  - different SEL entries
+  - all permutations of sensors, etc.
+- config tools for (***)
+  - intel node manager (***)
+    - maybe not?  Intel NM does not configure via a standard
+      checkout/commit fashion.  Policies are created, then removed.
+      In addition, policies must be disabled before they can be
+      reconfigured.
+    
+      some of these mechanisms could be hidden (i.e. if user changed
+      any configuration, disable policy, then re-configure it, then
+      re-enable it), but some would require blatant assumptions, such
+      as number of policies to output into the --checkout .conf file.
+  - firmware firewall
+  - other config options in ipmi-oem
+  - inventec mac/shared nic stuff
+    - will reboot BMC, is big problem
+- fru library like libipmimonitoring
+- ipmi proxy
+  - capture lan and do inband, maybe useful if you have dedicated port
+  that can't be seen by the network, and you don't have enough switch
+  ports to have both plugged up to the network.
+- OCP IPMI extensions
+  - FRU record
+  - command extensions
+
+FreeIPMI maybe stuff
+--------------------
+redo ipmipower/ipmiconole using phi accrual failure detector algorithm?
+
+library general
+---------------
+- merge all libs into one?  would aid debian packaging.
+  - make package layout simpler?
+  - make .so-naming consistent?
+  - merge all except libipmidetect?
+
+libfreeipmi
+-----------
+- forwarded command support (errata 35b)
+- support serial interface?
+- have funcs that return buflen return ssize_t?, input should be
+  size_t and void *? like read(), write()?
+- xRC4
+  - on Quanta S99Q/Dell FS12-TY
+  - Began on branches/xrc, from the branch ChangeLog
+  - xRC has been dropped for the time being.  After researching xRC,
+    ultimately the current architecture of all of FreeIPMI is
+    ill-suited for it.  As a stream based encryption, too much
+    architecture of FreeIPMI has been based on individual packets
+    being sent/recved/encrypted/decrypted independently of each other.
+    Most of xRC implementation is doable with some hacks.  For
+    example, the initialization vector and data offsets could be
+    passed as in/out parameters to the assemble/disassemble packet
+    functions.  The Krc could be re-generated as needed if the
+    initialization vector had been noticed to change (or data offset
+    == 0).  However, the deal break was an "out-of-band" requirement
+    for implementation of the suspend/resume payload encryption.  In
+    particular, if a packet from the BMC that had a new initialization
+    vector was dropped on the network, the client would need to send a
+    "suspend/resume payload encryption" packet to tell the BMC to
+    start over again before doing a resend. Architecturally, this was
+    the part that would have been VERY difficult to implement across
+    FreeIPMI as the client would suddenly be required to understand
+    the assemble/disassemble subtleties underneath and send the packet
+    on its own.
+
+libfreeipmi-fiid
+----------------
+- rearch for speed to not use strings, use macros + strings in internal.  So something like:
+  {1, FOO_MACRO, "FIELD_NAME", FLAGS}
+  so avoid string compares for get/set/compare/etc., but have available for debug output.
+
+libfreeipmi-driver
+------------------
+- kcs/ssif/etc
+  - how to deal with servers w/ multiple BMCs (***)
+  - need knew inband option on tools? 
+- ssif userspace implementation
+  - see ipmiutil for example
+
+  
+libfreeipmi-api
+---------------
+--fail-if-ipmi-not-detected
+  - would need inband flag - discover vs. not-discover on locate
+  - Ultimately impossible to do correctly, vendor need not store
+    anything in acpi/smbios/etc.
+  - User can use ipmi-locate if they really want to probe?
+
+libfreeipmi-interpret
+---------------------
+- handle sensor/sel events outside of spec - configurable in some way?
+  - some vendors have extra bits not in spec
+- handle sensor/sel events differently for different sensors on same
+  motherboard
+  - e.g.
+  SENSORFAULT | State Deasserted
+  SENSOROK    | State Asserted
+  - need mechanism to specify record ids/sensor number/entity/generator?
+- some sensor interpretations dependent on sensor number, way to add?
+  - QSSCS4R SMI Timeout & Power Throttled sensors 
+    - same event-type/sensor-type/etc., but different interpretation??  
+
+libfreeipmi-sdr
+---------------
+
+libfreeipmi-fru
+---------------
+
+libfreeipmi-sel
+---------------
+- cleanup parsing functions
+
+libipmiconsole
+--------------
+- "learn" workarounds function - to figure out workaround flags for user support simultaneous SOL sessions
+  - very hard, almost impossible to do?? 
+- "check" function, to see if session currently running
+- engine_submit() - try and move initialization/setup code into engine
+  to reduce time spent in engine_submit(), this is the core loop used by
+  conman and other console software. (***)
+- use conditional signals w/ garbage collector
+  - should work, it's not like the poll loop from before
+- buffer character input chars and send in chunks as necessary (nagle like)
+  - perhaps ~100ms of character data to reduce packets send?
+  - as far as I can tell, most ssh implementations send 1 char at a time,
+    to most users that libipmiconsole will get similar interaction.
+ 
+libipmimonitoring
+-----------------
+- select sensors via sensor name?
+  - deal w/ motherboards with slightly different SDRs
+  - but some mobos have sensor name == each other, so what is the purpose?
+  - would need to also add sensor number with it??
+  - also to deal w/ probability SDR's change on some mobos
+- how specify record ids w/ sharing
+- entity sensor names
+
+tools common
+------------
+- entity ids 0x41, 0x42, are "identical" to other entries
+  - should map them together for --entity-id-names output in
+    ipmi-sensors and ipmi-sel?
+- hostrange exclude hosts option
+  - not really necessary in FreeIPMI?  in pdsh, the reason you really
+    need this is because you can do -a (all) or -g (genders
+    attribute/netgroups attribute).
+- if user inputs hostname of localhost, do inband not outofband?
+- config via environment variables too - like config file?
+- config file - support workarounds/etc. for heterogenous clusters
+  - maybe?
+  - workaround-flags BLAH hosts[1-3]
+  -  workaround-flags FOO  hosts[5-9]
+- read/store username/password/k_g out of file encrypted so it's not
+  sitting there in the clear
+- convenience function to loop infinite times necessary to expand (***)
+  hostrange until done.
+  - i.e. node[0-4]-[3-10]
+  - hack is in ipmipower right now for 2s, no where else supported 
+
+ipmi-sensors
+------------
+- split vendor files into motherboard files?  Is getting big.
+- option to check sensor thresholds manually instead of event bitmask
+  - some mobos seem to set flags incorrectly
+- column for sensor number?
+  - useful for shared sensor output?
+- how to select specific shared sensor on commad line, can't do normally (***)
+  - i.e. perhaps need to do record-id and something else, like
+    -r 5.2 to indicate record id 5 and offset 2.
+  - issue for libipmimonitoring too?
+- remove shared sensor option
+  - make default like it should be
+  - this really ties to many other shared sensor issues 
+- do not error out on unexpected sensor_read errors, move on? (***)
+  - i.e. unexpected completion code error?
+  - require rework of sensor-read lib?  How detect session timeout, etc. 
+- make 'discretereading' on by default?
+  - it does not appear that to be illegal by IPMI spec.
+
+ipmi-sel
+--------
+- binary search like mechanism to make --display faster
+- support kernel panic OEM event 0xF0
+  - can't make work, is just my motherboard?  Or perhaps specific panics, not test panics?
+  - redhat doesn't enable by default, probably don't need to worry about this much
+  - see http://cateee.net/lkddb/web-lkddb/IPMI_PANIC_STRING.html
+  - see http://www.cyberciti.biz/tips/compiling-linux-kernel-module.html
+- non-uncommon for motherboards to output events both directions of
+  crossing threshold.  Can be confusing b/c assert/deassert not output
+  by default.  Should alter output in these cases?
+- --delete-date-range (***)
+- ganglia plugin?
+- nagios plugin?
+
+ipmipower
+--------
+- mechanism to parallelize oem extension options ranges. (***)
+  - i.e. on myhost+[0-3].  Simultaneous power off slots 0-3.
+  - perhaps --serialize-same-host option
+  - Will require larger re-architecture, create additional sockets per
+    power control attempt.  The constant sockets created in the
+    ipmipower_connection structs limit this for the time being.
+
+ipmi-fru
+--------
+- write FRU data option
+  - for OEM integrators
+  - or should be in bmc-device?
+
+bmc-device
+--------
+- set bmc global enables
+  - really should be done by firmware or distro
+  - or only as needed in ipmi-oem per vendor need?
+- (NOT CONFIRMED) get auxiliary log status
+- set sensor reading (***)
+
+bmc-watchdog
+------------
+Log to normal syslog, not to bmc log
+- legacy from when bmc-wachdog in cron, not daemon, and would log
+  every bmc reset
+cleanup to finally use libfreeipmi or common tool functions
+
+ipmiconsole
+-----------
+- support other escape codes like w/ &D
+- support F1-F12 suggested by user
+
+ipmi-config
+------------
+- make tools prefix sections w/ appropriate prefixes to allow
+  for checking of what sections should be used??
+  - i.e. BMC, CHASSIS, PEF, etc.
+  - probably not, too much backwords compatability crap to handle.
+    Also would make code ugly as hell to make all duplicate sections.
+    should do database of what sections go to what categories
+- core: support ipv4 mapped ipv6 addresses?
+  - until in spec, no point, maybe deal in ipmi-oem?
+- chassis, pef & sensors: conf.5 manpage
+- chassis: (NEVER TESTED) panel button config - need hardware w/ this
+- chassis: (NEVER TESTED) device instance selector
+- sensors: instructions for each section??
+- sensors: when value cannot be encodd accurately, report numbers that can work
+
+ipmi-oem
+--------
+dell poweredge lcd support?
+
+ipmiseld
+--------
+send e-mail on alert noticed/received?
+
+contributions
+-------------
+- perl extensions
+  - api support?
+  - raw support?
+- python extensions
+  - api support?
+  - raw support?
+- zenoss plugin
+- powerman
+  - let ipmipower return error messages to user in some way
+    - intead of "command completed successfully" all the time
+
+RELEASE TODOS - Do on every release
+-----------------------------------
+Email freeipmi-users && freeipmi-devel
+Email info-gnu@gnu.org
+Update savannah announcements
+Update freshmeat.net
+Update freeipmi webpage
+Update opendesktop.org page
+Update ohloh page
+Update to softpedia??
+Update fsf directory info.
+Upload to ftp.gluster.com
+Upload to ftp.gnu.org
+
+Workaround for CVE
+
+perl -pe 's/perm -777 -exec chmod a\+rwx/perm -755 -exec chmod  755 /' Makefile.in > Makefile.in.new
+
+Workaround for CVE 2012-3386
+
+perl -pe 's/chmod a\+w \$\(distdir\)/chmod u\+w \$\(distdir\)/' Makefile.in > Makefile.in.new
+
+info-gnu@gnu.org template e-mail 
+
+FreeIPMI X.X.X has been released. It can be downloaded at:
+
+http://www.gnu.org/software/freeipmi/download.html
+
+What is IPMI?
+
+The Intelligent Platform Management Interface (IPMI) specification
+defines a set of interfaces for platform management.  It is
+implemented by a large number of hardware manufacturers to support
+system management on motherboards. The features of IPMI that most
+users will be interested in are sensor monitoring (e.g. CPU
+temperatures, fan speeds), remote power control, and serial-over-LAN
+(SOL).
+
+What is FreeIPMI?
+
+FreeIPMI provides in-band and out-of-band IPMI software based on the
+IPMI v1.5/2.0 specification.  FreeIPMI provides tools and libraries
+for users to access and read IPMI sensor readings, system event log
+(SEL) entries, serial-over-LAN (SOL), remote power control functions,
+field replaceable unit (FRU) device information, and more.  More
+information about FreeIPMI can be found at the FreeIPMI webpage at:
+
+http://www.gnu.org/software/freeipmi/index.html
+
+Release X.X.X Changes
+---------------------
+
+To do this:
+
+1. The file to be distributed (for example, foo.tar.gz).
+
+2. Detached GPG binary signature for (1), (for example, foo.tar.gz.sig).
+
+gpg -b foo.tar.gz
+
+3. A clearsigned directive file, (for example, foo.tar.gz.directive.asc). 
+
+Format is:
+
+version: 1.1
+directory: freeipmi
+filename: freeipmi-0.X.X.tar.gz
+comment: FreeIPMI 0.X.X
+
+gpg --clearsign foo.tar.gz.directive
+
+4. Upload the file(s) via anonymous ftp to ftp-upload.gnu.org. If the
+upload is destined for ftp.gnu.org, place the file(s) in the
+/incoming/ftp directory. If the upload is destined for alpha.gnu.org,
+place the file(s) in the /incoming/alpha directory.
+
+Uploads are processed every five minutes. Uploads that are in progress
+while the upload processing script is running are handled properly, so
+do not worry about the timing of your upload. Uploaded files that
+belong to an incomplete triplet are deleted automatically after 24
+hours.
+
+Your designated upload email addresses (see Automated Upload
+Registration) are sent a message if there are any problems processing
+an upload for your package. You also receive a message when your
+upload has been successfully processed.

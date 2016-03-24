@@ -1,0 +1,25 @@
+The Linux OpenIPMI driver is often loaded via the /etc/init.d/ipmi
+setup script.  If your distribution/environment does not have this
+script, the following script can be used to load/unload the driver.
+
+#!/bin/sh
+
+/sbin/modprobe ipmi_devintf
+
+maj=`cat /proc/devices | awk '/ipmidev/{print $1}'`
+if [ -c /dev/ipmi0 ]
+then
+   rm -f /dev/ipmi0
+   /bin/mknod /dev/ipmi0 c $maj 0
+else
+   /bin/mknod /dev/ipmi0 c $maj 0
+fi
+
+/sbin/modprobe ipmi_si
+
+# do stuff
+
+/sbin/rmmod ipmi_si
+/sbin/rmmod ipmi_devintf
+/sbin/rmmod ipmi_msghandler
+

@@ -1,0 +1,598 @@
+FreeIPMI Design
+
+by 
+
+Albert Chu
+chu11@llnl.gov
+Last Updated: August 27, 2013
+
+These are some notes on various design decisions made in FreeIPMI.
+
+1) Fiid vs. other Marshalling/Unmarshalling Styles
+--------------------------------------------------
+
+Several programmers have asked us why we have chosen a relatively
+unpopular/different method to marshall/unmarshall IPMI packets and
+build network packets.
+
+First, lets discuss several classic methods for
+marshalling/unmarshalling data when using structs to represent a
+packet.
+
+Method A: Marshall/Unmarshall "manually":
+-----------------------------------------
+
+struct packet
+{
+  uint8_t field_1; /* 1 bit */
+  uint8_t field_2; /* 3 bits */
+  uint8_t field_3; /* 4 bits */
+  int16_t field_4; /* 16 bits */
+};
+
+my_marshall_function(struct packet *pkt, char *buf, unsigned int buflen)
+{
+   buf[0] |= pkt->field_1 & 0x1;
+   buf[0] |= (pkt->field_2 << 1) & 0x0E;
+   buf[0] |= (pkt->field_3 << 4) & 0xF0;
+   /* assuming network byte order here */
+   buf[1] |= (pkt->field_4 & 0xFF00) >> 8;
+   buf[2] |= pkt->field_4 & 0x00FF;
+}
+
+my_unmarshall_function(struct packet *pkt, char *buf, unsigned int buflen)
+{
+   pkt->field_1 = buf[0] & 0x01;
+   pkt->field_2 = buf[0] & 0x0E >> 1;
+   pkt->field_3 = buf[0] & 0xF0 >> 4;
+#if LITTLE_ENDIAN_HOST
+   pkt->field_4 = buf[2] | buf[1] << 8;;
+#else
+   pkt->field_4 = buf[1] | buf[2] << 8;;
+#endif
+}
+
+general_usage_example()
+{
+   struct packet pkt;
+   char buf[1024];
+   int len;
+ 
+   pkt.field_1 = 1;
+   pkt.field_2 = 2;
+   pkt.field_3 = 3;
+   pkt.field_4 = 5;
+
+   my_marshall_function(&pkt, buf, 1024);
+   my_send_data_function(buf);
+
+   len = my_receive_data_function(buf);
+   my_unmarshall_function(&pkt, buf, len);
+
+   printf("field_1 is: %d\n", pkt.field_1);
+}
+
+Pros:
+
+A) No need to deal with struct packing issues in the compiler.
+B) The struct definition describes packets closely and is relatively
+   easy to use and understand.
+C) Relatively efficient.
+D) General usage code size is relatively small.
+E) General usage need not determine field type (e.g. is it an unsigned
+   or signed integer).
+
+Cons:
+
+A) Have to deal with endian problems.
+B) Lots of marshalling and unmarshalling code are required for each
+   packet type.
+C) Relatively difficult to deal with optional fields. (You'll need
+   flags in the struct to indicate if a field was set/unset, or validate
+   the fields via protocol definition knowledge.)
+D) Relatively difficult to deal with variable length fields. (You'll
+   need a length parameter in the struct to indicate the length of a
+   field.)
+E) Packet dumps/debugging is relatively poor (you only get hex) or you
+   have to create debug functions to handle each packet type.
+F) Struct changes (e.g. due to IPMI errata changes) may break ABI if
+   the structs are part of a public interface.
+
+Method B: Cast a buffer to a packed struct:
+-------------------------------------------
+
+For Example:
+
+struct packet
+{
+  uint8_t field_1 : 1;
+  uint8_t field_2 : 3;
+  uint8_t field_3 : 4;
+  int16_t field_4; 
+};
+
+my_marshall_function(struct packet *pkt, char *buf, unsigned int buflen)
+{
+   memcpy(buf, pkt, sizeof(struct packet));
+#if LITTLE_ENDIAN_HOST
+    swap(&buf[1], &buf[2]);
+#endif
+}
+
+my_unmarshall_function(struct packet *pkt, char *buf, unsigned int buflen)
+{
+   *pkt = *((struct packet *)buf);
+#if LITTLE_ENDIAN_HOST
+    pkt->field_4 = ntohs(pkt->field_4);
+#endif
+}
+
+general_usage_example()
+{
+   struct packet pkt;
+   char buf[1024];
+   int len;
+ 
+   pkt.field_1 = 1;
+   pkt.field_2 = 2;
+   pkt.field_3 = 3;
+   pkt.field_4 = 5;
+
+   my_marshall_function(&pkt, buf, 1024);
+   my_send_data_function(buf);
+
+   len = my_receive_data_function(buf);
+   my_unmarshall_function(&pkt, buf, len);
+
+   printf("field_1 is: %d\n", pkt.field_1);
+}
+
+Pros:
+
+A) Not too much marshalling and unmarshalling code is required.
+B) General usage code size is relatively small.
+C) The struct definition describes packets exactly and is relatively
+   easy to use and understand.
+D) Very efficient (little actual marshalling/unmarshalling needs to be done.)
+E) General usage need not determine field type (e.g. is it an unsigned
+   or signed integer).
+
+Cons:
+
+A) Have to deal with endian problems.
+B) Have to deal with portability of struct packing techniques between
+   different compilers (there are differences in compilers, but nowadays,
+   this may be easier/more portable than I originally believed it to be).
+C) Difficult to deal with optional fields (no flags can be put
+   in the struct to indicate if a field was set/unset, can only
+   validate the fields via protocol definition knowledge.)
+D) No mechanism to deal with variable length fields (no length
+   field can be put in the struct to indicate the field length.)
+E) Packet dumps/debugging is relatively poor (you only get hex) or you
+   have to create debug functions to handle each packet type.
+F) Struct changes (e.g. due to IPMI errata changes) may break ABI if
+   the structs are part of a public interface.
+
+Our Method C: string_name -> bitmask mapping
+--------------------------------------------
+
+The "FreeIPMI Interface Definition" or 'fiid' API in libfreeipmi uses
+a string_name/bit_count template and an API to get and set values in a
+packet to handle marshalling/unmarshalling.
+
+The following are a few of the API functions used for FIID to give you
+an idea for the fiid API:
+
+fiid_obj_t fiid_obj_create (fiid_template_t tmpl);
+int32_t fiid_obj_errnum(fiid_obj_t obj);
+int8_t fiid_obj_clear (fiid_obj_t obj);
+int8_t fiid_obj_set (fiid_obj_t obj, char *field, uint64_t val);
+int8_t fiid_obj_get (fiid_obj_t obj, char *field, uint64_t *val);
+int32_t fiid_obj_get_all (fiid_obj_t obj, uint8_t *data, uint32_t data_len);
+int32_t fiid_obj_set_all (fiid_obj_t obj, uint8_t *data, uint32_t data_len);
+
+The following is the fiid equivalent in the previous examples:
+
+fiid_template_t tmpl_example =
+  {
+    {1, "field_1", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    {3, "field_2", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    {4, "field_3", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    {16, "field_4", FIID_FIELD_REQUIRED | FIID_FIELD_LENGTH_FIXED},
+    {0, "", 0}
+  };
+
+general_usage_example()
+{
+   fiid_obj_t obj;
+   char buf[1024];
+   int len;
+   uint64_t val;
+
+   obj = fiid_obj_create(tmpl_example);
+   fiid_obj_set(obj, "field_1", 1);
+   fiid_obj_set(obj, "field_2", 2);
+   fiid_obj_set(obj, "field_3", 3);
+   fiid_obj_set(obj, "field_4", 5);
+
+   /* "marshall" the packet */
+   fiid_obj_get_all(obj, buf, 1024);
+   my_send_data_function(buf);
+
+   fiid_obj_clear(obj);
+
+   len = my_receive_data_function(buf);
+
+   /* "unmarshall" the packet */
+   fiid_obj_set_all(obj, buf, len);
+  
+   fiid_obj_get(obj, "field_1", &val);   
+   printf("field_1 is: %d\n", (int16_t)val);
+}
+
+The pros and cons of the fiid method are:
+
+Pros:
+
+A) No need to deal with endian problems (handled internally in the API).
+B) No need to deal with struct packing issues (bit shifts are handled
+   internally in the API).
+C) Easier to deal with optional fields (For marshalling, don't set a
+   field.  For unmarshalling, the api can identify if a field is set or not).
+D) Easier to deal with variable length fields (For marshalling, set
+   whatever length you want.  For unmarshalling, the api can identify the
+   length of the field read).
+E) Templates describe the packets exactly.
+F) Easy to do large packet dumps and debug (fields and values easily
+   output and identified).
+G) Significantly reduce the amount of marshalling, unmarshalling, and
+   debug code needed (the API handles it all already).
+F) Template changes (e.g. due to IPMI errata changes) shouldn't break
+   ABI.  (You can publish the template strings, need not publish the
+   template itself.)
+ 
+Cons:
+
+A) Need to learn/use a reasonably large API and learn/use all the
+   templates.
+B) Pretty inefficient (lots of string comparisons).
+C) General usage code size is increased.
+D) General usage must determine and cast field to appropriate type
+   (e.g. is it an unsigned or signed integer).
+
+(Side Comments: 
+
+Some other networking APIs have a similar API, but use
+macros/enums for the field names rather than strings.  Many of the
+above benefits are identical, except the debug dump output
+capabilities are weaker in exchange for better performance.
+
+Some other networking APIs may return a type of a field (e.g. signed
+vs unsigned, 16bit vs 32bit, etc.).  That would remove need to
+determine casting in general usage in exchange for larger general
+usage code size.)
+
+The big reasons why this was developed and chosen over traditional
+methods.
+
+A) The IPMI specification is very large, so reducing code size weighed
+in as an important factor for the FreeIPMI authors.  This allowed
+there to be fewer marshalling/unmarshalling/debug functions.  By one
+FreeIPMI author's counting in the specification, there are 304
+different base payloads in the IPMI specification.  This does not
+include permutations of payloads due to different versions, optional
+fields, headers, trailers, encryption, oem extensions, record formats
+data is stored in, etc.
+
+B) There are a relatively large number of optional fields and variable
+length fields in the IPMI specification.  As stated above, the
+traditional struct based marshalling/unmarshalling have issues
+with handling these.
+
+C) The lack of IPMI compliance from vendors is a well known problem in
+the open-source community.  The templates have saved developers
+countless hours of debugging time due to the easy method by which
+packets can be dumped with their fields and values quickly identified.
+It is very easy to find vendor IPMI compliance problems very quickly.
+
+Here's an example of a dump:
+
+pwopr2: : RMCP Header:
+pwopr2: : ------------
+pwopr2: [               6h] = version[ 8b]
+pwopr2: [               0h] = reserved[ 8b]
+pwopr2: [              FFh] = sequence_number[ 8b]
+pwopr2: [               7h] = message_class.class[ 5b]
+pwopr2: [               0h] = message_class.reserved[ 2b]
+pwopr2: [               0h] = message_class.ack[ 1b]
+pwopr2: : IPMI Session Header:
+pwopr2: : --------------------
+pwopr2: [               0h] = authentication_type[ 8b]
+pwopr2: [               0h] = session_sequence_number[32b]
+pwopr2: [               0h] = session_id[32b]
+pwopr2: [               9h] = ipmi_msg_len[ 8b]
+pwopr2: : IPMI Message Header:
+pwopr2: : --------------------
+pwopr2: [              20h] = rs_addr[ 8b]
+pwopr2: [               0h] = rs_lun[ 2b]
+pwopr2: [               6h] = net_fn[ 6b]
+pwopr2: [              C8h] = checksum1[ 8b]
+pwopr2: [              81h] = rq_addr[ 8b]
+pwopr2: [               0h] = rq_lun[ 2b]
+pwopr2: [              26h] = rq_seq[ 6b]
+pwopr2: : IPMI Command Data:
+pwopr2: : ------------------
+pwopr2: [              38h] = cmd[ 8b]
+pwopr2: [               Eh] = channel_number[ 4b]
+pwopr2: [               0h] = reserved1[ 3b]
+pwopr2: [               1h] = get_ipmi_v2.0_extended_data[ 1b]
+pwopr2: [               2h] = maximum_privilege_level[ 4b]
+pwopr2: [               0h] = reserved2[ 4b]
+pwopr2: : IPMI Trailer:
+pwopr2: : --------------
+pwopr2: [              1Fh] = checksum2[ 8b]
+
+2) Non-generic error messages
+-----------------------------
+
+Under some circumstances, it may be preferred to return generic error
+messages to the user, so that a malicious user cannot infer remote
+login information from different error messages returned.  For
+example, returning a generic error message of "Permission Denied"
+would not give a malicious user information on whether the username or
+password was input incorrectly.
+
+Although implemented earlier on, the FreeIPMI authors have elected to
+not implement this now.  There are many vendor implementations of IPMI
+and many configuration options (authentication mechanism, cipher suite
+id, username, password, K_g, privilege level) needed for proper IPMI
+session establishment.  The number of error messages that could be
+mapped into a generic "Permission Denied" would make it too difficult
+for users to determine why they failed to connect properly.  The
+overall worth of implementing a generic "Permission Denied" error
+message just doesn't seem worth it now.
+
+3) Get Channel Authentication Capabilities Command
+--------------------------------------------------
+
+The Get Channel Authentication Capabilities Command is typically the
+first packet sent in the IPMI session.  It returns information 
+on the remote machine's support of:
+
+A) IPMI 1.5 authentication mechanisms (e.g. md2, md5, etc.)
+B) IPMI 1.5 and/or IPMI 2.0
+C) per msg authentication
+D) K_g status
+E) null username/non-null username/anonymous logins
+
+Currently in FreeIPMI, we check each of these values during the
+session setup to determine if a person can connect to the remote
+machine later in the protocol:
+
+A) If the user input an unsupported authentication mechanism, we
+return an error.
+
+B) If the user requested IPMI 2.0, but the remote machine doesn't
+support IPMI 2.0, we return an error.
+
+C) We determine if per msg authentication should be considered later
+in the protocol session.
+
+D) If the user was required/not-required to input a K_g value, we
+return an error appropriately.
+
+E) If the user input an unsupported username/password combination, we
+return an error appropriately.
+
+There is a question as to what values above, if any, need to be
+checked and appropriate errors returned to the user.  The Get Channel
+Authentication Capabilities command is often implemented incorrectly
+by a number of vendors, so that overall benefit of checks has been put
+in question.  The FreeIPMI authors have elected to keep all the checks
+for the following reasons.
+
+* 'A' and 'B' should be checked to avoid potential timeouts:
+
+  - Later in the protocol, the password could be sent/hashed
+    incorrectly, leading to a timeout because packets are not accepted by
+    the remote machine.
+
+  - If the remote machine does not support IPMI 2.0, later packets
+    could timeout because the remote machine does not recognize the packet
+    format.
+
+* 'C''s checks could be skipped as long as per msg authentication was not
+  supported.
+
+* 'D''s checks could be skipped, because an improper null vs non-null K_g
+will be caught later during IPMI 2.0 authentication.
+
+* 'E''s checks are the most complicated.  An improper null vs non-null
+username will be caught later during IPMI 1.5 and IPMI 2.0
+authentication.  An improper null vs non-null password can be caught
+later during IPMI 2.0 authentication, but may result in a timeout
+during IPMI 1.5 authentication.
+
+An argument could also be made that the speed at which an invalid
+username/password error is returned to a user could also give a
+malicious user information on the username/password of the remote BMC.
+
+In the end, the authors have felt the overall positive benefits
+provided by the checking of these values provides more than the
+negative implications.  Changes in the overall industry implementation
+could change this viewpoint later.
+
+4) Configuration tool callback design
+-------------------------------------
+
+Ipmi-config is coded with a archicture that reads/writes each
+configurable field in the BMC separately.
+
+As an example, suppose we have the following BMC configuration file
+we'd like to commit.
+
+FieldA       Value1
+FieldB.1     Value2
+FieldB.2     Value3
+FieldB.3     Value4
+FieldB.4     Value5
+
+Suppose FieldA is read/written using a single IPMI packet and fields
+FieldB.1-FieldB.4 can be read/written using a single IPMI packet.
+
+In the architecture that ipmi-config is currently based on, the above
+would require 5 read requests to read all 5 values.  It would require
+1 read request for FieldA, 4 read requests for FieldB.1-FieldB.4, and
+5 write requests to write the values.
+
+Obviously, this sounds like (and is!) very inefficient. 
+
+The authors acknowledge that the code is very inefficient b/c it will
+cause an excess number of request/response packets to be generated.  With
+a large number of inputs the Configtools can be slow.
+
+Here are some of the major reasons why this was done and is still
+kept.
+
+A) Due to widely varying IPMI versions and implementations, this
+handles the write configuration case best.  Suppose FieldB.2 is only
+configurable on IPMI 2.0 systems but not IPMI 1.5 systems.  Suppose
+(perhaps b/c it is optional in the IPMI specification) FieldB.3 is
+supported by some vendors but not other vendors.  Suppose FieldB.4 is
+simply not implemented correctly by the vendor.
+
+This architecture allows the majority of the configuration to succeed
+on a specific platform, and allows the end user to know exactly what
+fields may or may not be configurable.  If all 4 fields of
+FieldB.1-FieldB.4 were written at the same time, there is currently no
+method in the IPMI protocol to know what field was configured
+incorrectly and why (only a generic error of "invalid input" is
+returned, but you won't know which field it is).
+
+In the future, functionality could be added to retry each field
+separately if there was such a failure, however that would add another
+piece of complexity into the code we currently don't have time to add.
+In addition, with so many IPMI firmware implementations, it may
+difficult to add such functionality because of the wide array of error
+cases that might occur.
+
+B) There are several (and possibly more future) vendor compliance
+problems that can be (or will need to be) worked around.  By using
+this architecture, each specific field can be worked around
+independently depending on the vendor.  These workarounds need to be
+handled on both the read and write conditions.
+
+One of the major fallouts from this design is that if an
+invalid/illegal configuration exists on the motherboard by default,
+some configuration values may not be configurable.  For example,
+suppose we want to write the following config to the BMC.
+
+FieldA.1     Value1
+FieldA.2     Value2
+FieldA.3     Value3
+FieldA.4     Value4
+
+The architecture of the config tools will read FieldA.1-FieldA.4 from
+the BMC, change only FieldA.1, then try to write all the fields back
+to the BMC.  Then it would be repeated for FieldA.2, etc.
+
+However, suppose the default setting on the motherboard for FieldA.4
+is illegal.  Then each time we attempt to write FieldA.1, FieldA.2,
+and FieldA.3, an invalid input error will be returned b/c FieldA.4 is
+illegal.  Things cannot change until FieldA.4 is modified.
+
+In a worse scenario, suppose the default setting on the motherboard is
+illegal for both FieldA.3 and FieldA.4.  That means we will receive an
+invalid input error for the config of FieldA.1 through FieldA.4.
+
+Currently, this has been seen a very small minority of systems and
+work arounds have been added for those systems.
+
+Another similar fallout from this design is that the vendor must allow
+"piecemeal" configuration.  In other words, the vendor must allow a
+subset of the fields to perhaps be configured "incorrectly" while the
+other subset may be configured "correctly".  Some vendors require that
+fields be written "simultaneously", and do not support the ability to
+alter configuration one by one.
+
+Again, this has been seen a very small minority of systems and work
+arounds have been added for those systems.
+
+5) Dealing with workarounds
+---------------------------
+
+There is an admitted conflict in determining whether vendor compliance
+issues should be handled automatically vs. a specified workaround
+(e.g. on the commandline or via a flag in a library).
+
+On one hand, we would like for the tools to operate as simply for the
+users as possible without the need to specify strange workarounds or
+options on the command line.  For example, we could detect vendor
+product-IDs early in the protocol, and if necessary for a particular
+vendor, turn on the workarounds.
+
+On the other hand, some workarounds cannot be detected properly all of
+the time.  For example, the workaround may exist on one firmware
+release vs. another firmware release.  It may exist between one
+product of a vendor vs. another product from the vendor.  Another
+example, is that while we can make a pretty decent guess what the
+vendor intended, ultimately, there's no real way to know if the guess
+is correct.
+
+A number of these workarounds are due to vendor compliance problems
+that are sometimes so intrusive (e.g. using a different hashing
+algorithm for keys) they must require a workaround on the command line
+b/c there is really no other way to handle it.  However, some could be
+handled seemlessly, but would require altered behavior to handle the
+"common case" or "lowest common denominator" of all IPMI protocols.
+
+The general rule that the FreeIPMI authors have come to is that if the
+workaround changes some "normal" or "good" behavior, it must require a
+specified workaround.  Although it may/will be annoying to a number of
+users, I feel it is better for the long term.  It can hopefully also
+pressure vendors into fixing their implementations.
+
+As an example, on some motherboards, we found that System Event Log
+(SEL) records reported an invalid sensor generator ID.  We found that
+the reported generator ID was shifted off by one.  Thus, as a
+workround, if a SDR entry cannot be found for a respective system
+event, we will also search for a SDR entry using the generator ID
+shifted by one.  If the resulting SDR entry is found, we assume the
+original generator ID was just off by one and we use the located SDR
+record.  This workaround is seemless and doesn't involve an option on
+the command line.
+
+In contrast, we found on some other motherboards that some SEL records
+report an invalid event record type.  Unlike the above situation,
+there is no additional information from this record that can tell us
+how to parse the record.  For the particular motheboard, these illegal
+SEL records were normal system event records with improperly coded
+record types.  Therefore, we implemented a workaround called
+"assumesystemevent", which the user can specify to assume a valid
+system event record no matter what.
+
+Admittedly, the area is grey, and at some point, it's a judgement call
+:-)
+
+6) Dealing with OEM extensions
+------------------------------
+
+Similar to the "Dealing with workarounds" question above, there is a
+similar question of how to deal with OEM extensions.  Should code
+automatically detect the manufacturer and product to determine if OEM
+extensions can be handled or should be output?
+
+We would like the tools to operate as simply for the users without
+specifying options on the command line.  However, can we trust that a
+vendor will implement their extensions consistently across
+motherboards, products, or even firmware revisions?
+
+The general decision is that there will be an option for the user to
+specify if they would like OEM interpreted output if available.  Many
+FreeIPMI tools come with a --interpret-oem-data option for this
+situation.  If a motherboard is specifically supported by FreeIPMI,
+the user is free to use and trust the OEM support.  However, if OEM
+extensions happen to work for a unlisted motherboard, the user must
+take the output with some grain of salt.
+
+

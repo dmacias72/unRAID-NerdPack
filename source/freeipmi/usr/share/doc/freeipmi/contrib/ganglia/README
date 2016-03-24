@@ -1,0 +1,18 @@
+ganglia_ipmi_sensors.pl
+-----------------------
+
+This script can be used to monitor IPMI sensors in ganglia via
+FreeIPMI's ipmi-sensors.  Please see instructions found at the top of
+the script for detailed instructions.
+
+By default, this tool will monitor the sensor state (Nominal, Warning,
+or Critical) of each sensor as determined by libfreeipmi's interpret
+library and the sensor readings of temperature, fan and voltage
+sensors.  See ipmi-sensors(8) for more general info on ipmi-sensors
+and freeipmi_interpret_sensors.conf(5) for more information on sensor
+states.
+
+Albert Chu
+chu11 at llnl dot gov
+
+

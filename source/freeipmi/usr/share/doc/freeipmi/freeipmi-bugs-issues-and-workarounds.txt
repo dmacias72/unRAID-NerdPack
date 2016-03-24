@@ -1,0 +1,1902 @@
+FreeIPMI Bugs, Issues, and Workarounds
+
+by 
+
+Albert Chu
+chu11@llnl.gov
+Last Updated: December 29, 2014
+
+The following are some short descriptions of the issues I've found
+while developing FreeIPMI on various motherboards.  The descriptions
+below also describe workarounds I've had to implement to get around
+issues.  When possible, the motherboards these issues were found on
+are also documented.
+
+Each of the issues below is listed under one of the following
+categories:
+
+[COMPLIANCE] - IPMI implementations that are out of compliance with
+               the IPMI specification.  These issues range from simple
+               bugs in the implementation, to misinterpretation of the
+               IPMI specification, to flag out illegal
+               implementations.
+
+[INTERPRETATION] - Interpretation ambiguity between multiple vendors
+                   and the IPMI specification.
+
+[IMPLEMENTATION] - Implementations that are legal IPMI
+                   implementations, but implementation choices makes
+                   IPMI poorer, confusing, or more difficult to use.
+
+For the record, I have nothing against the vendors and the products
+that have these issues.  I am just as prone to programming bugs as
+they are.  The IPMI specification is gigantic and mistakes will
+happen.  I expect some design decisions were made for time to release,
+cost, customer needs, etc. too.  This documentation is mostly for
+historical purposes, people searching for information, and to document
+the difficulty of developing portable IPMI code.
+
+----------------------
+| Inband IPMI Issues |
+----------------------
+
+----------------------------------------------------------------------
+
+Inband IPMI Issue #1: [COMPLIANCE]
+
+  The SMBIOS/DMI tables do not properly indicate that KCS base address
+  is IO instead of memory-mapped.
+
+  Seen on: HP ProLiant DL145 G1
+
+  Resolution: Workaround option added to inform software to use
+  memory-mapped IO.
+
+----------------------------------------------------------------------
+
+-----------------------------
+| LAN Authentication Issues |
+-----------------------------
+
+----------------------------------------------------------------------
+
+LAN Authentication Issue #1: [IMPLEMENTATION]
+
+  BMCs would not respond to retransmissions of a Get Session Challenge
+  Request if a previous Get Session Challenge response was lost.
+
+  Seen on: Intel SR870BN4/Tiger 4
+
+  Resolution: Workaround added to send retransmitted Get Session
+  Challenge requests from a different source port.
+
+LAN Authentication Issue #2: [COMPLIANCE]
+
+  The only authentication supported by the motherboard is an OEM
+  specific authentication.  IPMI specification requires several
+  non-OEM authentication mechanisms.
+
+  Seen on: Undocumented Motherboard
+
+  Resolution: None
+
+  Notes: Undocumented motherboard was an early Supermicro motherboard
+  with IPMI support, but I never documented which one (achu).
+
+LAN Authentication Issue #3: [COMPLIANCE]
+
+  The initial outbound sequence number on activate session response is
+  off by one.  The activate session response packet is supposed to
+  contain the initial outbound sequence number passed during the
+  request.
+
+  Seen on: Intel SE7520JR2 with National Semiconductor PC87431M mBMC,
+  Intel SE7520AF2 with Intel Server Management Module (Professional
+  Edition)
+
+  Resolution: Initially, workaround was done to accept off by one
+  sequence number.  Later when packet windows were implemented, the
+  situation was automatically handled.
+
+LAN Authentication Issue #4: [COMPLIANCE]
+
+  The IPMI 2.0 packet responses for RAKP 2 have payload lengths that
+  are off by 1 (i.e. an invalid length).
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: Workaround option added to inform software to handle the
+  invalid length.
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+LAN Authentication Issue #5: [COMPLIANCE]
+
+  Username capabilities and/or K_g status are not reported properly by
+  the Get Authentication Capabilities response.
+
+  Seen on: Asus P5M2, Asus P5MT-R, Asus S162-E4, Asus RX4, Sun Fire
+  X4150, Sun Fire X4450, Intel SR1520ML, Intel X38ML
+
+  Resolution: Workaround option added to inform software to ignore
+  flags in the Get Authentication Capabilities response.
+
+LAN Authentication Issue #6: [COMPLIANCE] 
+
+  The IPMI_PRIVILEGE_LEVEL_HIGHEST_LEVEL flag does not work in the
+  Open Session phase of IPMI 2.0 connections.  The Open Session
+  response seems to simply return the privilege level passed in the
+  request (i.e. the IPMI_PRIVILEGE_LEVEL_HIGHEST_LEVEL flag rather
+  than the actual highest level privilege that can be used).
+
+  Seen on: Intel SE7520AF2 with Intel Server Management Module
+  (Professional Edition)
+
+  Resolution: Workaround option added to inform software to not pass
+  IPMI_PRIVILEGE_LEVEL_HIGHEST_LEVEL and pass a specific privilege
+  level.
+
+LAN Authentication Issue #7: [COMPLIANCE]
+
+  The username field is incorrectly padded during IPMI 2.0
+  authentication, leading to invalid keys.
+
+  Seen on: Intel SE7520AF2 with Intel Server Management Module
+  (Professional Edition)
+
+  Resolution: Workaround option added to inform software to adjust the
+  username when authenticating.
+
+LAN Authentication Issue #8: [COMPLIANCE]
+
+  When the authentication algorithm is HMAC-MD5-128 and the password
+  is greater than 16 bytes, the Intel BMC incorrectly truncates the
+  password to 16 bytes when generating keys, leading to invalid keys.
+
+  Seen on: Intel SE7520AF2 with Intel Server Management Module
+  (Professional Edition)
+
+  Resolution: Workaround option added to inform software to adjust the
+  password when authenticating.
+
+LAN Authentication Issue #9: [COMPLIANCE]
+
+  During the RAKP4 response, the integrity check value is incorrectly
+  calculated based on the integrity algorithm instead of the
+  authentication algorithm.
+
+  Seen on: Intel SE7520AF2 with Intel Server Management Module
+  (Professional Edition)
+
+  Resolution: Workaround option added to inform software to look for
+  and handle this situation.
+
+LAN Authentication Issue #10: [COMPLIANCE]
+
+  During the RAKP3 request, the name_only_lookup field must be
+  disabled, it cannot be enabled.
+
+  Seen on: Intel SE7520AF2 with Intel Server Management Module
+  (Professional Edition)
+
+  Resolution: Workaround option added to inform software to disable
+  the field.
+  
+LAN Authentication Issue #11: [COMPLIANCE]
+
+  Cipher suite IDs are are incorrectly attached to specific privilege
+  levels rather than a maximum privilege level limit.  So you can only
+  authenticate at the configured privilege level rather than a
+  privilege level <= to it.
+
+  Seen on: Undocumented Motherboard
+
+  Resolution: By passing IPMI_PRIVILEGE_LEVEL_HIGHEST_LEVEL during the
+  session establishment instead of the specific privilege level, the
+  problem is avoided.
+
+  Notes: Undocumented motherboard was an early Tyan motherboard with
+  IPMI 2.0 support, but never documented which one (achu).
+
+LAN Authentication Issue #12: [COMPLIANCE]
+
+  During a RAKP2 response, the key exchange authentication code is the
+  wrong length.
+
+  Seen on: Sun Fire 4100 with ILOM
+
+  Resolution: Workaround option added to inform software to handle the
+  invalid length.
+
+LAN Authentication Issue #13: [COMPLIANCE]
+
+  The remote BMC incorrectly calculates keys using the privilege
+  specified in the open session stage rather than the privilege used
+  during the RAKP1 stage.  This can be problematic if you specify
+  IPMI_PRIVILEGE_LEVEL_HIGHEST_LEVEL during that stage instead of a
+  specific privilege level (i.e. operator).
+
+  Seen on: Sun Fire X4150, Inventec 5441/Dell Xanadu II, Supermicro
+  X8DTH, Supermicro X8DTG, Supermicro X8DTU, Intel S5500WBV/Penguin
+  Relion 700, Intel S2600JF/Appro 512X, Quanta QSSC-S4R/Appro
+  GB812X-CN
+
+  Resolution: Workaround option added to inform software to pass a
+  specific privilege level instead of
+  IPMI_PRIVILEGE_LEVEL_HIGHEST_LEVEL.
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5441/Dell
+  Xanadu II.  Due to legacy, vendor reports will not fix on Intel
+  S5500WBV/Penguin Relion 700 and Intel S2600JF/Appro 512X.
+
+LAN Authentication Issue #14: [COMPLIANCE]
+
+  Given specific configuration of IPMI 1.5 authentication types,
+  certain user privileges are not specified correctly during Get
+  Authentication Capabilities and a CCh = "Invalid data field in
+  request" is returned during Activiate Session.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5441/Dell
+  Xanadu II.
+
+LAN Authentication Issue #15: [COMPLIANCE]
+
+  Disabling a specific cipher suite ID does not prohibit a user from
+  continuing to use that cipher suite ID.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU, MSI MS-91D2, Intel
+  Windmill, Quanta Winterfell, Wiwynn Windmill
+
+  Resolution: None
+
+LAN Authentication Issue #16: [COMPLIANCE]
+
+  Cipher suites 0 fails to authenticate.  During the RAKP4
+  communication, an integrity key is returned, when it in fact should
+  be 0 length.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU, Intel S5500WBV/Penguin
+  Relion 700, Intel S2600JF/Appro 512X
+
+  Resolution: Workaround option added to inform software to ignore the
+  non-zero length field.
+
+  Notes: Confirmed fixed in newer firmware for Supermicro X8DTG,
+  Supermicro X8DTU, Intel S2600JF/Appro 512X.
+
+LAN Authentication Issue #17: [COMPLIANCE]
+
+  Cipher suites 7 and 8 fail to establish a session.  Authentication
+  codes are not returned for session packets, therefore packets are
+  dropped as they are viewed as malformed.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro X8DTG,
+  Supermicro X8DTU.
+
+LAN Authentication Issue #18: [COMPLIANCE]
+
+  Cipher suites 11 and 12 fail to establish a session.  Authentication
+  codes returned are incorrect.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro X8DTG,
+  Supermicro X8DTU.
+
+LAN Authentication Issue #19: [IMPLEMENTATION]
+
+  When attempting to authenticate with a disabled Cipher Suite ID, a
+  0Ah status ("Unauthorized role or privelege level requested.") is
+  returned instead of 11h ("No Cipher Suite match with proposed
+  security algorithms.").  The resulting error message is confusing.
+
+  Seen on: Supermicro X8DTG
+
+  Resolution: None
+
+LAN Authentication Issue #20: [IMPLEMENTATION]
+
+  When attempting to authenticate with a disabled Cipher Suite ID, a
+  12h status ("Illegal or Unrecognized parameter.") is returned
+  instead of 11h ("No Cipher Suite match with proposed security
+  algorithms.").  The resulting error message is confusing.
+
+  Seen on: MSI MS-91D2
+
+  Resolution: None
+
+LAN Authentication Issue #21: [COMPLIANCE]
+
+  The tag bits for some of the cipher records are wrong.
+
+  Seen on: Sun Fire 4100 with ILOM
+
+  Resolution: Workaround added to parse unique cipher suite records.
+
+LAN Authentication Issue #22: [COMPLIANCE]
+
+  The motherboard reports support of Cipher Suite ID 15, however when
+  attemption authenticate with it, it is reported as unsupported.
+
+  Seen on: Intel S2600JF/Appro 512X
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware.
+
+LAN Authentication Issue #23: [COMPLIANCE]
+
+  The motherboard allows IPMI 1.5 authentication when > 16 byte
+  passwords are configured.  It appears the motherboard allows users
+  to authenticate using the 16 byte equivalent truncated password.
+  This violates the text in Table 22-35, which states "A password that
+  has been stored as a 20-byte password cannot be used for
+  establishing an IPMI v1.5 session."
+
+  Seen on: Supermicro X8DTG-D 
+
+LAN Authentication Issue #24: [COMPLIANCE]
+
+  When activating a session, the remote system requires that the
+  "maximum privilege requested" specified in the request be identical
+  to the maximum set for a user.  It cannot be less than it.  When
+  this occurs, an error of 0xD4 ("Cannot execute command due to
+  insufficient privilege level") is unexpectedly returned.
+
+  Seen on: Xyratex HB-F8-SRAY
+
+  Resolution: Specify specific privilege level to workaround this
+  issue.
+
+LAN Authentication Issue #24: [COMPLIANCE]
+
+  When authenticating with the 'straight password key' authentication
+  type, all responses from a session contain an empty authentication
+  code.
+
+  Seen on: Xyratex HB-F8-SRAY
+
+  Resolution: Workaround added to ignore these invalid authentication
+  codes.
+
+LAN Authentication Issue #25: [COMPLIANCE]
+
+  Cannot authenticate with a user without assigning privilege limit of
+  Administrator.
+
+  Seen on: Xyratex HB-F8-SRAY
+
+  Resolution: None
+
+LAN Authentication Issue #26: [COMPLIANCE]
+
+  Cannot authenticate with IPMI 1.5, authentication code generated
+  incorrectly.
+
+  Seen on: Intel Windmill, Quanta Winterfell, Wiwynn Windmill
+
+  Resolution: Workaround added to ignore these invalid authentication
+  codes.
+
+----------------------------------------------------------------------
+
+----------------------
+| LAN Session Issues |
+----------------------
+
+----------------------------------------------------------------------
+
+LAN Session Issue #1: [COMPLIANCE]
+
+  There is no response from the IPMI close command if a RESET is
+  executed.
+
+  Seen on: Intel SR870BN4/Tiger 4
+
+  Resolution: Workaround added to close session without waiting for
+  response.
+
+LAN Session Issue #2: [COMPLIANCE]
+
+  After the IPMI session is brought up, packet responses return empty
+  session IDs (i.e. 00000000h) to the client.
+
+  Seen on: Tyan S2882 with m3289 BMC
+
+  Resolution: Workaround option added to inform software to accept
+  empty session IDs.
+  
+  Notes: Problem is reported to be fixed in newer firmware for Tyan
+  S2882 with m3289 BMC.
+
+LAN Session Issue #3: [COMPLIANCE]
+
+  When Per-Message Authentication is disabled, packet responses
+  contain non-null authentication data when they should be null.
+
+  Seen on: Dell PowerEdge 2850, Dell Poweredge SC1425
+
+  Resolution: Workaround option added to verify unexpected non-null
+  authentication codes as though they were expected.
+
+  Notes: Confirmed fixed in newer firmware for Dell PowerEdge 2850,
+  Dell Poweredge SC1425.
+
+LAN Session Issue #4: [COMPLIANCE]
+
+  The remote BMC will advertise that Per Message Authentication is
+  disabled, but actually require it for the protocol. 
+
+  Seen on: IBM eServer 325
+
+  Resolution: Workaround option added to inform software to use Per
+  Message Authentication no matter what is advertised by the remote
+  BMC.
+
+  Notes: Differs from Session Issue #5 below in resolution.
+
+LAN Session Issue #5: [COMPLIANCE]
+
+  The remote BMC will advertise that Per Message Authentication is
+  disabled, but actually require it for the protocol.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: Workaround added to notice this condition and re-enable
+  Per Message Authentication.
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+LAN Session Issue #6: [COMPLIANCE]
+
+  Session sequence numbers have the wrong endian during IPMI 1.5
+  sessions.
+
+  Seen on: Sun Fire 4100 with ILOM
+
+  Resolution: Workaround option added to inform software to handle
+  incorrect endian sequence numbers.
+
+LAN Session Issue #7: [COMPLIANCE]
+
+  LAN session headers contain invalid checksums.
+
+  Seen on: Supermicro X9SCM-iiF, Supermicro X9DRi-F, Supermicro X9DRFR
+
+  Resolution: Workaround option added to inform software to ignore bad
+  checksums.
+
+----------------------------------------------------------------------
+
+--------------
+| SDR Issues |
+--------------
+
+----------------------------------------------------------------------
+
+SDR Issue #1: [COMPLIANCE]
+
+  The record count reported by a Get SDR Repository Info command is
+  not consistent to the number of records that exist on the
+  motherboard.
+
+  Seen on: Fujitsu RX 100, Fujitsu RX300/200-S8
+
+  Resolution: Workaround added to recognize situation and adjust count.
+
+SDR Issue #2: [COMPLIANCE]
+
+  The record ID returned from a Get SDR Record command is sometimes
+  different from the record ID passed in.
+
+  Seen on: Supermicro X6-DHR-1G with BMC2.0 daughter card
+
+  Resolution: No resolution in FreeIPMI required.  Resolved in
+  IPMItool with workaround to detect issue and use input record ID
+  instead of output record ID.
+
+SDR Issue #3: [COMPLIANCE]
+
+  When reading a SDR record, sometimes records list an invalid excess
+  number of bytes.  For example, the SDR record is 15 bytes long, but
+  a record of length 20 is indicated.
+
+  Seen on: HP Proliant DL585G7
+
+  Resolution: Workaround added to adjust and handle the correct length
+  of the record.
+
+SDR Issue #4: [COMPLIANCE]
+
+  When reading SDR records, the SDR last record id record is not
+  implemented, leading to errors when reading the SDR.
+
+  Seen on: Unspecified Inspur motherboard
+
+  Resolution: Workaround added to stop reading records after
+  recognized max.
+
+SDR Issue #5: [COMPLIANCE]
+
+  When reading an entire SDR record (with
+  IPMI_SDR_READ_ENTIRE_RECORD_BYTES_TO_READ) the response returns
+  fewer bytes than the actual length of the record.  This leads to
+  issues later during SDR caching.  When reading SDR records with
+  partial reads, things work correctly.
+
+  Seen on: Xyratex HB-F8-SRAY
+
+  Resolution: Workaround added to detect issue and do parital reads
+  instead.
+
+SDR Issue #6: [COMPLIANCE]
+
+  Retrieving sensors results in a "IPMI Internal Error" b/c a "Get SDR
+  Repository Info" command is not supported on the motherboard
+  (completion code 0xC1).
+
+  Seen on: Artesyn ATCA-7367
+
+  Resolution: None
+
+SDR Issue #7: [COMPLIANCE]
+
+  Retrieving sensors results in a "IPMI Internal Error" b/c a "Reserve
+  SDR Repository" command is not supported on the motherboard
+  (completion code 0xC1).
+
+  Seen on: Artesyn ATCA-7367
+
+  Resolution: None
+
+----------------------------------------------------------------------
+
+--------------------------
+| Serial-Over-LAN Issues |
+--------------------------
+
+----------------------------------------------------------------------
+
+Serial-Over-LAN Issue #1: [COMPLIANCE]
+
+  Serial breaks are not supported/do not work.
+
+  Seen on: Undocumented Motherboard
+
+  Resolution: None
+
+  Notes: Undocumented motherboard was an early Tyan motherboard with
+  IPMI support 2.0, but I never documented which one (achu).
+
+Serial-Over-LAN Issue #2: [COMPLIANCE]
+
+  SOL payload sizes are reported incorrectly.
+
+  Seen on: Asus P5M2, Asus P5MT-R, Asus S162-E4, Asus RX4, Intel
+  SR1520ML, Intel X38ML, Inventec 5441/Dell Xanadu II, Supermicro
+  X8DTH, Supermicro X8DTH-iF, Supermicro X8DTG, Supermicro X8DTU,
+  Quanta QSSC-S4R/Appro GB812X-CN, Intel S5500WBV/Penguin Relion 700
+
+  Resolution: Workaround option added to inform software to ignore
+  payload size checks and assume reasonable maximums.
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5441/Dell
+  Xanadu II.  Problem is reported to be fixed in newer firmware for
+  Supermicro X8DTH-iF.
+
+Serial-Over-LAN Issue #3: [COMPLIANCE]
+
+  A non-default SOL port is specified but not functional.
+
+  Seen on: Asus P5M2, Asus P5MT-R
+
+  Resolution: Workaround option added to inform software to ignore the
+  non-default port and assume the default SOL port is still used.
+
+Serial-Over-LAN Issue #4: [COMPLIANCE]
+
+  The Get Channel Payload Support command is not supported.
+
+  Seen on: Sun Fire 4100 with ILOM, Intel Windmill, Quanta Winterfell,
+  Wiwynn Windmill
+
+  Resolution: Workaround option added to inform software to skip this
+  point in the SOL state machine.
+
+  Notes: This command is optional in the IPMI spec, it is not optional
+  if SOL is supported.
+
+Serial-Over-LAN Issue #5: [COMPLIANCE]
+
+  SOL sessions are not deactivated after a Deactivate Payload request,
+  despite the response indicating success.  This could lead to a loop
+  that continually believes a SOL session is active, tries to
+  deactivate it, believes it is deactivated, then checks again if it
+  is active.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: Code added to error after a number of failed deactivations.
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.  This is similar to issue #17 below.
+
+Serial-Over-LAN Issue #6: [COMPLIANCE]
+
+  When a new IPMI session is started and steals the SOL session from a
+  previous one, the initial SOL session is not sent a "SOL is
+  deactivating" flag in a "BMC to Remote Console" packet.  The initial
+  IPMI session should eventually time out, but the closing is not
+  clean.
+
+  In some cases, the IPMI session may "stay alive" and it is only
+  serial data that may time out, leading to a situation that may be
+  very similar to Serial-Over-LAN Issue #8.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card, Inventec
+  5441/Dell Xanadu II, Inventec 5442/Dell Xanadu III, Dell Poweredge
+  R610, Dell Poweredge R710, Quanta S99Q/Dell FS12-TY, Supermicro
+  X8DTG, Supermicro X8DTU, Intel S2600JF/Appro 512X, Quanta
+  QSSC-S4R/Appro GB812X-CN, Wistron / Dell Poweredge C6220. 
+ 
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card, Inventec 5441/Dell Xanadu II, Inventec
+  5442/Dell Xanadu III.
+
+Serial-Over-LAN Issue #7: [IMPLEMENTATION]
+
+  During a reboot, SOL packets appear to be temporarily internally
+  dropped.  This leads to a large increase in sequence numbers once
+  the SOL session is "re-connected".  While the SOL session is
+  technically alive, the inability to predict/handle the sequence
+  number jump makes the SOL session difficult to handle, as you cannot
+  determine if packets are proper retransmissions or not.
+
+  Seen on: Tyan S4811 with SMDC daughter card
+
+  Resolution: Code added to error after a number of consecutive
+  invalid packets are received.
+
+Serial-Over-LAN Issue #8: [IMPLEMENTATION]
+
+  After a reboot, the SOL session appears to "disconnect" from the
+  motherboard's serial chip.  While the IPMI/SOL session is
+  technically alive, and character data input from the user is
+  accepted by the remote BMC, no character data is sent back from the
+  remote motherboard.  The SOL session is subsequently useless.
+
+  Seen on: Intel SR1520ML, Intel X38ML
+
+  Resolution: The SOL session must be closed and restarted.  Code to
+  implement "serial NUL pings" may aid software in detecting this
+  situation more quickly.
+
+Serial-Over-LAN Issue #9: [COMPLIANCE]
+
+  The Activate Payload requires the "BMC asserts CTS and DCD/DSR to
+  baseboard upon activation" flag to be set, it is not optional.
+
+  Seen on: Undocumented Motherboard
+
+  Resolution: None
+
+  Notes: Undocumented motherboard is an Intel motherboard.
+
+Serial-Over-LAN Issue #10: [IMPLEMENTATION]
+
+  If the remote system requires encryption, but the user attempts to
+  connect without encryption, an error response other than "Cannot
+  activate payload without encryption" is returned.  The resulting
+  error message is confusing.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5441/Dell
+  Xanadu II.
+
+Serial-Over-LAN Issue #11: [COMPLIANCE]
+
+  The Get Payload Activation Status command is not implemented
+  correctly.  The completion code CCh = "Invalid data field in
+  request" is returned when attempted.
+
+  Seen on: Supermicro X8SIL-F
+
+  Resolution: Workaround option added to inform software to skip this
+  point in the SOL state machine.
+
+  Notes: Problem is reported to be fixed in newer firmware for
+  Supermicro X8SIL-F.
+
+Serial-Over-LAN Issue #12: [COMPLIANCE]
+
+  The reported SOL port is specified w/ the wrong endian.
+
+  Seen on: Supermicro X8DTH-iF
+
+  Resolution: Workaround option added to inform software to ignore the
+  non-default port and assume the default SOL port is still used.
+
+  Notes: Problem is reported to be fixed in newer firmware for
+  Supermicro X8DTH-iF.
+
+Serial-Over-LAN Issue #13: [COMPLIANCE]
+
+  The Get Payload Activation Status command does not correctly report
+  if a previous SOL session was created.
+
+  Seen on: Quanta S99Q/Dell FS12-TY
+
+  Resolution: None
+
+Serial-Over-LAN Issue #14: [COMPLIANCE]
+
+  SOL appears to be allowed regardless of SOL being enabled / disabled
+  or a user being enabled / disabled for SOL access.
+
+  Seen on: MSI MS-91D2
+
+  Resolution: None
+ 
+Serial-Over-LAN Issue #15: [COMPLIANCE]
+
+  The Activate / Deactivate Payload commands appear to require Admin
+  privileges, regardless of how SOL support is configured.  The IPMI
+  specification indicates privilege requirements for executing these
+  commands depends on configuration.
+
+  Seen on: MSI MS-91D2
+
+  Resolution: None
+
+Serial-Over-LAN Issue #16: [COMPLIANCE]
+
+  The number of SOL payload instances that can simultaneously be
+  activated on a motherboard is always reported as 0, suggesting that
+  it cannot be activated.
+
+  Seen on: Dell Poweredge M605, Dell Poweredge M610, Dell Poweredge
+  M915
+
+  Resolution: Workaround added to assume the instance capacity is
+  really 1 when it is 0.  The assumption is made that the vendor does
+  not support multiple instances, which is why it is reported as 0.
+
+Serial-Over-LAN Issue #17: [COMPLIANCE] or [IMPLEMENTATION]
+
+  SOL sessions are not deactivated after a Deactivate Payload request.
+  Despite the SOL session being active, it appears the BMC does not
+  know it is activated, and returns "Payload already deactivated"
+  (0x80) completion code.  This could lead to a loop that continually
+  believes a SOL session is activated when calling Activate Payload,
+  and deactivated when calling Deactivate Payload.
+  
+  Seen on: Dell Poweredge M605, Dell Poweredge M610, Dell Poweredge
+  M915
+
+  Notes: It is possible the Dell BMC does not allow a SOL payload
+  deactivation except for the IPMI session that activated the SOL
+  payload.  While deactivation of a payload from another IPMI session
+  is allowed in IPMI (see Table 15-2 [2]), I am not sure if it is
+  required.  So I'm listing this as [COMPLIANCE] or [IMPLEMENTATION].
+  This is similar to issue #5 above.
+
+Serial-Over-LAN Issue #18: [COMPLIANCE]
+
+  SOL is always reported to have an active session in progress, so no
+  SOL session can be created.  This includes after a deactivate
+  payload completes successfully.
+
+  It is possible this motherboard does not support SOL.  However, it
+  should indicate that early in the session setup (perhaps via the Get
+  Channel Payload Support request).
+
+  Seen on: Xyratex HB-F8-SRAY
+
+  Resolution: None
+
+Serial-Over-LAN Issue #19: [COMPLIANCE]
+
+  SOL payload instances are not completely independent of each other.
+  Deactivate of SOL payload instance #X may deactivate a different SOL
+  payload instance #Y.
+
+  Seen on: Supermicro X8DTG-D, Inventec 5442/Dell Xanadu III
+  Resolution: None 
+
+Serial-Over-LAN Issue #20: [COMPLIANCE]
+
+  The Activate Payload requires Serial/modem alerts to be deferred
+  instead of failed even though motherboards do not have serial/modem
+  ports to communicate over.
+
+  Seen on: Intel Windmill, Quanta Winterfell, Wiwynn Windmill
+
+  Resolution: Workaround added to defer serial alerts.
+
+Serial-Over-LAN Issue #21: [COMPLIANCE]
+
+  The BMC occassionally gets stuck and an increase in the SOL packet
+  sequence number is required to get the machine unstuck.
+
+  Seen on: Intel Windmill, Quanta Winterfell, Wiwynn Windmill
+
+  Resolution: Workaround added to increase sequence number on severe
+  situations.
+
+----------------------------------------------------------------------
+
+---------------------------------
+| BMC/IPMI Configuration Issues |
+---------------------------------
+
+----------------------------------------------------------------------
+
+BMC/IPMI Configuration Issue #1: [COMPLIANCE]
+
+  BMC requires that a password must be passed to the Set User Password
+  command even if you are just trying to enable/disable a user.  The
+  IPMI specification explicitly states that the password is optional
+  when enabling/disabling a user.
+
+  Seen on: Sun X4140, Intel Windmill, Quanta Winterfell, Wiwynn Windmill
+
+  Resolution: Workaround added to detect this situation and retry with
+  a dummy password.
+
+BMC/IPMI Configuration Issue #2: [COMPLIANCE]
+
+  Users cannot be enabled/disabled via Set User Password.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+BMC/IPMI Configuration Issue #3: [COMPLIANCE]
+
+  Test passwords via Set User Password not supported.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+BMC/IPMI Configuration Issue #4: [COMPLIANCE]
+
+  SOL privilege level, Character Send Threshold, SOL Retry Count, and
+  SOL Retry interval cannot be modified.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+BMC/IPMI Configuration Issue #5: [COMPLIANCE]
+
+  User access parameters "Enable IPMI Msgs" and "Privilege Limit" are
+  not changeable via Set User Access.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+BMC/IPMI Configuration Issue #6: [COMPLIANCE] [CONFIG-1]
+
+  Default Channel configuration has a privilege limit of OEM even
+  though motherboard does not support an OEM privilege.  Attempts to
+  modify sub-fields "piecemeal" within the Set Channel Access command
+  fail a parameter out of range error (0xC9).
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+BMC/IPMI Configuration Issue #7: [COMPLIANCE]
+
+  Setting a channel privilege limit (e.g. LAN channel privilege limit)
+  does not affect authentication and/or execution of IPMI commands
+  over LAN.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card, Inventec
+  5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Supermicro H8QME with
+  SIMSO daughter card.
+
+BMC/IPMI Configuration Issue #8: [IMPLEMENTATION]
+
+  When commiting/writing large amounts of configuration data, some
+  data does not get stored or written properly.  It appears that the
+  BMC may lose data if overwhelmed with data written to the BMC.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card, Quanta S99Q/Dell
+  FS12-TY
+
+  Resolution: Workaround option added to inform software to slow down
+  writing of data.
+
+BMC/IPMI Configuration Issue #9: [COMPLIANCE]
+
+  The ability to authenticate under standard IPMI 1.5 authentication
+  types (i.e. MD5) OEM authentication to be enabled.  It appears to be
+  an internal logic error on the motherboard.
+
+  Seen on: Tyan S4811 with SMDC daughter card
+
+  Resolution: OEM authentication must be enabled in the BMC
+  configuration.
+
+BMC/IPMI Configuration Issue #10: [IMPLEMENTATION]
+
+  Get Username and Get User Payload commands fail with CCh = "Invalid
+  data field in request" if a username was not set previously.
+
+  Seen on: Sun X4140, Inventec 5441/Dell Xanadu II
+
+  Resolution: Workaround added to notify user to configure username
+  first.
+
+BMC/IPMI Configuration Issue #11: [IMPLEMENTATION]
+
+  User access parameters "Enable IPMI Msgs" and "Privilege Limit" are
+  not changeable via Set User Access until a username has been set.
+
+  Seen on: Inventec 5441/Dell Xanadu II, Supermicro X8DTH, Intel
+  S5500WBV/Penguin Relion 700
+
+  Resolution: Workaround added to notify user to configure username
+  first.
+
+BMC/IPMI Configuration Issue #12: [COMPLIANCE]
+
+  When disabling LAN IPMI via Set User Access "Enable IPMI Msgs", IPMI
+  over LAN still works for a user.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5441/Dell
+  Xanadu II.
+
+BMC/IPMI Configuration Issue #13: [COMPLIANCE]
+
+  Setting Non-volatile settings also changes Volatile settings for
+  channel configuration via Set Channel Access.
+
+  Seen on: Inventec 5441/Dell Xanadu II, Intel S5500WBV/Penguin Relion
+  700, Supermicro X8DTH
+  
+  Resolution: None
+
+BMC/IPMI Configuration Issue #14: [COMPLIANCE]
+
+  ARP response configuration is not functional even though the BMC ARP
+  response is available.
+
+  Seen on: Inventec 5441/Dell Xanadu II, Dell Poweredge R610, Dell
+  Poweredge R710
+
+  Resolution: None
+
+  Notes: This command is optional in the IPMI spec, but it is not
+  optional if ARP response is supported (see Table 23-4 [2]).
+  Confirmed fixed in newer firmware for Inventec 5441/Dell Xanadu II.
+
+BMC/IPMI Configuration Issue #15: [COMPLIANCE]
+
+  Setting a password using IPMI 2.0 extensions (i.e. up to 20 bytes in
+  length) does not work.
+
+  Seen on: Undocumented Motherboard
+
+  Resolution: User must configure password using IPMI 1.5 formatted
+  payloads.
+
+BMC/IPMI Configuration Issue #16: [IMPLEMENTATION]
+
+  User cannot be enabled/disabled until after a non-null password has
+  been configured.
+
+  Seen on: Dell Poweredge R610, Dell Poweredge R710, Wistron / Dell
+  Poweredge C6220.
+
+  Resolution: Workaround added to re-try enable/disable user after
+  password set.
+
+BMC/IPMI Configuration Issue #17: [COMPLIANCE] [CONFIG-1]
+
+  Default Authentication Type Enables configure several OEM
+  authentications on.  However, the motherboard does not support these
+  OEM authentications, and any "piecemeal" configuration of the
+  remaining sub-fields results in a bad parameter completion code
+  (0xCC).
+
+  Seen on: Dell Poweredge R610, Dell Poweredge R710
+
+  Resolution: Workaround added to notice this circumstance and attempt
+  to configure fields simultaneously.
+
+BMC/IPMI Configuration Issue #18: [IMPLEMENTATION]
+
+  Read only fields return an error code of 0xD5 (request parameter not
+  supported) instead of 0x82 (read only parameter).  The resulting
+  error message is confusing.
+
+  Seen on: Dell Poweredge R610, Dell Poweredge R710
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #19: [COMPLIANCE]
+
+  User IPMI messaging being enabled/disabled does not affect
+  authentication and/or execution of IPMI commands for the user.
+
+  Seen on: Dell Poweredge R610, Dell Poweredge R710
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #20: [COMPLIANCE]
+
+  Configuring the Subnet Mask will also lead to the "Default Gateway
+  IP Address" to be configured.  It appears to be some type of memory
+  corruption on the motherboard firmware.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #21: [IMPLEMENTATION]
+
+  Several configuration fields, most notably several SOL configuration
+  fields, are stored in volatile memory rather than non-volatile
+  memory.  These particular configuration fields were not required by
+  IPMI to be stored in non-volatile memory, but ultimately is an issue
+  b/c it requires users to reconfigure IPMI on every system boot.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: Resolved/enhanced in newer firmware for Inventec 5441/Dell
+  Xanadu II.
+
+BMC/IPMI Configuration Issue #22: [COMPLIANCE]
+
+  Gratuitous ARP configuration can be enabled, but is not available on
+  the system.
+
+  Seen on: Quanta S99Q/Dell FS12-TY
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #23: [COMPLIANCE]
+
+  MAC address is read only, but motherboard does not return read-only
+  error when changing the MAC address.  This leads the user to believe
+  MAC address can be configured.
+
+  Seen on: Quanta S99Q/Dell FS12-TY
+ 
+  Resolution: None
+
+BMC/IPMI Configuration Issue #24: [COMPLIANCE]
+
+  IPMI over LAN functions only if ARPs are enabled.  If ARPs are
+  disabled and you choose to store the MAC address locally in an ARP
+  cache, IPMI over LAN will still not function.
+
+  Seen on: Quanta S99Q/Dell FS12-TY
+
+  Resolution: None
+ 
+BMC/IPMI Configuration Issue #25: [IMPLEMENTATION]
+
+  A default username cannot be changed.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU, Intel S5500WBV/Penguin Relion 700 
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #26: [COMPLIANCE]
+
+  User access parameters configured via Set User Access do not work
+  for some users.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #27: [COMPLIANCE]
+
+  Cipher Suites 6, 7, 8, 11, and 12 are not available on the board,
+  but their Cipher Suite's Maximum Privilege Level are configurable,
+  suggesting to the user they are available.
+
+  Seen on: Supermicro X8DTG, Supermicro X8DTU
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #28: [COMPLIANCE]
+
+  Multiple LAN Channels exist, however when asking the BMC how many
+  SOL Channels there are, it indicates only 1.  Generally speaking,
+  this need not be a bug.  However, for this particular motherboard it
+  is.
+
+  Seen on: Intel S5500WBV/Penguin Relion 700
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #29: [COMPLIANCE]
+
+  The number of entries returned from a RMCP+ Messaging Cipher Suite
+  Privilege Levels request is not valid.  Not only is it not valid,
+  the number of entries does not even match the number of entries
+  specified by a RMCP+ Messaging Cipher Suite Entry Support Count
+  request.
+
+  Seen on: HP DL145
+
+  Resolution: Workaround added to not output a privilege if one is not
+  available.
+
+BMC/IPMI Configuration Issue #30: [COMPLIANCE]
+
+  Cipher Suite 1-16 are listed as supported instead of cipher suites
+  0-15.
+
+  Seen on: Intel S2600JF/Appro 512X
+
+  Resolution: Workaround added to detect this specific situation and
+  adjust appropriately.
+
+  Notes: Confirmed fixed in newer firmware.
+
+BMC/IPMI Configuration Issue #31: [IMPLEMENTATION]
+
+  Some new IPMI configuration are not accepted by the BMC until after
+  a system reboot is done.  
+
+  Seen on: Dell Poweredge R610, Dell Poweredge R710, Inventec
+  5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: A cold reset of the BMC is sufficient to resolve this issue
+  on Inventec 5441/Dell Xanadu II without rebooting the machine.
+
+BMC/IPMI Configuration Issue #32: [COMPLIANCE]
+
+  Motherboard errors out with unspecified password when trying to set
+  a new user password (completion code 0x8F).
+
+  Seen on: Wistron / Dell Poweredge C6220 
+
+  Resolution: None
+
+  Notes: Motherboard has internal password requirements leading to
+  error.
+
+BMC/IPMI Configuration Issue #33: [COMPLIANCE]
+
+  When retrieving boot flags via Get System Boot Options, the response
+  payload under IPMI 2.0 contains an extra 12 bytes of
+  unknown/unspecified data.
+
+  Seen on: HP DL380 G5
+
+  Resolution: None 
+
+BMC/IPMI Configuration Issue #34: [COMPLIANCE]
+
+  Many configuration options return "Parameter Not Supported" (0x80)
+  when attempting to set a value, but do not when the parameter is
+  being read.  It is likely the firmware writers meant that the
+  parameter was read only (0x82).
+
+  Seen on: Xyratex HB-F8-SRAY
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #35: [COMPLIANCE]
+
+  User #1 cannot be enabled/disabled.  It is permanently enabled.
+
+  Seen on: Supermicro X10DDW-i 
+
+  Resolution: None
+
+BMC/IPMI Configuration Issue #36: [COMPLIANCE] [CONFIG-1]
+
+  Default user privilege limit is RESERVED.  Attempts to
+  modify sub-fields "piecemeal" within the Set User Access command
+  fail.
+
+  Seen on: Supermicro X10DDW-i
+
+  Resolution: Workaround added to work around this situation.
+
+BMC/IPMI Configuration Issue #37: [COMPLIANCE]
+
+  IPMI LAN session w/ IPMI 1.5 times out after changing a user
+  password within the LAN session.
+
+  Seen on: Supermicro X9DRT-HF+
+
+  Resolution: It appeared that this motherboard was still accepting
+  request packets using the old Password for the authentication hash
+  but was responding with packets using the new Password for the hash.
+  Ignoring the authentication code of response packets was sufficient
+  to work around the problem.  It was also discovered communicating
+  with IPMI 2.0 worked and did not exhibit this problem.
+
+----------------------------------------------------------------------
+
+-------------------------------------------------------
+| Platform Event Filtering (PEF) Configuration Issues |
+-------------------------------------------------------
+
+----------------------------------------------------------------------
+
+Platform Event Filtering Configuration Issue #1: [IMPLEMENTATION] [CONFIG-1]
+
+  Alert Policy configurations cannot be configured "piecemeal".  If
+  all fields are not configured perfectly and simultaneously, every
+  configuration will result in a completion code of 0xCC (Invalid data
+  field in Request).
+
+  Seen on: Inventec 5441/Dell Xanadu II, Fujitsu RX 100
+
+  Resolution: Workaround added to notice this circumstance and attempt
+  to configure fields simultaneously.
+
+----------------------------------------------------------------------
+
+---------------------------------------
+| Field Replaceable Unit (FRU) Issues |
+---------------------------------------
+
+----------------------------------------------------------------------
+
+Field Replaceable Unit Issue #1: [COMPLIANCE]
+
+  Some FRU data has invalid checksums.
+
+  Seen on: Undocumented Motherboard, Inventec 5441/Dell Xanadu II,
+  Dell Poweredge R610, Dell Poweredge R710,
+
+  Resolution: Workaround option added to inform software to not check
+  checksums.
+
+  Notes: Undocumented motherboard was an Intel Tiger motherboard, but
+  never documented which one (achu).
+
+Field Replaceable Unit Issue #2: [IMPLEMENTATION]
+
+  A FRU Chassis Info Area reports an unspecified chassis type.
+
+  Seen on: Quanta S99Q/Dell FS12-TY
+
+  Resolution: None 
+
+----------------------------------------------------------------------
+
+------------------
+| Sensors Issues |
+------------------
+
+----------------------------------------------------------------------
+
+Sensors Issue #1: [COMPLIANCE]
+
+  Some sensors don't return a sensor state (16 bit field) although
+  only half of the sensor state (8 bit field) is optional.
+
+  Seen on: Dell 2950, Inventec 5441/Dell Xanadu II
+
+  Resolution: Workaround added to assume sensor state is 0 when this
+  occurs.
+
+Sensors Issue #2: [COMPLIANCE]
+
+  Some sensors return sensor states that are illegal.  For example, a
+  sensor state of 0x40 is returned, but 0x1 through 0x20 are the only
+  legal ones.
+
+  Seen on: Dell 2950, SuperMicro X9DRI-LN4F+
+
+  Resolution: Workaround added to ignore invalid sensor states.
+
+Sensors Issue #3: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return
+  IPMI_COMP_CODE_REQUEST_SENSOR_DATA_OR_RECORD_NOT_PRESENT (0xCB)
+  completion codes for unknown reasons.
+
+  Seen on: Dell 2950
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #4: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return
+  IPMI_COMP_CODE_COMMAND_ILLEGAL_FOR_SENSOR_OR_RECORD_TYPE (0xCD) for
+  unknown reasons.
+
+  Seen on: Sun V20Z
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #5: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return IPMI_COMP_CODE_PARAMETER_OUT_OF_RANGE (0xC9)
+  completion codes for unknown reasons.
+
+  Seen on: Dell 2650
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #6: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return IPMI_COMP_CODE_COMMAND_CANNOT_RESPOND (0xCE)
+  completion codes for unknown reasons.
+
+  Seen on: HP ProLiant DL145 G2
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #7: [COMPLIANCE]
+
+  The Get Sensor Event Enable command always returns "sensor scanning
+  disabled" bit, even if sensor scanning is not disabled.
+
+  Seen on: Sun X4140
+
+  Resolution: None
+
+Sensors Issue #8: [COMPLIANCE]
+
+  Several sensors have invalid Entity IDs.  In other words, not in the
+  valid Entity ID range or OEM defined range.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None, generic unknown Entity ID type listed.
+
+Sensors Issue #9: [COMPLIANCE]
+
+  Sensor bridging over IPMI 1.5 fails b/c IPMB respones have invalid
+  authentication codes.
+
+  Seen on: Inventec 5441/Dell Xanadu II, Inventec 5442/Dell Xanadu III
+
+  Resolution: Workaround option added to inform software to ignore
+  authentication codes in response packets.
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5442/Dell
+  Xanadu III.
+
+Sensors Issue #10: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return IPMI_COMP_CODE_REQUEST_PARAMETER_NOT_SUPPORTED
+  (0xD5) completion codes for unknown reasons.
+
+  Seen on: Sun Fire X4450 w/ ELOM 3.0.0
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #11: [COMPLIANCE]
+
+  Some sensors report invalid event bitmasks.  For example, when the
+  lower critical threshold has not been crossed, the lower critical
+  threshold event bitmask is set.
+
+  Seen on: Intel SR2500, Intel SR1500SAS, Intel S5000PAL
+
+  Resolution: None
+
+Sensors Issue #12: [COMPLIANCE]
+
+  Sensors on the motherboard are owned by the BMC, but the SDR reports
+  that it is not.  Thus, sensor bridging fails.
+
+  Seen on: HP Proliant DL140 G1, Fujitsu RX300, Fujitsu RX300S2
+
+  Resolution: Workaround option added to inform software to assume the
+  sensor owner is the BMC no matter what.
+
+  Notes: Confirmed fixed in newer firmware for Fujitsu RX300, Fujitsu
+  RX300S2.
+
+Sensors Issue #13: [INTERPRETATION] [IMPLEMENTATION]
+
+  Sensors do not assert state bits (i.e. sensor event bitmask)
+  consistently to indicate that a sensor is "doing good".  For
+  example, for a "Power Supply" sensor, offset 00h (i.e. state 0 or
+  bitmask 0x0001) indicates "Presence Detected".  On some motherboards
+  this is considered to be the "good" result to see from a "Power Supply"
+  sensor reading.  On some other motherboards, the motherboards have
+  elected to not return any offset (i.e. no states set or bitmask
+  0x0000) when the power supply is fine, electing to only return an
+  offset when an actual failure occurs.
+
+  Seen on: Various, this is a general issue.
+
+  Resolution: None
+
+Sensors Issue #14: [IMPLEMENTATION]
+
+  Event only sensors are listed in the SDR using a full or compact SDR
+  record.  Software is very likely to believe these are sensors that
+  are readable, leading to non-optimal performance.
+
+  Seen on: Various, this is a general issue.
+
+  Resolution: None
+
+Sensors Issue #15: [INTERPRETATION]
+
+  SDR records for some sensors list an event/reading type code for a
+  discrete sensor, but return an analog reading from a Get Sensor
+  Reading command. (The SDR's analog data format indicates an
+  analog/threshold based sensor, however no threshold limits for the
+  sensor are listed in the SDR.)
+
+  This was discovered when FreeIPMI and IPMItool sensor output
+  mismatched.  In FreeIPMI, ipmi-sensors would report discrete states
+  (e.g. "At or Below (<=) Lower Non-Critical Threshold") without an
+  actual sensor reading (e.g. 100 Watts).  In IPMItool, it would
+  output the sensor reading (e.g. 100 Watts) but invalid/incorrect
+  discrete states.
+
+  IMO, a SDR record that indicates an analog reading w/ a discrete
+  event/reading type code is illegal.  At the minimum it makes no
+  sense.  If you report an analog reading without any treshold
+  information, what is the use?  While it is not explicitly stated in
+  the IPMI specification, this is strongly implied to be wrong.  In
+  42.1, it states for threshold sensors, "The Get Sensor Reading
+  command for a threshold-based sensor contains the present 'analog'
+  reading for the sensor along in addition to the discrete threshold
+  comparison status bit field."
+
+  Seen on: HP Proliant DL380 G7, HP ProLiant ML310 G5
+
+  Resolution: Workaround option added to inform software to read the
+  sensor reading if there are enough hints it may be available.
+
+Sensors Issue #16: [INTERPRETATION]
+
+  The analog data format lists 4 possible conditions: 00b = unsigned,
+  01b = 1's complement, 10b = 2's complement, 11b = does not return
+  analog reading.  This strongly suggests that any SDR entry that does
+  not report an analog reading should set this field to 11b.  However,
+  text below this section states, "If neither thresholds nor analog
+  reading are provided, this field should be written as 00h."  Some
+  vendors set this field to 00b for non-analog sensors, while others
+  set it to 11b.
+
+  Seen on: Various, this is a general issue.
+
+  Resolution: None
+
+Sensors Issue #17: [COMPLIANCE]
+
+  Some sensors report that their sensor scanning is disabled, even
+  though the sensor is actually not.
+
+  Seen on: Dell Poweredge 2900, Dell Poweredge 2950, Dell Poweredge
+  R410, Dell Poweredge R610, HP Integrity rx3600
+
+  Resolution: Workaround option added to inform software to ignore the
+  scanning bit and read a sensor reading regardless of the scanning
+  bits value.
+
+Sensors Issue #18: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return IPMI_COMP_CODE_UNSPECIFIED_ERROR
+  (0xFF) completion codes for unknown reasons.
+
+  Seen on: Sun Blade x6250
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #19: [COMPLIANCE] [SENSORS-1]
+
+  Some sensors return IPMI_COMP_CODE_DESTINATION_UNAVAILABLE (0xD3)
+  completion codes for unknown reasons.
+
+  Seen on: Sun Blade 6000M2
+
+  Resolution: Workaround added to assume sensor not available.
+
+Sensors Issue #20: [IMPLEMENTATION]
+
+  Some sensors are given a unit modifier (i.e. A / B, or A * B) but a
+  modifier unit of unspecified.  This leads to sensors with units
+  like: "C / unspecified".
+
+  Seen on: Wistron / Dell Poweredge C6220
+
+  Resolution: Workaround added to handle corner case.
+
+Sensors Issue #21: [IMPLEMENTATION]
+
+  Some SDR entries report RPM thresholds that are inconsistent
+  and illogical.  For example, a upper critical threshold will be
+  reported that is below the nominal reading.
+
+  Seen on: HP DL140 G3 and HP ML160 G6
+
+  Resolution: None
+
+----------------------------------------------------------------------
+
+---------------------------------
+| System Event Log (SEL) Issues |
+---------------------------------
+
+----------------------------------------------------------------------
+
+System Event Log Issue #1: [COMPLIANCE]
+
+  SEL records incorrectly report the generator_id slave address.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: Workaround added to handle this as a special case and
+  adjust the generator ID appropriately.
+
+System Event Log Issue #2: [COMPLIANCE]
+
+  Different record ids (e.g. 280 vs. 281) can be used to retrieve
+  identical SEL records.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: None
+
+System Event Log Issue #3: [COMPLIANCE]
+
+  The Reserve SEL IPMI command incorrectly requires an Operator
+  privilege Level instead of a User privilege level.
+
+  Seen on: Supermicro H8QME with SIMSO daughter card
+
+  Resolution: Workaround added to simply continue without a
+  reservation ID.
+
+System Event Log Issue #4: [COMPLIANCE]
+
+  The Get SEL Entry command is not supported.
+
+  Seen on: HP DL 585
+
+  Resolution: None
+
+System Event Log Issue #5: [COMPLIANCE]
+
+  Some SEL records report illegal record types.
+
+  Seen on: HP DL 380 G5, Intel S2600JF/Appro 512X
+
+  Resolution: Workaround option added to inform software to assume the
+  record is a normal system event.
+
+System Event Log Issue #6: [IMPLEMENTATION]
+
+  The SEL contains sensor numbers and sensor owner IDs which are not
+  listed in the SDR.  This can lead to an output that contains less
+  useful information.
+
+  Seen on: Inventec 5441/Dell Xanadu II, Sun Fire X4150
+
+  Resolution: None
+
+System Event Log Issue #7: [IMPLEMENTATION]
+
+  SEL events showing a threshold sensor do not properly report if they
+  are going high or going low, which can lead to confusion for
+  users. For example, the following set of events might occur.
+
+  Upper Non-critical - going high ; Sensor Reading = 242.00 W ; Threshold = 240.00 W
+  Upper Non-critical - going high ; Sensor Reading = 180.00 W ; Threshold = 240.00 W
+
+  The following would be preferred
+
+  Upper Non-critical - going high ; Sensor Reading = 242.00 W ; Threshold = 240.00 W
+  Upper Non-critical - going low ; Sensor Reading = 180.00 W ; Threshold = 240.00 W
+
+  It is very likely the implementors only thought of
+  asserting/deasserting identical events, without considerations of
+  the actual event messages and the resulting output that can occur.
+
+  Seen on: Dell Poweredge C410x
+
+  Resolution: None
+
+  Notes:
+
+  The following SEL output in ipmitool shows how it can lead to even more confusion.
+
+  Upper Non-critical going high | Reading 240 > Threshold 240 Watts
+  Upper Non-critical going high | Reading 88 > Threshold 240 Watts
+
+  It reads "88 > 240"
+
+----------------------------------------------------------------------
+
+-----------------------------
+| BMC Watchdog Timer Issues |
+-----------------------------
+
+----------------------------------------------------------------------
+
+BMC Watchdog Timer Issue #1: [COMPLIANCE]
+
+  The timer is running/stopped flag appears to be stuck on "stopped"
+  regardless if the timer is running or not.  Functionality may be
+  limited due to this.
+
+  Seen on: Sun x4100, Sun x4200, Sun x4500
+
+  Resolution: Workaround option added to inform software to analyze
+  countdown rather than flag for running vs stopped state.
+
+  Notes: Confirmed fixed in newer firmware for Sun x4100, Sun x4200,
+  Sun x4500.
+
+BMC Watchdog Timer Issue #2: [???]
+
+  A reply from a Get Watchdog Timer command returns a packet without
+  valid data.
+
+  Seen on: Unspecified Supermicro
+
+  Resolution: Handle special case and retry command.
+
+----------------------------------------------------------------------
+
+---------------
+| DCMI Issues |
+---------------
+
+----------------------------------------------------------------------
+
+DCMI Issue #1: [COMPLIANCE]
+
+  DCMI is reported as available, when it is not.
+
+  Seen on: Inventec 5441/Dell Xanadu II
+
+  Resolution: None
+
+  Notes: Confirmed fixed in newer firmware for Inventec 5441/Dell
+  Xanadu II.
+
+DCMI Issue #2: [INTERPRETATION]
+
+  The DCMI spec indicates a potential completion code for the "Get
+  Power Limit" command as "No Set Power Limit" (0x80).  FreeIPMI
+  originally interpreted this to mean the "Set Power Limit" command
+  was not available.  Atleast one vendor interpreted this to mean "No
+  Power Limit Set".  One can consider this an English interpretation
+  issue of 'No set POWER LIMIT' vs. 'No SET POWER LIMIT' (i.e. is
+  "set" a verb or part of a proper noun referencing the DCMI command).
+  Confounding this issue is the fact that the example implementation
+  in Intel's DCMItool implements the former, while the DCMI
+  Conformance test suite implements the latter.  In addition to this,
+  with the latter interpretation, it need not be an indication of an
+  error, but rather a flag.  So the rest of the packet can be
+  completely full of legitimate data.  
+
+  Seen on: Various, this is a general issue.
+
+  Resolution: Code added to handle both interpretations.
+
+DCMI Issue #3: [INTERPRETATION]
+
+  The DCMI 1.1 Specification includes new commands to set the asset
+  tag and management controller identifier string.  The payload to
+  write these strings is:
+
+  Byte 1   - Group Extension (DCh)
+  Byte 2   - Offset to Write
+  Byte 3   - Bytes to Write (max 16)
+  Byte 4-N - Data
+
+  and the response is:
+
+  Byte 1 - Completion Code
+  Byte 2 - Group Extension (DCh)
+  Byte 3 - Total Length Written
+
+  The maximum size for both strings is listed at 64 bytes.
+
+  In the spec, it is unclear how this payload is to be used.  It is
+  unclear if the "Total Length Written" field is similar to a posix
+  write, where <= the bytes passed in may be written.  Or is it an
+  indication of the total length of bytes stored?  The management
+  identifier string is stated to be NUL terminated, but the asset tag
+  is not stated with this requirement.  
+
+  Seen on: Various, this is a general issue.
+
+  Resolution: Code assumes that all 64 bytes of the buffer must be
+  overwritten everytime the string is modified.  This seems to be the
+  safest approach.
+
+DCMI Issue #4: [COMPLIANCE]
+
+  The Set Asset Tag command does not return the length of the asset
+  tag written.
+
+  Seen on: Unspecified Supermicro Motherboard
+
+  Resolution: None
+
+----------------------------------------------------------------------
+
+------------------------------------
+| Platform Event Trap (PET) Issues |
+------------------------------------
+
+----------------------------------------------------------------------
+
+Platform Event Trap Issue #1: [COMPLIANCE]
+
+  Responses from a PET Acknowledge are invalid and malformed.  The
+  payload is short by one byte (i.e. does not contain a completion
+  code).
+
+  Seen on: Dell Poweredge R610
+
+  Resolution: Workaround option added to inform software to accept
+  malformed packets.
+
+----------------------------------------------------------------------
+
+--------------------
+| Misc IPMI Issues |
+--------------------
+
+----------------------------------------------------------------------
+
+Misc IPMI Issue #1: [COMPLIANCE]
+
+  The Get System Info Parameters command incorrectly requires
+  administrator privileges rather than the defined user level
+  privileges.
+
+  Seen on: MSI MS-91D2
+
+  Resolution: None, user should attempt to authenticate at a higher
+  privilege level.
+
+Misc IPMI Issue #2: [COMPLIANCE]
+
+  The Get System Info Parameters command returns insufficient
+  privilege level (0xD4) even when the privilege level is sufficient.
+
+  Seen on: Supermicro X8DTL-3F, Supermicro X9DRFR
+
+  Resolution: None, user should attempt to authenticate at a higher
+  privilege level.
+
+Misc IPMI Issue #3: [COMPLIANCE]
+
+  The manufacturer ID specified by the motherboard was invalid
+  (i.e. not a valid IANA Enterprise number).
+
+  Seen on: Supermicro X8DTH, Supermicro X8DTG, Supermicro X8DTU
+
+  Resolution: Workaround added to recognize special case IANA number
+  as belonging to a specific manufacturer.
+
+Misc IPMI Issue #4: [INTERPRETATION]
+
+  When retrieving the operating system name via Get System Info
+  Parameters, the 'set_selector', 'encoding', or 'string_length'
+  fields in the response is not set.  It is not clear if this is an
+  error in their packet for indicating an unsupported field or an
+  empty field.
+
+  Seen on: Bull 510 Blade.
+
+  Resolution: Workaround added to bmc-info to handle special case.
+
+Misc IPMI Issue #5: [COMPLIANCE]
+
+  The Get System Info Parameters command returns insufficient
+  privilege level (0xD4) regardless of privilege level.
+
+  Seen on: Intel Windmill, Quanta Winterfell, Wiwynn Windmill
+
+  Resolution: None
+
+Misc IPMI Issue #6: [COMPLIANCE]
+
+  The Get SDR Repository Info command returns insufficient privilege
+  level (0xD4) regardless of privilege level.
+
+  Seen on: Wiwynn Windmill
+
+  Resolution: None, user should attempt to authenticate at a higher
+  privilege level.
+
+Misc IPMI Issue #7: [COMPLIANCE]
+
+  System does not support RMCP ping/pong.
+
+  Seen on: Intel Windmill, Quanta Winterfell, Wiwynn Windmill
+
+----------------------------------------------------------------------
+
+------------
+| Appendix |
+------------
+
+[CONFIG-1]
+
+To see a discussion on why this implementation is poor, please see
+"Configuration tool callback design" in the freeipmi-design.txt
+document.
+
+[SENSORS-1]
+
+In all liklihood, these are all circumstances that the vendor wanted
+to say "this sensor isn't available on this motherboard".  It is
+ironic that there are so many error codes vendors are returning for
+this circumstance.  It's also strange that so many vendors don't set
+the "reading unavailable" or "sensor scanning disabled" bit when
+returning the Get Sensor Reading command.  But I digress.
+
+I get the impression vendors try to put the same SDR on multiple
+motherboards, regardless of whether a motherboard can even have a
+sensor reading/event represented by that SDR entry, leading to the
+strange range of error codes.
+
+The best thing vendors could do is have an SDR for each motherboard
+that is actually legit.  The IPMI spec strongly suggests this as well:
+
+"Sensor Data Records are data records that contain information about
+the type and number of sensors in the platform ..." (1.7.7).
+
+"The SDR Repository is intended to hold information indicating the set
+of management controllers, sensors, and FRU Devices that is expected
+to be in the system ... For example, suppose the baseboard had
+connectors for five fans, but only the first four were supposed to be
+populated.  The SDRs for the system would report four fan sensors ..."
+(33)
+

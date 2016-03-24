@@ -1,0 +1,6 @@
+Local FreeIPMI argp modified from argp-standalone-1.3.  Many
+configure.ac autoconfing for the local argp library taken from
+argp-standalone as well.
+
+argp-standalone taken from glibc from Neil Moller.
+http://www.lysator.liu.se/~nisse/misc/

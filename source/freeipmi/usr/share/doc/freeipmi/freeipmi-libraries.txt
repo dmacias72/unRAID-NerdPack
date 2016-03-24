@@ -1,0 +1,134 @@
+FreeIPMI Libraries
+
+by 
+
+Albert Chu
+chu11@llnl.gov
+Last Updated: May 18, 2012
+
+The following is a short summary of the libraries and APIs available for
+use in FreeIPMI.
+
+Libfreeipmi
+-----------
+
+Libfreeipmi is the primary library that most of the FreeIPMI tools are based
+upon.  The following describe the sub-sections of the library.
+
+api - The highest level API provided by libfreeipmi.  It abstracts
+away the details of inband and outofband protocols from the user.  It
+also provides useful error codes for the user to easily interpret IPMI
+problems.  'api' is used by most FreeIPMI tools and libraries, such as
+bmc-info(8), ipmi-sensors(8), and libipmimonitoring(3).
+
+cmds - Provides fiid templates and 'fill' functions for IPMI
+commands.  Also provides macros definining common parameters for
+IPMI commands.  The cmds are used by most other portions of
+libfreeipmi including the 'api' sub-section and tools such as
+ipmipower(8) and ipmiconsole(8).
+
+debug - Provides various packet/record dumping utility functions.
+Utilized by the 'api' subsection and by tools such as ipmipower(8) and
+ipmiconsole(8).
+
+driver - Provides APIs for in-band IPMI communication.  Currently
+supported drivers are KCS, SSIF, OpenIPMI, and sunbmc.  The 'driver'
+subsction is used by tools such as bmc-watchdog(8) and the 'api'
+sub-section.
+
+fiid - The "FreeIPMI Interface Definition" provides an API used for
+the construction/deconstruction of packets in libfreeipmi.  The API
+works around fiid-templates, which are then used to create
+fiid-objects.  Fiid-templates are used to describe packets through
+a string-name to bit-field mapping.  The API allows users to
+read/write fields in an object using the string to bit-field
+mapping.  Marshalling, packing, endian, and various other network
+issues are handled within 'fiid'.  Fiid objects are used throughout
+libfreeipmi, including the 'api' sub-section, 'cmds' sub-sections,
+and various tools.
+
+fru - Provides an API for reading and parsing Field Replaceable Unit
+(FRU) records.  Utilized by tools such as ipmi-fru(8).
+
+interface - Provides 'assemble' and 'disassemble' functions for
+building packets for individual in-band or out-of-band protocols.
+Also provides all necessary fiid templates, 'fill' functions, and
+other utility functions necessary to communicate on an IPMI
+interface.  Utilized by the 'api' sub-section and tools such as
+ipmipower(8) and ipmiconsole(8).
+
+interpret - Provides an API for interpreting sensor or SEL events by
+mapping them into Nominal, Warning, or Critical states.  Utilized by
+FreeIPMI tools and libraries, such as ipmi-sensors(8), ipmi-sel(8),
+and libipmimonitoring(3).
+
+locate - Provides an API to probe several standards to find default
+values for in-band IPMI communication.  Utilized by the 'api'
+sub-section and the ipmi-locate(8) tool.
+
+payload - Provides macros, fiid-templates, and information on paylods
+used in IPMI.  Used predominantly by ipmiconsole(8) and other
+serial-over-LAN (SOL) related code.
+
+record-format - Provides macros, fiid-templates, and information on
+records used in IPMI.  Utilized by the 'fru' and 'sdr' subsection and
+tools like ipmi-sensors(8) and ipmi-fru(8).
+
+sdr - Provides an API for creating, caching, reading, and parsing a
+sensor data repository (SDR) and the SDR records within it.  Utilized
+by tools such as ipmi-fru(8) and ipmi-sensors(8).
+
+sel - Provides an API for reading and parsing System Event Log (SEL)
+entries.  Utilized by tools such as ipmi-sel(8).
+
+sensor-read - Provides an API for reading a sensor.  Utilized by tools
+such as ipmi-sensors(8).
+
+spec - Provides macros and arrays for various other definitions and
+tables in IPMI.  Utilized by tools such as ipmi-sensors(8).
+
+util - Provides various utility functions for the calculation of keys,
+sensor readings, etc.  Utilized by most of the rest of FreeIPMI.
+
+Libipmiconsole
+--------------
+
+Libipmiconsole implements a high level serial-over-lan (SOL) API for
+remote console access.  It can be used to establish and manage
+multiple IPMI 2.0 SOL sessions.  The goal of this library is to
+abstract away all of the underlying IPMI/SOL details away from the
+user into a relatively simple file descriptor interface.
+
+Libipmimonitoring
+-----------------
+
+Libipmimonitoring implements a high level SEL and sensor monitoring
+API.  An iterator interface is provided that allows the user to
+iterate through sensor values, groups, units, and states.
+
+Libipmidetect
+-------------
+
+Libipmidetect implements a high level API for determing which nodes in
+a cluster do or do-not support IPMI.  This library is primarily useful
+for detecting when nodes are removed from a cluster for servicing, so
+that IPMI applications can avoid unnecessary timeouts.  The library
+interacts with the ipmidetectd(8) daemon.
+
+pkg-config support
+------------------
+
+FreeIPMI provides pkg-config support for all the above libraries.
+
+You can thus use the standard configure macros:
+
+	PKG_CHECK_MODULES(FREEIPMI, libfreeipmi, HAVE_LIBFREEIPMI="yes", HAVE_LIBFREEIPMI="no")
+
+Or use direct pkg-config calls:
+
+	CFLAGS	+= $(shell pkg-config --cflags libfreeipmi)
+	LIBS 	+= $(shell pkg-config --libs libfreeipmi)
+
+
+For more information, refer to pkg-config documentation:
+http://www.freedesktop.org/wiki/Software/pkg-config

@@ -1,0 +1,107 @@
+Building/Install from source
+----------------------------
+
+The instructions below (modified from the INSTALL file) should
+work for most people.
+
+  1. `cd' to the directory containing the package's source code and type
+     `./configure' to configure the package for your system.
+
+     Running `configure' takes awhile.  While running, it prints some
+     messages telling which features it is checking for.  If your system
+     requires additional packages and/or libraries in order for FreeIPMI
+     to be built, appropriate messages should be displayed.  These 
+     packages and/or libraries should be installed and `./configure' should
+     be executed again.
+
+  2. Once `./configure' has succeeded, type `make' to compile the
+     package.
+
+  3. Type `make install' to install the programs and any data files and
+     documentation.
+     
+     You may need to be root in order for files to be installed into
+     the proper locations on your system.
+
+By default files will typically be installed in /usr/local (binaries
+in /usr/local/bin, libraries in /usr/local/lib, configuration files in
+/usr/local/etc/, etc.).  To install into the more common locations
+such as /usr/bin, /usr/lib/, /etc, etc. the options passed into
+`./configure' must be adjusted.
+
+The following set of options and settings are suitable for most Linux
+systems.
+
+--prefix=/usr --exec-prefix=/usr --sysconfdir=/etc
+--localstatedir=/var --mandir=/usr/share/man
+
+Your mileage may vary depending on your system.
+
+If you install the binaries or libraries in non-standard locations
+(e.g. /usr/local or /opt), you may have to update other system
+configuration to find the files and libraries.  For example, in Linux
+you may need to update your PATH or LD_LIBRARY_PATH environment
+variables.  Or you may need to update your /etc/ld.so.conf files and
+run ldconfig(8) to find libraries globally.  This is highly dependent
+on your operating system.
+
+Building RPMs
+-------------
+
+For most people you can build RPMs one of two ways.
+
+From the source:
+
+rpmbuild -ta freeipmi-X.Y.Z.tar.gz
+
+From the source rpm:
+
+rpmbuild --rebuild freeipmi-X.Y.Z-1.src.rpm
+
+Depending on your default RPM build environment, you may need to be root
+in order for RPMs to be stored in the default locations.
+
+After the RPMs are built, you may install them the normal way:
+
+rpm -i freeipmi-X.Y.Z.ARCH.rpm
+
+Additional configure options
+----------------------------
+
+The following configure options are available to users for more unique
+compilation requirements and environments.
+
+--without-encryption
+
+This option disables compilation of encryption support in FreeIPMI.
+Most notably, this disables encryption support when doing out of band
+IPMI 2.0 communication.
+
+This option may be particularly useful in embedded environments that
+do not have the libraries needed to compile encryption support.
+
+--with-dont-check-for-root
+
+When running tools inband, root access is normally required.  In some
+systems, this may not be desired.  This options removes the check for
+root access in FreeIPMI tools.
+
+--without-random-device
+
+This option disables checks and use of /dev/urandom and /dev/random.
+This may be required for embededded systems without these devices.
+
+--with-pkgconfig-dir
+
+This option can configure an alternate default pkgconfig directory.
+
+--with-bmc-watchdog-logfile
+
+This option can configure an alternate default bmc-watchdog log
+directory.
+
+--with-ipmi-monitoring-sdr-cache-dir
+
+This option can configure an alternate default libipmimonitoring SDR
+cache directory.
+

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+options="--output-sensor-state"
+verboseset=0
+
+while test $# != 0
+  do
+  case "$1" in
+      --legacy-output)
+	  options="$options --ipmimonitoring-legacy-output"
+	  ;;
+      -v)
+	  verboseset=1
+	  ;;
+      *)
+          options="$options $1"
+	  ;;
+  esac
+  shift
+done
+
+if [ "$verboseset" = "0" ]; then
+    options="$options --ignore-not-available-sensors"
+fi
+
+exec /usr/sbin/ipmi-sensors $options

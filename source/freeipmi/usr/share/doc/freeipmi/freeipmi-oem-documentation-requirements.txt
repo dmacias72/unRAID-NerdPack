@@ -1,0 +1,227 @@
+IPMI OEM additions/extensions documentation requirements
+
+Albert Chu
+chu11@llnl.gov
+Last Updated: January 3, 2011
+
+The following is a list of the common OEM documentation requirements
+that are needed for full OEM support in FreeIPMI.
+
+IPMI OEM Command Extensions/Additions
+-------------------------------------
+
+IPMI OEM command extensions/additions for setting up, controlling,
+configuring, monitoring, and managing the system that are not in the
+IPMI specification.  Many times, this is needed to configure hardware
+or gather information for monitoring, gather information to diagnose
+problems, etc.  Or in more general terms, OEM command
+extensions/additions necessary to help manage the system.
+
+Examples include:
+ 
+OEM commands for configuring the hardware for IPMI.  For example,
+configuring the ethernet port to be shared or dedicated (ipmi-oem's
+Inventec's get/set-nic-mode commands are an example of this).
+
+OEM commands for retrieving motherboard specific information.  For
+example, OEM commands for reading firmware versions (ipmi-oem's
+Supermicro extra-firmware-info command is an example of this).
+
+OEM commands for retrieving motherboard specific hardware information
+necessary for hardware monitoring.  For example, retrieving the
+current health status of hardware (ipmi-oem's Fujitsu
+get-remote-storage-status command is an example of this).
+
+OEM commands for resetting configuration back to the manufacturer
+defaults (ipmi-oem's Dell reset-to-defaults command is an
+example of this).
+
+OEM commands for configuring any additional "features" added to IPMI
+by the vendor.  For example, how to configure the ports, timeout,
+on/off of web server abilities on the BMC (ipmi-oem's Dell
+get/set-web-server-config commands are an example of this).
+
+IPMI OEM Parameter Extensions
+-----------------------------
+
+IPMI OEM parameter extensions to IPMI for setting up, controlling,
+configuring, monitoring, and managing the system that are not in the
+IPMI specification.  For example, IPMI parameter extensions for
+reading service tags via the Get System Info Parameters command or
+configuring SOL Inactivity Timeouts via the Get/Set SOL Configuration
+Parameters command (ipmi-oem's Dell get-system-info and
+get/set-sol-inactivity-timeout commands are examples of this).
+
+The following is a (likely) incomplete list of IPMI commands OEM
+parameter extensions may have been added to.
+
+Get/Set System Info Parameters (22.14a/22.14b)
+
+Get/Set LAN Configuration Parameters (23.1/23.2)
+
+Get/Set PEF Configuration Parameters (30.3/30.4)
+
+Get/Set SOL Configuration Parameters (26.2/26.3)
+
+Get/Set Serial Modem Configuration Parameters (25.1/25.2)
+
+Get/Set System Boot Options (28.12/28.13)
+
+IPMI OEM events offsets and event data
+--------------------------------------
+
+IPMI OEM event offsets and event data to read sensors and system event
+log (SEL) information.  The following is a (likely) incomplete list of
+areas where IPMI OEM extensions may have been added pertaining to
+event offsets and event data.
+
+OEM Event Type Codes (see Table 42-1)
+
+OEM Sensor Types and Offsets and Event Data2/3 information (see Table 42-3)
+
+OEM Entity IDs (see 43.14)
+
+OEM System Event Data2 and Data3 information for all possible events (see 29.7)
+
+IPMI OEM Records
+----------------
+
+IPMI OEM records that store motherboard information or motherboard
+event information.  The following is a (likely) incomplete list of
+areas where IPMI OEM extensions may have been added pertaining to
+various records.
+
+OEM SEL Records (32.2 and 32.3)
+
+OEM SDR Records (43.12)
+
+OEM FRU Records (see Platform Management FRU Information Storage Definition v1.0)
+
+IPMI OEM Misc
+-------------
+
+The following are miscellaneous IPMI commands or areas that may have
+OEM options or extensions related to setting up, controlling,
+configuring, monitoring, and managing the system that are not in the
+IPMI specification.
+
+Get Device ID Auxiliary Information (see 20.1)
+
+DCMI Get/Set Power Limit Exception Actions (See DCMI 6.6.2 and 6.6.3)
+
+Necessary Documentation Details
+-------------------------------
+
+The following is a summary of documentation information detail that is
+necessary to add OEM extension support into FreeIPMI.
+
+A)
+
+Details on the exact bit/hex and field layout of the packet or record
+should be documented.
+
+For example, sometimes we are given nothing more than a hex string, e.g.
+
+"0x21 0x33 0x44 0x00 0x00 0x01"
+
+and told this will do FOO action.  This isn't useful because we don't
+know what each byte does or what additional options are available.
+
+A specific packet/record layout similar to what is in the IPMI
+spec should be documented.
+
+B) 
+
+Hex to string/flag mapping information in sensors, system event logs,
+configuration fields, etc. should be documented.
+
+For example, documentation may list:
+
+"[0:3] - FOO type"
+
+OR
+
+"event data 2 holds the FOO type"
+
+OR
+
+"event data 2 - FOO error, see FOO error doc."
+
+with nothing else.
+
+Details for how to map hex/masks to strings/flags should be
+documented.  For example, something like:
+
+0x1 = type 1
+0x2 = type 2
+0x3 = type 3
+
+OR
+
+0x1 = bitmask condition 1
+0x2 = bitmask condition 2
+0x4 = bitmask condition 3
+
+OR
+
+0x80 = error message 1
+0x81 = error message 2
+0x82 = error message 3
+
+C) 
+
+Enough detail should be documented to calculate, determine, handle
+errors, etc. of various packet or record fields.  This is especially
+true when bitmasks, bit shifts, bit manipulation, multipliers,
+etc. are involved.
+
+For example, we may be given a code snippet such as:
+
+if (event_data2 & 0xF)
+  printf("DIMM bank %d\n", event_data3);
+
+In the example above, there is a fair amount of detail missing:
+
+- How do you print DIMM information if "event_data2 & 0xF" isn't true?
+
+- Or is it an error condition? If so what error conditions are
+  possible?
+
+- It seems that event_data2 holds a bitmask, what other bitmask
+  conditions are possible?
+
+D)
+
+The units of packet or record fields should always be documented.
+
+E)
+
+The endian of multibyte fields should always be documented.
+
+F)
+
+Configuration fields should be documented as read only, write only, or
+read/write.
+
+G)
+
+Details for mapping between technical information and "real life"
+information should be documented.
+
+For example, documents may show how to map DIMM locations into DIMM 0,
+DIMM 1, DIMM2, DIMM 3, etc.  However, no algorithm for mapping this
+into information physically printed on the motherboard (e.g. DIMM A1,
+DIMM A2, DIMM B1, DIMM B2) is not given.  Without it, the information
+is of very little use to those using FreeIPMI to diagnose problems.
+
+Other Notes
+-----------
+
+While it is possible that code would be sufficient documentation of
+the above, it is typically not sufficient.  Code often implements a
+subset of the actual data/information for the needs of the particular
+software.  For example, outputting only the information the software
+deems "useful" and ignoring the rest.  Code is often not documented
+at a level that is sufficient as real documentation.  In order to
+convert the code into code necessary for another project may require
+reverse engineering or guesses.

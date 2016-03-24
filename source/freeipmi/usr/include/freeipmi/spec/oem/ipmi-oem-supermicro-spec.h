@@ -1,0 +1,77 @@
+/*
+ * Copyright (C) 2003-2015 FreeIPMI Core Team
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ */
+
+#ifndef IPMI_OEM_SUPERMICRO_SPEC_H
+#define IPMI_OEM_SUPERMICRO_SPEC_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*
+ * Supermicro X8DTG
+ */
+
+/* w/ IPMI_CMD_OEM_SUPERMICRO_GENERIC_EXTENSION */
+#define IPMI_OEM_SUPERMICRO_SUB_COMMAND_BMC_SERVICES 0xF0
+
+/* w/ IPMI_OEM_SUPERMICRO_SUB_COMMAND_BMC_SERVICES */
+#define IPMI_OEM_SUPERMICRO_BMC_SERVICES_ACTION_DISABLE  0x00
+#define IPMI_OEM_SUPERMICRO_BMC_SERVICES_ACTION_ENABLE   0x01
+#define IPMI_OEM_SUPERMICRO_BMC_SERVICES_ACTION_STATUS   0x02
+
+#define IPMI_OEM_SUPERMICRO_BMC_SERVICES_STATUS_DISABLED 0x00
+#define IPMI_OEM_SUPERMICRO_BMC_SERVICES_STATUS_ENABLED  0x01
+
+/*
+ * Supermicro X8DTU, X8STi, X9DRW
+ */
+
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_CHANNEL 0x07
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_PS1     0x70
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_PS2     0x72
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_PS3     0x74
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_MAGIC   0x0C
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_GOOD    0x01
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS_BAD     0x00
+
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_CHANNEL 0x07
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_PS1     0x78
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_PS2     0x7A
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_PS3     0x7C
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_MAGIC   0x78
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_GOOD    0x01
+#define IPMI_OEM_SUPERMICRO_GET_PMBUS_POWER_SUPPLY_STATUS_BAD     0x00
+
+/*
+ * Supermicro X10DRU-i+
+ */
+
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS2_CHANNEL 0x07
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS2_PS1     0xB0
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS2_PS2     0xB2
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS2_MAGIC   0x79
+/* achu: Both of these mean good ... yeah, makes no sense :P */
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS2_GOOD1   0x00
+#define IPMI_OEM_SUPERMICRO_GET_POWER_SUPPLY_STATUS2_GOOD2   0x02
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* IPMI_OEM_SUPERMICRO_SPEC_H */
