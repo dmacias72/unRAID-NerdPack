@@ -1,4 +1,0 @@
-#!/bin/sh
-/etc/rc.d/rc.ipmievd start
-sleep 1
-/etc/rc.d/rc.ipmitail start

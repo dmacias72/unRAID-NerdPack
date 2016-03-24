@@ -1,6 +1,0 @@
-Menu="SystemInformation"
-Icon="ipmitool.png"
-Title="IPMI tool"
-Type="xmenu"
-Tabs="true"
----
