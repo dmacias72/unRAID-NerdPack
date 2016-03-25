@@ -21,7 +21,6 @@
 - new installs on 6.2 will work fine
 - 6.2 users with previous install will need to reboot or install libgcrypt-1.6.5 (temporarily) to use freipmi 1.5.1
 - libgcrypt-1.6.5 is included with unRAID 6.2 and previous versions downgraded it to 1.5.5 to use freeipmi 1.4.11
-- http://ftp.slackware.com/pub/slackware/slackware64-current/slackware64/n/libgcrypt-1.6.5-x86_64-1.txz
 - fix: bug local ipmi timeout webgui to wait for ipmi (only affected systems without local ipmi)
 - changed backup events to archive events
 - add archive event page and switch
