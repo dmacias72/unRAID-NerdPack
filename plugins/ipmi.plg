@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.03.14">
+<!ENTITY version   "2016.03.24">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,8 +16,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.03.24
+- update for 6.2 to freeipmi 1.5.1
+- new installs on 6.2 will work fine
+- 6.2 users with previous install will need to reboot or install libgcrypt-1.6.5 (temporarily) to use freipmi 1.5.1
+- libgcrypt-1.6.5 is included with unRAID 6.2 and previous versions downgraded it to 1.5.5 to use freeipmi 1.4.11
+- http://ftp.slackware.com/pub/slackware/slackware64-current/slackware64/n/libgcrypt-1.6.5-x86_64-1.txz
+- fix: bug local ipmi timeout webgui to wait for ipmi (only affected systems without local ipmi)
+- changed backup events to archive events
+- add archive event page and switch
 ###2016.03.14
-- update freeipmi package
+- update freeipmi 1.4.11 package remove init.d
 - fix virtual machines not auto starting due to /etc/init.d directory created by freeipmi package
 ###2016.03.13
 - add test button for sending sample notification events
@@ -98,14 +107,14 @@ The 'tablesorter' package file.
 This plugin uses freeipmi to display sensor readings
 -->
 
-<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-3.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-3.txz">
 <URL>&pkgURL;/freeipmi-1.4.11-x86_64-3.txz</URL>
 <MD5>6c7839886f7c7b0cc4947aaf6199d60e</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz" Run="upgradepkg --install-new">
-<URL>&pkgURL;/libgcrypt-1.5.5-x86_64-1_slack14.1.txz</URL>
-<MD5>636607a48bd342760289913bb7f34b54</MD5>
+<FILE Name="&plgPATH;/freeipmi-1.5.1-x86_64-1.txz">
+<URL>&pkgURL;/freeipmi-1.5.1-x86_64-1.txz</URL>
+<MD5>f9df6ccd8c231e937ac4a8459ae91330</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
@@ -150,7 +159,9 @@ The 'install' script.
 <INLINE>
 #Verify unRAID Version
 source /etc/unraid-version
-if [[ ${version:0:3} == 6.0 ]]; then
+VER=${version:0:3}
+
+if [[ $VER == 6.0 ]]; then
   echo "unRAID version 6.1 or higher is required"
   exit 1
 fi
@@ -164,6 +175,16 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
      &plgPATH;/&plgNAME;.md5
   exit 1
 else
+	if [[ $VER == 6.1 ]]; then
+		echo "\nInstalling dependencies for unRAID 6.1"
+		upgradepkg --install-new &plgpath;/freeipmi-1.4.11-x86_64-3.txz
+	fi
+
+	if [[ $VER == 6.2 ]]; then
+		echo "\nInstalling dependencies for unRAID 6.2"
+		upgradepkg --install-new &plgpath;/freeipmi-1.5.1-x86_64-1.txz
+	fi
+
 	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
 	# Load impi drivers
@@ -189,7 +210,7 @@ echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been installed."
 echo " This plugin requires Dynamix webGui to operate"
-echo " Copyright 2015, &author;"
+echo " Copyright 2016, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""

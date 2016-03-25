@@ -11,8 +11,17 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-03-14</Date>
+<Date>2016-03-24</Date>
 <Changes>
+###2016.03.24
+- update for 6.2 to freeipmi 1.5.1
+- new installs on 6.2 will work fine
+- 6.2 users with previous install will need to reboot or install libgcrypt-1.6.5 (temporarily) to use freipmi 1.5.1
+- libgcrypt-1.6.5 is included with unRAID 6.2 and previous versions downgraded it to 1.5.5 to use freeipmi 1.4.11
+- http://ftp.slackware.com/pub/slackware/slackware64-current/slackware64/n/libgcrypt-1.6.5-x86_64-1.txz
+- fix: bug local ipmi timeout webgui to wait for ipmi (only affected systems without local ipmi)
+- changed backup events to archive events
+- add archive event page and switch
 ###2016.03.14
 - update freeipmi package
 - fix virtual machines not auto starting due to /etc/init.d directory created by freeipmi package
