@@ -234,6 +234,8 @@ sleep 1
 /etc/rc.d/rc.ipmitail stop
 sleep 1
 
+rm -rf &plgPATH;/libgcrypt*.txz
+
 removepkg &plgPATH;/*.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
