@@ -146,7 +146,6 @@ else
 
 		# restore VM Manager Menu
 		sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
-
 	fi
 
 	upgradepkg --install-new &plgpath;/&plgname;.txz
@@ -171,6 +170,7 @@ echo " Copyright 2016, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
+
 fi
 </INLINE>
 </FILE>
