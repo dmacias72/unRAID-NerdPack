@@ -19,6 +19,7 @@
 ###2016.03.25
 - fix: archived events page update on event delete
 - fix: archived events with same timestamp
+- fix: archived events tablesorter pager
 ###2016.03.24
 - update for 6.2 to freeipmi 1.5.1
 - new installs on 6.2 will work fine
