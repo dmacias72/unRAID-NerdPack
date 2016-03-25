@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.03.24">
+<!ENTITY version   "2016.03.25">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.03.25
+- fix: archived events page update on event delete
+- fix: archived events with same timestamp
 ###2016.03.24
 - update for 6.2 to freeipmi 1.5.1
 - new installs on 6.2 will work fine
@@ -23,8 +26,8 @@
 - libgcrypt-1.6.5 is included with unRAID 6.2 and previous versions downgraded it to 1.5.5 to use freeipmi 1.4.11
 - http://ftp.slackware.com/pub/slackware/slackware64-current/slackware64/n/libgcrypt-1.6.5-x86_64-1.txz
 - fix: bug local ipmi timeout webgui to wait for ipmi (only affected systems without local ipmi)
-- changed backup events to archive events
-- add archive event page and switch
+- changed backup events to archived events
+- add archived event page and switch
 ###2016.03.14
 - update freeipmi 1.4.11 package remove init.d
 - fix virtual machines not auto starting due to /etc/init.d directory created by freeipmi package

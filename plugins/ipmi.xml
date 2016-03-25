@@ -11,8 +11,11 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-03-24</Date>
+<Date>2016-03-25</Date>
 <Changes>
+###2016.03.25
+- fix: archived events page update on event delete
+- fix: archived events with same timestamp
 ###2016.03.24
 - update for 6.2 to freeipmi 1.5.1
 - new installs on 6.2 will work fine
