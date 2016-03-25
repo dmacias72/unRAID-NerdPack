@@ -178,14 +178,6 @@ if [[ $VER == 6.0 ]]; then
   exit 1
 fi
 
-if [[ $VER == 6.1 ]]; then
-  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.9-x86_64-1.txz
-fi
-
-if [[ ${version:0:3} == 6.2 ]]; then
-  upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.11-x86_64-2.txz
-fi
-
 # Verify and install plugin package
 sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
 sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
@@ -195,8 +187,18 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   rm &plgpath;/&plgname;.md5
   exit 1
 else
+	if [[ $VER == 6.1 ]]; then
+		echo "\nInstalling dependencies for unRAID 6.1"
+  		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.9-x86_64-1.txz
+	fi
+
+	if [[ $VER == 6.2 ]]; then
+		echo "\nInstalling dependencies for unRAID 6.2"
+  		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.11-x86_64-2.txz
+	fi
+
   upgradepkg --install-new &plgpath;/&plgname;.txz
-fi
+
 
 # Cleaning old source files
 find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
@@ -210,6 +212,8 @@ echo " Copyright 2016, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
+
+fi
 </INLINE>
 </FILE>
 
