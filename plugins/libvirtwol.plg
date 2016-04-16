@@ -21,7 +21,8 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 
 <CHANGES>
 ###2016.04.16
--  add white-space: normal to fix status css formatting
+- add dynamix plugin API
+- add white-space: normal to fix status css formatting
 ###2016.03.23
 - remove libpcap
 ###2016.03.19
