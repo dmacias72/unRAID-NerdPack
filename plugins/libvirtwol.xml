@@ -14,6 +14,7 @@ Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to 
 <Date>2016-04-16</Date>
 <Changes>
 ###2016.04.16
+- add help button comments
 - add dynamix plugin API
 - add white-space: normal to fix status css formatting
 ###2016.03.23
