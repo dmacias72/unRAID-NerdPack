@@ -11,13 +11,27 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-04-28</Date>
+<Date>2016-05-10</Date>
 <Changes>
-###2016.04.28
-- fix: empty archive
+###2016.05.10
+- add: ability to use any fan or temp sensor in footer
+- add: settings and readings tabs to Settings and Tools menu
+- add: ipmi sensors configuration to readings page
+- add: ipmi system configuration editor to settings page
+- add: ability to edit, save and load on boot ipmi sensor configuration e.g. sensor thresholds
+- add: help button text
+- add: Dynamix plugin update API
+- add: ipmi fan control for ASRock boards only
+- (based on fans being named: CPU_FAN1, CPU_FAN2, REAR_FAN1, REAR_FAN2, FRNT_FAN1, FRNT_FAN2)
+- add: select fan control ip address
+- add: advanced view for fan control options
+- fix: show separate status on each settings page
+- add: highest array hard drive temp as a sensor
+- add: abbreviated units to readings, change units column to type column
+- fix: reduce footer footprint
+- fix: network options
+###2016.04.27
 - fix: network timeout
-###2016.04.06
-- fix: ipmi local connection check
 ###2016.03.27
 - fix: add check for valid date
 ###2016.03.26
@@ -25,6 +39,7 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 ###2016.03.25
 - fix: archived events page update on event delete
 - fix: archived events with same timestamp
+- fix: archived events tablesorter pager
 ###2016.03.24
 - update for 6.2 to freeipmi 1.5.1
 - new installs on 6.2 will work fine
@@ -32,8 +47,8 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 - libgcrypt-1.6.5 is included with unRAID 6.2 and previous versions downgraded it to 1.5.5 to use freeipmi 1.4.11
 - http://ftp.slackware.com/pub/slackware/slackware64-current/slackware64/n/libgcrypt-1.6.5-x86_64-1.txz
 - fix: bug local ipmi timeout webgui to wait for ipmi (only affected systems without local ipmi)
-- changed backup events to archive events
-- add archive event page and switch
+- changed backup events to archived events
+- add archived event page and switch
 ###2016.03.14
 - update freeipmi package
 - fix virtual machines not auto starting due to /etc/init.d directory created by freeipmi package
