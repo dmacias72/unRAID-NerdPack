@@ -13,6 +13,8 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
 <Date>2016-05-10</Date>
 <Changes>
+###2016.05.10a
+- fix: local ipmi check Thanks to ljm42
 ###2016.05.10
 - add: ability to use any fan or temp sensor in footer
 - add: settings and readings tabs to Settings and Tools menu
