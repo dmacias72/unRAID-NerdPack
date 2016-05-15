@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.05.10a">
+<!ENTITY version   "2016.05.15">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,9 +16,21 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.05.15
+- fix: condense code, remove excess files
+- fix: readings page buttons alignment
+- fix: sensors refresh rate first time dash or readings page is loaded
+- add: update ipmi check method and network checks
+- add: color to sensor readings in footer based on sensor state
+- add: tablesorter reset for all tables (1st click is ascending, 2nd is descending and third 3rd is unsorted)
+- add: settings drop down check list for sensor select and ignore
+- add: settings drop down check list for Dashboard sensor type (uncheck all: hides IPMI Dashboard Summary)
+- add: Dashboard summary page and hide switch
+- fix: motherboard logos not showing
 ###2016.05.10a
 - fix: local ipmi check Thanks to ljm42
 ###2016.05.10
+- add: motherboard logos
 - add: ability to use any fan or temp sensor in footer
 - add: settings and readings tabs to Settings and Tools menu
 - add: ipmi sensors configuration to readings page

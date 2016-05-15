@@ -11,11 +11,23 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-05-10</Date>
+<Date>2016-05-15</Date>
 <Changes>
+###2016.05.15
+- fix: condense code, remove excess files
+- fix: readings page buttons alignment
+- fix: sensors refresh rate first time dash or readings page is loaded
+- add: update ipmi check method and network checks
+- add: color to sensor readings in footer based on sensor state
+- add: tablesorter reset for all tables (1st click is ascending, 2nd is descending and third 3rd is unsorted)
+- add: settings drop down check list for sensor select and ignore
+- add: settings drop down check list for Dashboard sensor type (uncheck all: hides IPMI Dashboard Summary)
+- add: Dashboard summary page and hide switch
+- fix: motherboard logos not showing
 ###2016.05.10a
 - fix: local ipmi check Thanks to ljm42
 ###2016.05.10
+- add: motherboard logos
 - add: ability to use any fan or temp sensor in footer
 - add: settings and readings tabs to Settings and Tools menu
 - add: ipmi sensors configuration to readings page
