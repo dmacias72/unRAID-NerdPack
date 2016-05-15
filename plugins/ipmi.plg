@@ -18,6 +18,7 @@
 <CHANGES>
 ###2016.05.15
 - fix: condense code, remove excess files
+- fix: allow negative sensor readings in the footer
 - fix: readings page buttons alignment
 - fix: sensors refresh rate first time dash or readings page is loaded
 - add: update ipmi check method and network checks
