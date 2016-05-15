@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.05.06">
+<!ENTITY version   "2016.05.15">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,15 +21,17 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.05.15
+- fix: tabs not working due to image path
 ###2016.05.06
-- add tabs for settings, scheduler and history
-- add dynamix plugin update api
-- add help info
+- add: tabs for settings, scheduler and history
+- add: dynamix plugin update api
+- add: help info
 ###2016.03.14
 - update package locations
 ###2016.03.12
-- fix install python 2.7.11 for unRAID 6.2+
-- fix install python 2.7.9 for unRAID 6.1
+- fix: install python 2.7.11 for unRAID 6.2+
+- fix: install python 2.7.9 for unRAID 6.1
 ###2016.02.28
 - fix: chart and table sync on changes
 - fix: filters save
