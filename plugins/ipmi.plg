@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.05.15">
+<!ENTITY version   "2016.05.16">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,12 +16,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.05.16
+- add: Dashboard will show any sensor if state is not nominal
+- fix: Dashboard summary switch default to On
+- fix: no sensors if localhost and network enabled
+- fix: no sensors displayed if ignore is empty Thanks to ljm42
+- fix: remove depreciated network check in footer display Thanks ljm42
 ###2016.05.15
 - fix: condense code, remove excess files
-- fix: allow negative sensor readings in the footer
 - fix: readings page buttons alignment
 - fix: sensors refresh rate first time dash or readings page is loaded
-- add: update ipmi check method and network checks
+- add: update ipmi check method and network checks (move into fuctions)
 - add: color to sensor readings in footer based on sensor state
 - add: tablesorter reset for all tables (1st click is ascending, 2nd is descending and third 3rd is unsorted)
 - add: settings drop down check list for sensor select and ignore
@@ -177,6 +182,8 @@ DISP_SENSOR2="0"
 DISP_SENSOR1="0"
 DISP_SENSOR2="0"
 LOADCFG="disable"
+DASHTYPES=""
+IGNORE=""
 ]]>
 </INLINE>
 </FILE>
