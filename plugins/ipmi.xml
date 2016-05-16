@@ -11,11 +11,16 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-05-15</Date>
+<Date>2016-05-16</Date>
 <Changes>
+###2016.05.16
+- add: Dashboard will show any sensor if state is not nominal
+- fix: Dashboard summary switch default to On
+- fix: no sensors if localhost and network enabled
+- fix: no sensors displayed if ignore is empty Thanks to ljm42
+- fix: remove depreciated network check in footer display Thanks ljm42
 ###2016.05.15
 - fix: condense code, remove excess files
-- fix: allow negative sensor readings in the footer
 - fix: readings page buttons alignment
 - fix: sensors refresh rate first time dash or readings page is loaded
 - add: update ipmi check method and network checks
