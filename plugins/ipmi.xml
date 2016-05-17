@@ -11,8 +11,20 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-05-16</Date>
+<Date>2016-05-17</Date>
 <Changes>
+###2016.05.17
+- fix: workaround for dynamix plugin update api not refreshing after update (remove update message)
+- fix: workaround for dynamix drop down checklists bug (F5 on other tab breaks ddcl)
+- fix: refresh Settings tab on tab1 click for ddcl bug
+- fix: convert fan control settings to name based instead of number based (you'll need to setup fancontrol again)
+- fix: check for board manufacturer 
+- add: remove auto board.json update and add manual Check for Updates button  
+- add: update fan logging: add start/stop messages and fan speed changes are in the form Fan Name(%):Temp Sensor(°C)
+- add: ignored sensors to fan control page
+- add: ignored sensors and command line arguments to CL helper scripts: ipmisensors, ipmisel and ipmifru
+- add: Dashboard settings for all sensors, deselect all to disable Dashboard
+- remove: Dashboard switch and types
 ###2016.05.16
 - add: Dashboard will show any sensor if state is not nominal
 - fix: Dashboard summary switch default to On
@@ -23,7 +35,7 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 - fix: condense code, remove excess files
 - fix: readings page buttons alignment
 - fix: sensors refresh rate first time dash or readings page is loaded
-- add: update ipmi check method and network checks
+- add: update ipmi check method and network checks (move into fuctions)
 - add: color to sensor readings in footer based on sensor state
 - add: tablesorter reset for all tables (1st click is ascending, 2nd is descending and third 3rd is unsorted)
 - add: settings drop down check list for sensor select and ignore
@@ -33,6 +45,7 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 ###2016.05.10a
 - fix: local ipmi check Thanks to ljm42
 ###2016.05.10
+- add: CL helper scripts ipmisensors and ipmisel that use network settings if network is enabled
 - add: motherboard logos
 - add: ability to use any fan or temp sensor in footer
 - add: settings and readings tabs to Settings and Tools menu
