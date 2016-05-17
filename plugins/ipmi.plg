@@ -17,10 +17,11 @@
 
 <CHANGES>
 ###2016.05.17
+- notice: with the latest update you will need to reconfigure your fan control settings
+- fix: convert fan control settings to name based instead of number based (you'll need to setup fancontrol again)
 - fix: workaround for dynamix plugin update api not refreshing after update (remove update message)
 - fix: workaround for dynamix drop down checklists bug (F5 on other tab breaks ddcl)
 - fix: refresh Settings tab on tab1 click for ddcl bug
-- fix: convert fan control settings to name based instead of number based (you'll need to setup fancontrol again)
 - fix: check for board manufacturer 
 - add: remove auto board.json update and add manual Check for Updates button  
 - add: update fan logging: add start/stop messages and fan speed changes are in the form Fan Name(%):Temp Sensor(°C)
