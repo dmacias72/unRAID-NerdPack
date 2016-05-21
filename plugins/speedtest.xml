@@ -4,15 +4,18 @@
 <PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.plg</PluginURL>
 <PluginAuthor>dmacias72</PluginAuthor>
 <Beta>False</Beta>
-<Category>Tools:System</Category>
+<Category>Network:Other Tools:System</Category>
 <Name>Speedtest</Name>
 <Description>
 This plugin interacts with the command line interface for testing internet bandwidth using speedtest.net
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2016-05-20</Date>
+<Date>2016-05-21</Date>
 <Changes>
+###2016.05.21
+- fix: fix scheduler tab count if no mover settings
+- fix: blank image not showing with empty table
 ###2016.05.20
 - fix: workaround for dynamix plugin update api not refreshing after update (remove update message)
 - fix: change chart sort order

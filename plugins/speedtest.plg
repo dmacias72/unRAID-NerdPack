@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.05.20">
+<!ENTITY version   "2016.05.21">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,9 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.05.21
+- fix: fix scheduler tab count if no mover settings
+- fix: blank image not showing with empty table
 ###2016.05.20
 - fix: workaround for dynamix plugin update api not refreshing after update (remove update message)
 - fix: change chart sort order
