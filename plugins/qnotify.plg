@@ -1,0 +1,167 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "qnotify">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2016.05.20">
+<!ENTITY launch    "Settings/QNotify">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL    "&gitURL;/packages">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
+
+<CHANGES>
+###2016.05.20
+- add dynamix plugin update api
+###2016.05.19
+- initial unRAID 6 release.
+</CHANGES>
+
+<!--
+This plugin uses PyQuassel to send Pushbullet notifications for Quassel Core Server
+-->
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-2.txz">
+<URL>&pkgURL;/6.2/python3-3.5.1-x86_64-2.txz</URL>
+<MD5>a2b6f257cbb6dea91df4d422cc7b2b0b</MD5>
+</FILE>
+
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python3-3.5.1-x86_64-2.txz">
+<URL>&pkgURL;/6.2/python3-3.5.1-x86_64-2.txz</URL>
+<MD5>a2b6f257cbb6dea91df4d422cc7b2b0b</MD5>
+</FILE>
+
+<!--
+The 'plugin' config file.
+-->
+<FILE Name="&plgPATH;/&name;.cfg">
+<INLINE>
+<![CDATA[
+DAEMON="disable"
+]]>
+</INLINE>
+</FILE>
+
+<!--
+The 'plugin' python config file.
+-->
+<FILE Name="&plgPATH;/config.py">
+<INLINE>
+<![CDATA[
+host = "localhost"
+port = 4242
+username = ""
+password = ""
+enabledPlugins = ["pushbullet"]
+pushbulletAccessToken = ""
+pushbulletDeviceName = "None"
+pushIfKeyword = [""]
+]]>
+</INLINE>
+</FILE>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash" Method="install">
+<INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+VER=${version:0:3}
+
+if [[ $VER == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgPATH;/&plgNAME;.txz \
+     &plgPATH;/&plgNAME;.md5
+  exit 1
+else
+    if [[ $VER == 6.1 ]]; then
+        echo "\nInstalling dependencies for unRAID 6.1"
+        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.1-x86_64-2.txz
+    fi
+
+    if [[ $VER == 6.2 ]]; then
+        echo "\nInstalling dependencies for unRAID 6.2"
+        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.1-x86_64-2.txz
+    fi
+
+    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+
+
+    # Start scripts if enabled
+    <![CDATA[
+    echo "checking qnotify daemon..."
+    setsid /etc/rc.d/rc.qnotify start >/dev/null 2>&1 < /dev/null &
+    sleep 1
+    ]]>
+
+    # Cleaning old source files
+    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+
+fi
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+#stop daemon
+/etc/rc.d/rc.qnotify stop
+sleep 1
+
+removepkg &plgPATH;/*.txz
+rm -rf &emhttp;
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<Plugin>True</Plugin>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/qnotify.plg</PluginURL>
+<PluginAuthor>dmacias72</PluginAuthor>
+<Beta>False</Beta>
+<Category>Tools:System</Category>
+<Name>Quassel Notify</Name>
+<Description>
+The Quassel Notify plugin allows you to receive Pushbullet notifications based on keywords from Quassel Core Server. It uses PyQuassel which is a pure python implementation of QuasselClient. Doesn't depend on any PySide or PyQt libraries.
+</Description>
+<Support>http://lime-technology.com/forum/</Support>
+<Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/qnotify.png</Icon>
+<Date>2016-05-20</Date>
+<Changes>
+###2016.05.20
+- add dynamix plugin update api
+###2016.05.19
+- initial unRAID 6 release.
+</Changes>
+</Containers>
