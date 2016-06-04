@@ -11,8 +11,10 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2016-06-03</Date>
+<Date>2016-06-04</Date>
 <Changes>
+###2016.06.04
+- fix: history table css
 ###2016.06.03
 - add: selectable versions of speedtest-cli
 - add: timeout option for those getting 0 values
