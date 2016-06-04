@@ -194,6 +194,7 @@ rm -f &plgpath;/&plgname;.txz
 rm -f &plgpath;/&plgname;.md5
 
 #remove installed packages
+rm -f &plgpath;/libpcap*.txz
 removepkg &plgpath;/*.txz
 rm -f &plgpath;/*.txz
 
