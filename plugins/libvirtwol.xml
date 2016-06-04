@@ -15,6 +15,7 @@ Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to 
 <Changes>
 ###2016.06.04
 - add rc script
+- amend dynamix plugin api
 ###2016.04.16
 - add help button comments
 - add dynamix plugin API
