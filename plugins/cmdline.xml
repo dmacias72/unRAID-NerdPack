@@ -11,8 +11,11 @@ Command Line implements Shell In A Box. A web server that can export arbitrary c
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=42683.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/cmdline.png</Icon>
-<Date>2016-03-24</Date>
+<Date>2016-06-14</Date>
 <Changes>
+###2016.06.14
+- add: dynamix plugin update api
+- add: help content
 ###2016.03.24
 - update shellinabox to unofficial 2.20
 - fix: https when ssl is enabled
