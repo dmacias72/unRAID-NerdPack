@@ -11,8 +11,10 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2016-06-10</Date>
+<Date>2016-06-19</Date>
 <Changes>
+###2016.06.19
+- fix: scheduler not saving changes
 ###2016.06.10
 - fix: make schedule variables unique, so other schedules aren't affected
 ###2016.06.08
