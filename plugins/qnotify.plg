@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "qnotify">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.05.28">
+<!ENTITY version   "2016.06.23">
 <!ENTITY launch    "Settings/QNotify">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,11 +16,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.06.23
+- fix: compile separate Python 3.5.1 for unRAID 6.1
 ###2016.05.28
-- add log file
+- add: log file
 ###2016.05.22
 - fix: get token from notification settings
-- fix: clear settings when stopping
+- fix: settings clearing when stopping
 ###2016.05.20
 - add: dynamix plugin update api
 ###2016.05.19
@@ -31,9 +33,9 @@
 This plugin uses PyQuassel to send Pushbullet notifications for Quassel Core Server
 -->
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-2.txz">
-<URL>&pkgURL;/6.2/python3-3.5.1-x86_64-2.txz</URL>
-<MD5>a2b6f257cbb6dea91df4d422cc7b2b0b</MD5>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-1.txz">
+<URL>&pkgURL;/6.1/python3-3.5.1-x86_64-1.txz</URL>
+<MD5>e19803aa714dcea6dd8f922089d4e996</MD5>
 </FILE>
 
 
@@ -110,7 +112,8 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
 else
     if [[ $VER == 6.1 ]]; then
         echo "\nInstalling dependencies for unRAID 6.1"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.1-x86_64-2.txz
+        rm -f /boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-2.txz
+        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.1-x86_64-1.txz
     fi
 
     if [[ $VER == 6.2 ]]; then
