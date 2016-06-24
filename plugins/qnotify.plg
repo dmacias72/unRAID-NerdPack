@@ -38,7 +38,6 @@ This plugin uses PyQuassel to send Pushbullet notifications for Quassel Core Ser
 <MD5>e19803aa714dcea6dd8f922089d4e996</MD5>
 </FILE>
 
-
 <FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python3-3.5.1-x86_64-2.txz">
 <URL>&pkgURL;/6.2/python3-3.5.1-x86_64-2.txz</URL>
 <MD5>a2b6f257cbb6dea91df4d422cc7b2b0b</MD5>
