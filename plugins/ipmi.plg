@@ -294,6 +294,8 @@ else
 	setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
 	sleep 1
 	echo "checking ipmi fan control..."
+	setsid /usr/sbin/ipmifan --quit &
+	sleep 1
 	setsid /usr/sbin/ipmifan --daemon &
 	sleep 1
 	echo "checking ipmi sensors configuration..."
