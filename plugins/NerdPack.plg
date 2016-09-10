@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.03.15">
+<!ENTITY version   "2016.09.10">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.09.10
+- add: popup for unRAID version change or empty downloads folder
+- add: always compare package checksums
+- fix: remove corrupted packages
+- fix: remove failed downloads
+- fix: add package desc and json to scandir filter
 ###2016.03.15
 - enable apply button if update ready
 - fix: remove old package settings from config after package update
