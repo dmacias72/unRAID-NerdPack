@@ -11,19 +11,19 @@ Title="Nerd Pack"
 <input type="hidden" id="include" name="#include" value="/plugins/NerdPack/include/ClearConfig.php"/>
 
 <table class="tablesorter hover-highlight" id="tblPackages">
-	<thead>
-		<tr>
-			<th class="filter-name" data-placeholder="Search..."> Name </th>
-			<th class="filter-version" data-placeholder="by status"> Version </th>
-			<th class="sorter-metric filter-false" data-placeholder="by size" data-metric-name-full="byte|Byte|BYTE" data-metric-name-abbr="b|B"> Size </th>
-			<th class="filter-downloaded" data-placeholder="by download"> Downloaded </th>
-			<th class="filter-installed" data-placeholder="by install"> Installed </th>
-			<th class="filter-plugins" data-placeholder="Search..."> Plugins </th>
-			<th class="parser-false filter-false"><input id="checkall" type="checkbox"></th>
-		</tr>
-	</thead>
-	<tbody>
-	</tbody>
+    <thead>
+        <tr>
+            <th class="filter-name" data-placeholder="Search..."> Name </th>
+            <th class="filter-version" data-placeholder="by status"> Version </th>
+            <th class="sorter-metric filter-false" data-placeholder="by size" data-metric-name-full="byte|Byte|BYTE" data-metric-name-abbr="b|B"> Size </th>
+            <th class="filter-downloaded" data-placeholder="by download"> Downloaded </th>
+            <th class="filter-installed" data-placeholder="by install"> Installed </th>
+            <th class="filter-plugins" data-placeholder="Search..."> Plugins </th>
+            <th class="parser-false filter-false"><input id="checkall" type="checkbox"></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
 
 <input onclick="packageQuery(1)" value="Check for Updates" type="button"><input class="reset" type="button" title="reset filters" value="Reset Filters">
