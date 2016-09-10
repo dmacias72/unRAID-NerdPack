@@ -91,7 +91,8 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
                 if (file_check_sha1($pkg_file, $pkg_sha1)){
                     logger($pkg_gitname.' package download sucessful!', $argq);
                 }else{
-                    unlink($pkg_file);
+                    if (file_exists($pkg_file))
+                        unlink($pkg_file);
                     logger($pkg_gitname.' package download failed!', $argq);
                 }
             }
@@ -123,7 +124,8 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
                 if (file_check_sha1($pkg_file, $pkg_sha1))
                     logger($pkg_gitname.' package up to date, checksum ok.', $argq);
                 else{
-                    unlink($pkg_file);
+                    if (file_exists($pkg_file))
+                        unlink($pkg_file);
                     logger($pkg_gitname.' package checksum failed! package deleted.', $argq);
                 }
             }else
