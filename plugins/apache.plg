@@ -130,11 +130,38 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <MD5>6942fb6f9f78b8e3cc4a1c77469a2512</MD5>
 </FILE>
 
+<FILE Name="&plgpath;/&name;.cfg">
+<INLINE>
+<![CDATA[
+# Apache Web Server configuration:
+SERVICE="disable"
+DOCROOT="/var/www/html"
+PORT="8088"
+RUNAS="nobody"
+]]>
+</INLINE>
+</FILE>
+
+<FILE Name="&plgpath;/&name;-cert.sh">
+<INLINE>
+<![CDATA[
+openssl req -new -x509 -keyout /boot/config/plugins/apache/server.crt -out /boot/config/plugins/apache/server.crt -days 365 -nodes; chmod 600 /boot/config/plugins/apache/server.crt
+]]>
+</INLINE>
+</FILE>
+
 <!--
-git from github as tarball
+The 'plugin' package file.
 -->
-<FILE Name="&plugin;/&name;-&version;.tar.gz">
-<URL>"https://github.com/&author;/&name;/archive/&version;.tar.gz"</URL>
+<FILE Name="&plgpath;/&plgname;.txz">
+<URL>&gitURL;/archive/&plgname;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgpath;/&plgname;.md5">
+<URL>&gitURL;/archive/&plgname;.md5</URL>
 </FILE>
 
 <!--
@@ -142,20 +169,40 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash">
 <INLINE>
-if [ ! -d &emhttp; ]; then
-    mkdir -p &emhttp;
-fi
-tar -zxf &plugin;/&name;-&version;.tar.gz --strip=1 -C &emhttp;/
-find &plugin; -type f -iname "*.tar.gz" ! -iname "&name;-&version;.tar.gz" -delete
-chmod +0770 /usr/local/emhttp/plugins/&name;/scripts/*
-cp -nr /usr/local/emhttp/plugins/&name;/&name; /boot/config/plugins
+#Verify unRAID Version
+source /etc/unraid-version
+VER=${version:0:3}
 
-if [ ! -L /var/www/htdocs ]; then
-    mv -T /var/www/htdocs /var/www/html
+if [[ $VER == 6.1 ]]; then
+  echo "unRAID version 6.2 or higher is required"
+  exit 1
 fi
-ln -sfT /var/www/html /srv/httpd/htdocs
-rm -rf /etc/httpd
-ln -sfT &plugin;/httpd /etc/httpd
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
+sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgpath;/&plgname;.txz
+  rm &plgpath;/&plgname;.md5
+  exit 1
+else
+    upgradepkg --install-new &plgpath;/&plgname;.txz
+
+    # Cleaning old source files
+    find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+
+fi
 </INLINE>
 </FILE>
 
@@ -164,25 +211,22 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-/usr/local/emhttp/plugins/&name;/scripts/stop
-rm -rf /usr/local/emhttp/plugins/&name;
-rm -f &plugin;/&name;-&version;.tar.gz
+&emhttp;/scripts/stop
+removepkg &plgpath;/&plgname;.txz
+rm -rf &emhttp;
+rm -f &plgpath;/&plgname;.txz
+rm -f &plgpath;/&plgname;.md5
+
+#remove installed packages
+removepkg &plgpath;/*.txz
+rm -f &plgpath;/*.txz
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
 </INLINE>
 </FILE>
-
-<FILE Name="/tmp/apache-chkconf" Run="/bin/bash">
-<INLINE>
-<![CDATA[
-#!/bin/sh
-# This will check each entry in the config so nothing is missing, and if missing, sets to default
-CFGFILE=/boot/config/plugins/apache/apache.cfg
-[ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep DOCROOT` ] && echo "DOCROOT=\"/var/www/html\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"8088\"" >> "$CFGFILE"
-[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
-rm /tmp/apache-chkconf
-]]>
-</INLINE>
-</FILE>
-
-</PLUGIN>
