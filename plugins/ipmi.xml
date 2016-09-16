@@ -11,8 +11,10 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-07-22</Date>
+<Date>2016-09-16</Date>
 <Changes>
+###2016.09.16
+- update tablesorter to 2.27.6
 ###2016.07.22
 - fix: fan control not setting fans to auto when stopped
 - fix: fan control not setting fan min (only setting a value of 1)

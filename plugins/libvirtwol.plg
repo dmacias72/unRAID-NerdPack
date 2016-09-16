@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.06.04">
+<!ENTITY version   "2016.09.16">
 <!ENTITY launch    "Settings/VMSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -20,6 +20,8 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 -->
 
 <CHANGES>
+###2016.09.16
+- update python to 2.7.12
 ###2016.06.04
 - add rc script
 - amend dynamix plugin api
@@ -75,9 +77,9 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.11-x86_64-2.txz">
-<URL>&gitURL;/packages/6.2/python-2.7.11-x86_64-2.txz</URL>
-<MD5>5ff7e4c8a7ef742fbf12a6ae25914df7</MD5>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.12-x86_64-1.txz">
+<URL>&gitURL;/packages/6.2/python-2.7.12-x86_64-1.txz</URL>
+<MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
 </FILE>
 
 <FILE Name="&plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz">
@@ -148,7 +150,7 @@ else
 
 	if [[ $VER == 6.2 ]]; then
 		echo "\nInstalling dependencies for unRAID 6.2"
-		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.11-x86_64-2.txz
+		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.12-x86_64-1.txz
 		upgradepkg --install-new &plgpath;/libvirt-python-1.3.1-x86_64-1ponce.txz
 
 		# restore VM Manager Menu

@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.07.22">
+<!ENTITY version   "2016.09.16">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.09.16
+- update tablesorter to 2.27.6
 ###2016.07.22
 - fix: fan control not setting fans to auto when stopped
 - fix: fan control not setting fan min (only setting a value of 1)
@@ -164,9 +166,9 @@
 <!--
 The 'tablesorter' package file.
 -->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.02.12-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2016.02.12-x86_64-1.txz</URL>
-<MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
+<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2.27.6-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/archive/tablesorter-2.27.6-x86_64-1.txz</URL>
+<MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
 </FILE>
 
 <!--

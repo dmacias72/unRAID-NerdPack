@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.06.19">
+<!ENTITY version   "2016.09.16">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,9 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.09.16
+- update python to 2.7.12
+- update tablesorter to 2.27.6
 ###2016.06.19
 - fix: scheduler not saving changes
 ###2016.06.10
@@ -144,9 +147,9 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <!--
 The 'tablesorter' package file.
 -->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2016.02.12-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2016.02.12-x86_64-1.txz</URL>
-<MD5>d25fb1235efaa5f71c790b8d71ed7337</MD5>
+<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2.27.6-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/archive/tablesorter-2.27.6-x86_64-1.txz</URL>
+<MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
 </FILE>
 
 <FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python-2.7.9-x86_64-1.txz">
@@ -154,9 +157,9 @@ The 'tablesorter' package file.
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.11-x86_64-2.txz">
-<URL>&gitURL;/packages/6.2/python-2.7.11-x86_64-2.txz</URL>
-<MD5>5ff7e4c8a7ef742fbf12a6ae25914df7</MD5>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.12-x86_64-1.txz">
+<URL>&gitURL;/packages/6.2/python-2.7.12-x86_64-1.txz</URL>
+<MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
 </FILE>
 
 <FILE Name="&pkgs;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
@@ -225,7 +228,7 @@ else
 
 	if [[ $VER == 6.2 ]]; then
 		echo "\nInstalling dependencies for unRAID 6.2"
-  		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.11-x86_64-2.txz
+  		upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.12-x86_64-1.txz
 	fi
 
   upgradepkg --install-new &plgpath;/&plgname;.txz
