@@ -29,8 +29,8 @@
 - fix: workaround for dynamix plugin update api not refreshing after update (remove update message)
 - fix: workaround for dynamix drop down checklists bug (F5 on other tab breaks ddcl)
 - fix: refresh Settings tab on tab1 click for ddcl bug
-- fix: check for board manufacturer 
-- add: remove auto board.json update and add manual Check for Updates button  
+- fix: check for board manufacturer
+- add: remove auto board.json update and add manual Check for Updates button
 - add: update fan logging: add start/stop messages and fan speed changes are in the form Fan Name(%):Temp Sensor(°C)
 - add: ignored sensors to fan control page
 - add: ignored sensors and command line arguments to CL helper scripts: ipmisensors, ipmisel and ipmifru
@@ -267,47 +267,47 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
      &plgPATH;/&plgNAME;.md5
   exit 1
 else
-	if [[ $VER == 6.1 ]]; then
-		echo "\nInstalling dependencies for unRAID 6.1"
-		rm &plgPATH;/freeipmi-1.5.1-x86_64-1.txz
-		upgradepkg --install-new &plgPATH;/freeipmi-1.4.11-x86_64-3.txz
-	fi
+    if [[ $VER == 6.1 ]]; then
+        echo "\nInstalling dependencies for unRAID 6.1"
+        rm &plgPATH;/freeipmi-1.5.1-x86_64-1.txz
+        upgradepkg --install-new &plgPATH;/freeipmi-1.4.11-x86_64-3.txz
+    fi
 
-	if [[ $VER == 6.2 ]]; then
-		echo "\nInstalling dependencies for unRAID 6.2"
-		rm &plgPATH;/freeipmi-1.4.11-x86_64-3.txz
-		upgradepkg --install-new &plgPATH;/freeipmi-1.5.1-x86_64-1.txz
-	fi
+    if [[ $VER == 6.2 ]]; then
+        echo "\nInstalling dependencies for unRAID 6.2"
+        rm &plgPATH;/freeipmi-1.4.11-x86_64-3.txz
+        upgradepkg --install-new &plgPATH;/freeipmi-1.5.1-x86_64-1.txz
+    fi
 
-	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
-	# Load impi drivers
-	echo "checking ipmi drivers..."
-	for module in ipmi_msghandler ipmi_devintf ipmi_si; do
-		modprobe $module
-	done
+    # Load impi drivers
+    echo "checking ipmi drivers..."
+    for module in ipmi_msghandler ipmi_devintf ipmi_si; do
+        modprobe $module
+    done
 
-	# Start scripts if enabled
-	<![CDATA[
-	echo "checking ipmi event monitor..."
-	/etc/rc.d/rc.ipmiseld start >/dev/null 2>&1 < /dev/null &
-	sleep 1
-	echo "checking ipmi system log tail..."
-	setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
-	sleep 1
-	echo "checking ipmi fan control..."
-	setsid /usr/sbin/ipmifan --quit &
-	sleep 1
-	setsid /usr/sbin/ipmifan --daemon &
-	sleep 1
-	echo "checking ipmi sensors configuration..."
-	setsid /etc/rc.d/rc.ipmicfg commit &
-	sleep 1
-	]]>
+    # Start scripts if enabled
+    <![CDATA[
+    echo "checking ipmi event monitor..."
+    /etc/rc.d/rc.ipmiseld start >/dev/null 2>&1 < /dev/null &
+    sleep 1
+    echo "checking ipmi system log tail..."
+    setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
+    sleep 1
+    echo "checking ipmi fan control..."
+    setsid /usr/sbin/ipmifan --quit &
+    sleep 1
+    setsid /usr/sbin/ipmifan --daemon &
+    sleep 1
+    echo "checking ipmi sensors configuration..."
+    setsid /etc/rc.d/rc.ipmicfg commit &
+    sleep 1
+    ]]>
 
-	# Cleaning old source files
-	find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-	find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+    # Cleaning old source files
+    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -343,11 +343,11 @@ removepkg &plgPATH;/*.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
   &plgPATH;/*.md5
-   
+
 
 echo "unloading ipmi drivers..."
 for module in ipmi_msghandler ipmi_devintf ipmi_si; do
-	modprobe -r $module
+    modprobe -r $module
 done
 echo ""
 echo "-----------------------------------------------------------"

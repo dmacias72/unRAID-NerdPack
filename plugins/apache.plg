@@ -1,0 +1,188 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "apache">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2015.09.16">
+<!ENTITY launch    "Settings/&name;">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
+
+<!--
+This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.0 ONLY. All dependencies are installed as needed and is controlable from the webgui.
+-->
+
+<CHANGES>
+###2016.09.16
+- update plugin for 6.2 only
+###2015.09.07
+- fix start and stop scripts
+###2015.09.06
+- change image png
+- refomat code for markdown and dynamix inherent functions
+###2015.08.31
+- add full path to settings page POST script
+###2015.08.27
+- fix plugin remove script
+###2015.08.26
+- update extensions to php 5.4.44
+- updated for unRAID 6.1
+###2015.08.20
+- fix rc.apache symlink
+###2015.08.19
+- update apache to 2.4.16
+- update extentions to php 5.4.43
+- updates for unRAID 6.1-rc* only
+###2015.06.06
+- update to apache 2.4.12
+- update php extensions to 5.4.40
+- remove libpng and libjpeg packages will need to reboot
+###2015.05.22
+- condense code
+- use native v6 code and styling
+###2015.04.18
+- fix bugs
+- add version and link to webserver
+###2015.04.17
+- update extentions to php 5.4.36
+- added directory browser
+- reformatted layout
+###2015.01.31
+- update for beta12+
+###2014.09.25
+- fix install and remove scripts
+###2014.09.25
+- reformated github and plugin format
+- conf files will now be in /boot/config/plugins/apache/httpd
+###2014.06.07
+- initial commit
+</CHANGES>
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/apr-1.5.2-x86_64-1.txz">
+<URL>&gitURL;/packages/6.2/apr-1.5.2-x86_64-1.txz</URL>
+<MD5>4076e8b7bd35e028b1cfb9224b51afc8</MD5>
+</FILE>
+
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/apr-util-1.5.4-x86_64-2.txz">
+<URL>&gitURL;/packages/6.2/apr-util-1.5.4-x86_64-2.txz</URL>
+<MD5>4efea0ce9975635fe82ad0a6a079d1ca</MD5>
+</FILE>
+
+<FILE Name="&pkgs;freetype-2.6.5-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;freetype-2.6.5-x86_64-1.txz</URL>
+<MD5>60eb82ef3458130fc48f07e6f5035876</MD5>
+</FILE>
+
+<FILE Name="&pkgs;httpd-2.4.23-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;httpd-2.4.23-x86_64-1.txz</URL>
+<MD5>5a7a6f7ec34f23b88bd60072dcc1add9</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libtool-2.4.6-x86_64-4.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libtool-2.4.6-x86_64-4.txz</URL>
+<MD5>3a4d8446f6025bdc06f423d719f942e8</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libX11-1.6.3-x86_64-2.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libX11-1.6.3-x86_64-2.txz</URL>
+<MD5>26472fb7e9d86d3127a427f2c364623f</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libXau-1.0.8-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libXau-1.0.8-x86_64-1.txz</URL>
+<MD5>b09a959ee01a1ea1d31600999b05dfef</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libxcb-1.11.1-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libxcb-1.11.1-x86_64-1.txz</URL>
+<MD5>86a2a1c5f8fa01e6c2372d3d957201c4</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libXdmcp-1.1.2-x86_64-2.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libXdmcp-1.1.2-x86_64-2.txz</URL>
+<MD5>ce01ef3cc35262bb124d36e2f5c520c5</MD5>
+</FILE>
+
+<FILE Name="&pkgs;libXpm-3.5.11-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;libXpm-3.5.11-x86_64-1.txz</URL>
+<MD5>d7e67e2109a8b0e3e554187dcccf3089</MD5>
+</FILE>
+
+<FILE Name="&pkgs;net-snmp-5.7.3-x86_64-3.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;net-snmp-5.7.3-x86_64-3.txz</URL>
+<MD5>4e5e3b7b73388912e18205ab1f509629</MD5>
+</FILE>
+
+<FILE Name="&pkgs;php-ext-5.6.25-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;php-ext-5.6.25-x86_64-1.txz</URL>
+<MD5>b3a04a99ab551b85b690b41c57976ce9</MD5>
+</FILE>
+
+<FILE Name="&pkgs;t1lib-5.1.2-x86_64-3.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;t1lib-5.1.2-x86_64-3.txz</URL>
+<MD5>6942fb6f9f78b8e3cc4a1c77469a2512</MD5>
+</FILE>
+
+<!--
+git from github as tarball
+-->
+<FILE Name="&plugin;/&name;-&version;.tar.gz">
+<URL>"https://github.com/&author;/&name;/archive/&version;.tar.gz"</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+if [ ! -d &emhttp; ]; then
+    mkdir -p &emhttp;
+fi
+tar -zxf &plugin;/&name;-&version;.tar.gz --strip=1 -C &emhttp;/
+find &plugin; -type f -iname "*.tar.gz" ! -iname "&name;-&version;.tar.gz" -delete
+chmod +0770 /usr/local/emhttp/plugins/&name;/scripts/*
+cp -nr /usr/local/emhttp/plugins/&name;/&name; /boot/config/plugins
+
+if [ ! -L /var/www/htdocs ]; then
+    mv -T /var/www/htdocs /var/www/html
+fi
+ln -sfT /var/www/html /srv/httpd/htdocs
+rm -rf /etc/httpd
+ln -sfT &plugin;/httpd /etc/httpd
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+/usr/local/emhttp/plugins/&name;/scripts/stop
+rm -rf /usr/local/emhttp/plugins/&name;
+rm -f &plugin;/&name;-&version;.tar.gz
+</INLINE>
+</FILE>
+
+<FILE Name="/tmp/apache-chkconf" Run="/bin/bash">
+<INLINE>
+<![CDATA[
+#!/bin/sh
+# This will check each entry in the config so nothing is missing, and if missing, sets to default
+CFGFILE=/boot/config/plugins/apache/apache.cfg
+[ ! `cat "$CFGFILE" | grep SERVICE` ] && echo "SERVICE=\"disable\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep DOCROOT` ] && echo "DOCROOT=\"/var/www/html\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep ^PORT` ] && echo "PORT=\"8088\"" >> "$CFGFILE"
+[ ! `cat "$CFGFILE" | grep RUNAS` ] && echo "RUNAS=\"nobody\"" >> "$CFGFILE"
+rm /tmp/apache-chkconf
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>

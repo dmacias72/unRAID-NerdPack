@@ -7,10 +7,10 @@
 <!ENTITY launch    "Settings/CommandLineSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
-<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
-<!ENTITY plgNAME	 "&name;-&version;-x86_64-1">
-<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
@@ -34,7 +34,7 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 - fix: conform screenfetch OS: to 80 columns (remove brackets)
 - condense and restructure code
 ###2016.02.20
-- fix: update plugin ovewriting home directory with saved 
+- fix: update plugin ovewriting home directory with saved
 ###2016.02.11a
 - fix screenfetch error if emhttp/var.ini were not ready
 ###2016.02.11
@@ -60,8 +60,8 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 - default config file
 ###2016.01.06
 - change package path to plugin directory
-- fix Tool/Command Line page 
-- fix misspelled cfg file 
+- fix Tool/Command Line page
+- fix misspelled cfg file
 - fix default port 8088 to 4200
 ###2015.12.30
 - remove old plugin directory on install
@@ -143,31 +143,31 @@ fi
 sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
 sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
-	echo "Wrong 'plugin' package md5 hash."
-	rm &plgPATH;/&plgNAME;.txz
-	rm &plgPATH;/&plgNAME;.md5
-	exit 1
+    echo "Wrong 'plugin' package md5 hash."
+    rm &plgPATH;/&plgNAME;.txz
+    rm &plgPATH;/&plgNAME;.md5
+    exit 1
 else
-	#remove old plugin and move old files
-	OLDPLG="/boot/config/plugins/shellinabox-plugin"
-	if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
-		rm -rf  /usr/local/emhttp/plugins/shellinabox
-	fi
-	if [ -d /usr/local/emhttp/plugins/shellinabox-plugin ]; then
-		rm -rf  /usr/local/emhttp/plugins/shellinabox-plugin
-	fi
-	if [ -f $OLDPLG/shellinabox-plugin.cfg ]; then
-		mv -f $OLDPLG/shellinabox-plugin.cfg &plgPATH;/cmdline.cfg
-	fi
-	if [ -f $OLDPLG/home_directory.tar.gz ]; then 
-		mv -f $OLDPLG/home_directory.tar.gz &plgPATH;/home_directory.tar.gz
-	fi
-	if [ -d $OLDPLG ]; then
-		rm -rf  $OLDPLG
-	fi
-	
-	# upgrade package
-	upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+    #remove old plugin and move old files
+    OLDPLG="/boot/config/plugins/shellinabox-plugin"
+    if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
+        rm -rf  /usr/local/emhttp/plugins/shellinabox
+    fi
+    if [ -d /usr/local/emhttp/plugins/shellinabox-plugin ]; then
+        rm -rf  /usr/local/emhttp/plugins/shellinabox-plugin
+    fi
+    if [ -f $OLDPLG/shellinabox-plugin.cfg ]; then
+        mv -f $OLDPLG/shellinabox-plugin.cfg &plgPATH;/cmdline.cfg
+    fi
+    if [ -f $OLDPLG/home_directory.tar.gz ]; then
+        mv -f $OLDPLG/home_directory.tar.gz &plgPATH;/home_directory.tar.gz
+    fi
+    if [ -d $OLDPLG ]; then
+        rm -rf  $OLDPLG
+    fi
+
+    # upgrade package
+    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
  # start shellinabox daemon
 /etc/rc.d/rc.shellinaboxd startup

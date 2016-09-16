@@ -7,10 +7,10 @@
 <!ENTITY launch    "Settings/Wakeonlan">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
-<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname	 "&name;-&version;-x86_64-1">
-<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
@@ -34,7 +34,7 @@
 ###2015.03.05a
 - fix default ethernet interface
 ###2015.02.24
-- button bindings when editing 
+- button bindings when editing
 ###2015.02.21
 - added autosave
 - added table sorting
@@ -90,7 +90,7 @@ The 'plugin' package MD5 hash.
 The 'install' script.
 -->
 <FILE Run="/bin/bash">
-<INLINE> 
+<INLINE>
 #Verify unRAID Version
 source /etc/unraid-version
 if [[ ${version:0:3} == 6.0 ]]; then
@@ -112,12 +112,12 @@ fi
 
 # remove old plugin name folder
 if [ -d /usr/local/emhttp/plugins/wol ]; then
- 	rm -f /usr/local/emhttp/plugins/wol
+    rm -f /usr/local/emhttp/plugins/wol
 fi
 
 # create log directory
 if [ ! -d /var/log/&name; ]; then
- 	mkdir -p /var/log/&name;
+    mkdir -p /var/log/&name;
 fi
 chmod 755 /var/log/&name;
 

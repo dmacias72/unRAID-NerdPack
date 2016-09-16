@@ -7,10 +7,10 @@
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
-<!ENTITY pkgURL	 "&gitURL;/source/packages">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname	 "&name;-&version;-x86_64-1">
-<!ENTITY emhttp	 "/usr/local/emhttp/plugins/&name;">
+<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
@@ -48,7 +48,7 @@
 - add check for other plugin dependencies on uninstall
 ###2016.01.25
 - Merge eschultz pull request
-- tweaks to tablesorter to restore saved filters 
+- tweaks to tablesorter to restore saved filters
 - minor optimizations
 ###2016.01.24
 - Merged eschultz's package repo and following fixes
@@ -197,31 +197,31 @@ fi
 sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
 sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
-	echo "Wrong 'plugin' package md5 hash."
-	rm &plgpath;/&plgname;.txz \
-		&plgpath;/&plgname;.md5
-	exit 1
+    echo "Wrong 'plugin' package md5 hash."
+    rm &plgpath;/&plgname;.txz \
+        &plgpath;/&plgname;.md5
+    exit 1
 else
-	if [ ! -d &plgpath;/packages/$VER ]; then
-		mkdir &plgpath;/packages/$VER
-	fi
+    if [ ! -d &plgpath;/packages/$VER ]; then
+        mkdir &plgpath;/packages/$VER
+    fi
 
-	count=`ls -1 /boot/config/plugins/NerdPack/packages/*.txz 2>/dev/null | wc -l`
-	if [ $count != 0 ]; then
-		if [ ! -d &plgpath;/packages/6.1 ]; then
-			mkdir &plgpath;/packages/6.1
-		fi
-		echo "Moving package files..."
-		mv  &plgpath;/packages/*txz  &plgpath;/packages/6.1
-	fi
+    count=`ls -1 /boot/config/plugins/NerdPack/packages/*.txz 2>/dev/null | wc -l`
+    if [ $count != 0 ]; then
+        if [ ! -d &plgpath;/packages/6.1 ]; then
+            mkdir &plgpath;/packages/6.1
+        fi
+        echo "Moving package files..."
+        mv  &plgpath;/packages/*txz  &plgpath;/packages/6.1
+    fi
 
-	upgradepkg --install-new &plgpath;/&plgname;.txz
+    upgradepkg --install-new &plgpath;/&plgname;.txz
 
-	/usr/sbin/packagemanager
+    /usr/sbin/packagemanager
 
-	# Cleaning old source files
-	find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-	find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+    # Cleaning old source files
+    find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
