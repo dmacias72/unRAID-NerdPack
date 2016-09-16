@@ -21,12 +21,9 @@ $pkgs_downloaded = file_exists($pkg_path) ? array_diff(scandir($pkg_path, 1), ['
 // get array of all installed packages
 $pkgs_installed = array_diff(scandir("/var/log/packages", 1), ['.', '..']);
 
-$pkgs_desc_file = (is_file($desc_file)) ? file_get_contents($desc_file) : '[]';
-$pkgs_desc_array = json_decode($pkgs_desc_file, true);
+$pkgs_desc_array   = (file_exists($desc_file)) ? json_decode(file_get_contents($desc_file), true) : '[]';
 
-$pkgs_github_file = (is_file($repo_file)) ? file_get_contents($repo_file) : '[]';
-$pkgs_github_array = json_decode($pkgs_github_file, true);
-
+$pkgs_github_array = (file_exists($repo_file)) ? json_decode(file_get_contents($repo_file), true) : '[]';
 
 function logger($output, $quiet = false) {
     exec('echo '.escapeshellarg($output).' 2>&1 | logger -tnerdpack');

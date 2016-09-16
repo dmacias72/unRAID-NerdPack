@@ -57,16 +57,16 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
     $pkg_pattern = '/^'.$pkg_name.'.*/'; // search pattern for packages
     $pkg_install_status = preg_grep($pkg_pattern, $pkgs_installed); // check install status
     $pkg_download_status = preg_grep($pkg_pattern, $pkgs_downloaded); // check package download status
-                $pkg_online_status = preg_grep($pkg_pattern, $pkgs_github_array);
+    $pkg_online_status = preg_grep($pkg_pattern, $pkgs_github_array);
 
-                $pkg_matches = array_filter($pkgs_github_array, function($a) use ($pkg_pattern) {
-                    return preg_grep($pkg_pattern, $a);
-                });
+    $pkg_matches = array_filter($pkgs_github_array, function($a) use ($pkg_pattern) {
+        return preg_grep($pkg_pattern, $a);
+    });
 
-                $pkg_gitname = array_values($pkg_matches)[0]['name'];
-                $pkg_file = $pkg_path.$pkg_gitname;
-                $pkg_url = array_values($pkg_matches)[0]['download_url'];
-                $pkg_sha1 = array_values($pkg_matches)[0]['sha'];
+    $pkg_gitname = array_values($pkg_matches)[0]['name'];
+    $pkg_file = $pkg_path.$pkg_gitname;
+    $pkg_url = array_values($pkg_matches)[0]['download_url'];
+    $pkg_sha1 = array_values($pkg_matches)[0]['sha'];
 
     //check if plugin is dependent on package
     $plugins = [];
@@ -75,8 +75,8 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
         $plg_msg = "$pkg_name used by plugin: ";
         foreach ($plugins as $plugin){
             $plg_msg .= pathinfo($plugin, PATHINFO_FILENAME).", ";
-            }
-            logger(substr($plg_msg, 0, -2));
+        }
+        logger(substr($plg_msg, 0, -2));
     }
 
     if ($pkg_pref == 'yes') { // if package is selected to be installed
@@ -97,10 +97,12 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
                 }
             }
         }
+
         if (!$pkg_install_status) { // if package is not installed
             $pkg_msg = 'Installing';
             $pkg_cmd = 'upgradepkg --install-new '.$pkg_path.$pkg_name.'* 2>&1';
         }
+
     } else if ($pkg_pref == 'no' && $pkg_install_status && $argu) {
         if($plugins){
             logger("$pkg_name in use by another plugin, not uninstalled.",$argq);
@@ -113,6 +115,7 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
             }
         }
     }
+
     if (!empty($pkg_cmd)) {
         logger("$pkg_msg $pkg_name package...");
         shell_exec($pkg_cmd);
@@ -122,14 +125,16 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
         if ($pkg_pref == 'yes'){
             if (file_exists($pkg_file)){
                 if (file_check_sha1($pkg_file, $pkg_sha1))
-                    logger($pkg_gitname.' package up to date, checksum ok.', $argq);
+                    $pkg_msg = 'package up to date, checksum ok.';
                 else{
                     if (file_exists($pkg_file))
                         unlink($pkg_file);
-                    logger($pkg_gitname.' package checksum failed! package deleted.', $argq);
+                    $pkg_msg = 'checksum failed! package deleted.';
                 }
             }else
-                logger($pkg_gitname.' package missing!', $argq);
+                $pkg_msg = ' package missing!';
+
+            logger($pkg_name." $pkg_msg", $argq);
         }
     }
 }

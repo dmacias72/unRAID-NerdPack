@@ -3,9 +3,11 @@ require_once '/usr/local/emhttp/plugins/NerdPack/include/NerdPackHelpers.php';
 require_once '/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php';
 
 // Only download repo update if the current one is 1 hour old or more
-if (!is_file($repo_file) || !empty($_GET['force']) || (filemtime($repo_file) < (time() - 3600))) {
+if (!file_exists($repo_file) || !empty($_GET['force']) || (filemtime($repo_file) < (time() - 3600))) {
     get_content_from_github($pkg_repo, $repo_file);
     get_content_from_github($pkg_desc, $desc_file);
+    $pkgs_desc_array   = (file_exists($desc_file)) ? json_decode(file_get_contents($desc_file), true) : '[]';
+    $pkgs_github_array = (file_exists($repo_file)) ? json_decode(file_get_contents($repo_file), true) : '[]';
 }
 
 $pkgs_array = [];
