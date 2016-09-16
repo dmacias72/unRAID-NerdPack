@@ -17,7 +17,7 @@
 
 <CHANGES>
 ###2016.09.16
-- fix: empty package list on new install
+- fix: empty package list on new install or upgrade
 - update tablesorter to 2.27.6
 ###2016.09.10
 - add: popup for unRAID version change or empty downloads folder
