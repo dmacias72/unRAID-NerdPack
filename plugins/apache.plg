@@ -85,6 +85,11 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <MD5>5a7a6f7ec34f23b88bd60072dcc1add9</MD5>
 </FILE>
 
+<FILE Name="&plgpath;/libiodbc-3.52.10-x86_64-2.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libiodbc-3.52.10-x86_64-2.txz</URL>
+<MD5>5d62962db9add60780e184c76048d3d3</MD5>
+</FILE>
+
 <FILE Name="&plgpath;/libmcrypt-2.5.8-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libmcrypt-2.5.8-x86_64-1.txz</URL>
 <MD5>758bfc84d60a0d1bb8c1e51caaffe50f</MD5>
@@ -223,7 +228,7 @@ rm -f &plgpath;/&plgname;.txz
 rm -f &plgpath;/&plgname;.md5
 
 #remove installed packages
-removepkg &plgpath;/*.txz
+setsid removepkg &plgpath;/*.txz
 rm -f &plgpath;/*.txz
 
 echo ""
