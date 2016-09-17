@@ -85,6 +85,11 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <MD5>5a7a6f7ec34f23b88bd60072dcc1add9</MD5>
 </FILE>
 
+<FILE Name="&plgpath;/libmcrypt-2.5.8-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libmcrypt-2.5.8-x86_64-1.txz</URL>
+<MD5>758bfc84d60a0d1bb8c1e51caaffe50f</MD5>
+</FILE>
+
 <FILE Name="&plgpath;/libtool-2.4.6-x86_64-4.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libtool-2.4.6-x86_64-4.txz</URL>
 <MD5>3a4d8446f6025bdc06f423d719f942e8</MD5>
@@ -122,7 +127,7 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 
 <FILE Name="&plgpath;/php-ext-5.6.25-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/php-ext-5.6.25-x86_64-1.txz</URL>
-<MD5>b3a04a99ab551b85b690b41c57976ce9</MD5>
+<MD5>df1e2d53ed33e6cac78d2a208a8f0142</MD5>
 </FILE>
 
 <FILE Name="&plgpath;/t1lib-5.1.2-x86_64-3.txz" Run="upgradepkg --install-new">
