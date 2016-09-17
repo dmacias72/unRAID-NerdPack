@@ -221,19 +221,18 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-&emhttp;/scripts/stop
+/etc/rc.d/rc.apache stop
 removepkg &plgpath;/&plgname;.txz
 rm -rf &emhttp;
 rm -f &plgpath;/&plgname;.txz
 rm -f &plgpath;/&plgname;.md5
 
 #remove installed packages
-echo "Removing installed packages..."
+echo "Please wait, removing installed packages..."
 <![CDATA[
-setsid removepkg /boot/config/plugins/apache/*.txz &
+removepkg /boot/config/plugins/apache/*.txz > /dev/null 2>&1
+rm -f /boot/config/plugins/apache/*.txz
 ]]>
-
-rm -f &plgpath;/*.txz
 
 echo ""
 echo "-----------------------------------------------------------"
