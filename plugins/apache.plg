@@ -75,57 +75,57 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <MD5>4efea0ce9975635fe82ad0a6a079d1ca</MD5>
 </FILE>
 
-<FILE Name="&plgpath;freetype-2.6.5-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/freetype-2.6.5-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;freetype-2.6.5-x86_64-1.txz</URL>
 <MD5>60eb82ef3458130fc48f07e6f5035876</MD5>
 </FILE>
 
-<FILE Name="&plgpath;httpd-2.4.23-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/httpd-2.4.23-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;httpd-2.4.23-x86_64-1.txz</URL>
 <MD5>5a7a6f7ec34f23b88bd60072dcc1add9</MD5>
 </FILE>
 
-<FILE Name="&plgpath;libtool-2.4.6-x86_64-4.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libtool-2.4.6-x86_64-4.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;libtool-2.4.6-x86_64-4.txz</URL>
 <MD5>3a4d8446f6025bdc06f423d719f942e8</MD5>
 </FILE>
 
-<FILE Name="&plgpath;libX11-1.6.3-x86_64-2.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libX11-1.6.3-x86_64-2.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;libX11-1.6.3-x86_64-2.txz</URL>
 <MD5>26472fb7e9d86d3127a427f2c364623f</MD5>
 </FILE>
 
-<FILE Name="&plgpath;libXau-1.0.8-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libXau-1.0.8-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;libXau-1.0.8-x86_64-1.txz</URL>
 <MD5>b09a959ee01a1ea1d31600999b05dfef</MD5>
 </FILE>
 
-<FILE Name="&plgpath;libxcb-1.11.1-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libxcb-1.11.1-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;libxcb-1.11.1-x86_64-1.txz</URL>
 <MD5>86a2a1c5f8fa01e6c2372d3d957201c4</MD5>
 </FILE>
 
-<FILE Name="&plgpath;libXdmcp-1.1.2-x86_64-2.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libXdmcp-1.1.2-x86_64-2.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;libXdmcp-1.1.2-x86_64-2.txz</URL>
 <MD5>ce01ef3cc35262bb124d36e2f5c520c5</MD5>
 </FILE>
 
-<FILE Name="&plgpath;libXpm-3.5.11-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/libXpm-3.5.11-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;libXpm-3.5.11-x86_64-1.txz</URL>
 <MD5>d7e67e2109a8b0e3e554187dcccf3089</MD5>
 </FILE>
 
-<FILE Name="&plgpath;net-snmp-5.7.3-x86_64-3.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/net-snmp-5.7.3-x86_64-3.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;net-snmp-5.7.3-x86_64-3.txz</URL>
 <MD5>4e5e3b7b73388912e18205ab1f509629</MD5>
 </FILE>
 
-<FILE Name="&plgpath;php-ext-5.6.25-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/php-ext-5.6.25-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;php-ext-5.6.25-x86_64-1.txz</URL>
 <MD5>b3a04a99ab551b85b690b41c57976ce9</MD5>
 </FILE>
 
-<FILE Name="&plgpath;t1lib-5.1.2-x86_64-3.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgpath;/t1lib-5.1.2-x86_64-3.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;t1lib-5.1.2-x86_64-3.txz</URL>
 <MD5>6942fb6f9f78b8e3cc4a1c77469a2512</MD5>
 </FILE>
