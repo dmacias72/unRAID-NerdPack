@@ -8,22 +8,22 @@ if (!is_dir($pkg_path))
 $pkg_desc = 'https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/packages-desc';
 $pkg_repo = "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/$os_version";
 
-$desc_file = $pkg_path.'packages-desc';
-$repo_file = $pkg_path.'packages.json';
+$desc_file   = $pkg_path.'packages-desc';
+$repo_file   = $pkg_path.'packages.json';
 $config_file = $plg_path.'NerdPack.cfg';
 
 // get package configs
-$pkg_cfg = (is_file($config_file)) ? parse_ini_file($config_file) : [];
+$pkg_cfg = file_exists($config_file) ? parse_ini_file($config_file) : [];
 
 // get array of downloaded packages
-$pkgs_downloaded = file_exists($pkg_path) ? array_diff(scandir($pkg_path, 1), ['.', '..','packages.json','packages-desc']) : [];
+$pkgs_downloaded   = is_dir($pkg_path) ? array_diff(scandir($pkg_path, 1), ['.', '..','packages.json','packages-desc']) : [];
 
 // get array of all installed packages
-$pkgs_installed = array_diff(scandir("/var/log/packages", 1), ['.', '..']);
+$pkgs_installed    = array_diff(scandir("/var/log/packages", 1), ['.', '..']);
 
-$pkgs_desc_array   = (file_exists($desc_file)) ? json_decode(file_get_contents($desc_file), true) : '[]';
+$pkgs_desc_array   = file_exists($desc_file) ? json_decode(file_get_contents($desc_file), true) : [];
 
-$pkgs_github_array = (file_exists($repo_file)) ? json_decode(file_get_contents($repo_file), true) : '[]';
+$pkgs_github_array = file_exists($repo_file) ? json_decode(file_get_contents($repo_file), true) : [];
 
 function logger($output, $quiet = false) {
     exec('echo '.escapeshellarg($output).' 2>&1 | logger -tnerdpack');

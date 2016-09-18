@@ -6,8 +6,8 @@ require_once '/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php';
 if (!file_exists($repo_file) || !empty($_GET['force']) || (filemtime($repo_file) < (time() - 3600))) {
     get_content_from_github($pkg_repo, $repo_file);
     get_content_from_github($pkg_desc, $desc_file);
-    $pkgs_desc_array   = (file_exists($desc_file)) ? json_decode(file_get_contents($desc_file), true) : '[]';
-    $pkgs_github_array = (file_exists($repo_file)) ? json_decode(file_get_contents($repo_file), true) : '[]';
+    $pkgs_desc_array   = file_exists($desc_file) ? json_decode(file_get_contents($desc_file), true) : [];
+    $pkgs_github_array = file_exists($repo_file) ? json_decode(file_get_contents($repo_file), true) : [];
 }
 
 $pkgs_array = [];
@@ -25,7 +25,7 @@ foreach ($pkgs_github_array as $pkg_github) {
 
     $pkg_version = $pkg_nameArray[sizeof($pkg_nameArray) - 3]; // get package version
 
-    $pkg_nver = $pkg_name.'-'.str_replace('.', '_', $pkg_version); // add underscored version to package name
+    $pkg_nver    = $pkg_name.'-'.str_replace('.', '_', $pkg_version); // add underscored version to package name
 
     $pkg_pattern = '/^'.$pkg_name.'.*/'; // search pattern for packages
 

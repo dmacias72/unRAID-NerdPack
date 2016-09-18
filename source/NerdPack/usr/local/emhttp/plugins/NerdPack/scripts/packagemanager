@@ -1,5 +1,7 @@
 #!/usr/bin/php -q
 <?php
+$debug = FALSE;
+$prog  = pathinfo(__FILE__, PATHINFO_FILENAME);
 $usage = <<<EOF
 
 Process package files in NerdPack config. Download and install,
@@ -14,12 +16,13 @@ Usage: packagemanager [options]
   -v, --verbose    print all packages progress
       --help       display this help and exit
       --version    output version information and exit
-
+      --debug      turn on debugging
 
 EOF;
 
 $shortopts = "drquv";
 $longopts = [
+    "debug",
     "delete",
     "download",
     "help",
@@ -45,28 +48,39 @@ $argq = (array_key_exists("q", $args) || array_key_exists("quiet", $args));
 $argr = (array_key_exists("r", $args) || array_key_exists("delete", $args));
 $argu = (array_key_exists("u", $args) || array_key_exists("uninstall", $args));
 $argv = (array_key_exists("v", $args) || array_key_exists("verbose", $args));
+$debug = array_key_exists("debug", $args);
 
 require_once '/usr/local/emhttp/plugins/NerdPack/include/NerdPackHelpers.php';
 require_once '/usr/local/emhttp/plugins/NerdPack/include/DownloadHelpers.php';
+
+/* debug */
+function debug($m){
+  global $prog, $debug;
+  if($debug){
+    $STDERR = fopen('php://stderr', 'w+');
+    fwrite($STDERR, $m.PHP_EOL);
+    fclose($STDERR);
+  }
+}
 
 logger('Processing Packages...');
 
 foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each package
     $pkg_cmd = '';
-    $pkg_name = str_replace('_', '.', $pkg_name); // replace "_" with "." in package names
+    $pkg_name    = str_replace('_', '.', $pkg_name); // replace "_" with "." in package names
     $pkg_pattern = '/^'.$pkg_name.'.*/'; // search pattern for packages
-    $pkg_install_status = preg_grep($pkg_pattern, $pkgs_installed); // check install status
+    $pkg_install_status  = preg_grep($pkg_pattern, $pkgs_installed); // check install status
     $pkg_download_status = preg_grep($pkg_pattern, $pkgs_downloaded); // check package download status
-    $pkg_online_status = preg_grep($pkg_pattern, $pkgs_github_array);
+    $pkg_online_status   = preg_grep($pkg_pattern, $pkgs_github_array);
 
     $pkg_matches = array_filter($pkgs_github_array, function($a) use ($pkg_pattern) {
         return preg_grep($pkg_pattern, $a);
     });
 
     $pkg_gitname = array_values($pkg_matches)[0]['name'];
-    $pkg_file = $pkg_path.$pkg_gitname;
-    $pkg_url = array_values($pkg_matches)[0]['download_url'];
-    $pkg_sha1 = array_values($pkg_matches)[0]['sha'];
+    $pkg_file    = $pkg_path.$pkg_gitname;
+    $pkg_url     = array_values($pkg_matches)[0]['download_url'];
+    $pkg_sha1    = array_values($pkg_matches)[0]['sha'];
 
     //check if plugin is dependent on package
     $plugins = [];
@@ -140,4 +154,16 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
 }
 
 logger('All packages processed...');
+
+/* print variable */
+$defined_vars = get_defined_vars();
+
+//remove vars from array to save
+unset($defined_vars['pkgs_desc_array'],$defined_vars['pkgs_github_array']);
+
+foreach (array("_GET","_POST","_COOKIE","_FILES","argv","argc","_SERVER") as $i)
+    unset($defined_vars[$i]);
+
+debug("\nDECLARED VARIABLES:\n".print_r($defined_vars, true));
+unset($defined_vars);
 ?>
