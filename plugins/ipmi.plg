@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.16">
+<!ENTITY version   "2016.09.20">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.09.20
+- fix: inaccurate error when running fancontrol while disabled
 ###2016.09.16
 - update tablesorter to 2.27.6
 ###2016.07.22
@@ -296,7 +298,7 @@ else
     setsid /etc/rc.d/rc.ipmitail start >/dev/null 2>&1 < /dev/null &
     sleep 1
     echo "checking ipmi fan control..."
-    setsid /usr/sbin/ipmifan --quit &
+    setsid /usr/sbin/ipmifan --quit > /dev/null 2>&1 &
     sleep 1
     setsid /usr/sbin/ipmifan --daemon &
     sleep 1
