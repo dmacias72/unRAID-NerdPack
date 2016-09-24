@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "apache">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.17a">
+<!ENTITY version   "2016.09.24">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -20,6 +20,11 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 -->
 
 <CHANGES>
+###2016.09.24
+- fix: apr and apr-util packages not installing
+- fix: clearing log files
+- add: restart button
+- add: missing dependencies for gd.so
 ###2016.09.17a
 - fix: php.ini not being used
 - update php extensions to 5.6.24 match unRAID 6.2
@@ -68,12 +73,12 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 - initial commit
 </CHANGES>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/apr-1.5.2-x86_64-1.txz">
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/apr-1.5.2-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&gitURL;/packages/6.2/apr-1.5.2-x86_64-1.txz</URL>
 <MD5>4076e8b7bd35e028b1cfb9224b51afc8</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/apr-util-1.5.4-x86_64-2.txz">
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/apr-util-1.5.4-x86_64-2.txz" Run="upgradepkg --install-new">
 <URL>&gitURL;/packages/6.2/apr-util-1.5.4-x86_64-2.txz</URL>
 <MD5>4efea0ce9975635fe82ad0a6a079d1ca</MD5>
 </FILE>
@@ -81,6 +86,11 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <FILE Name="&plgpath;/freetype-2.6.5-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/freetype-2.6.5-x86_64-1.txz</URL>
 <MD5>60eb82ef3458130fc48f07e6f5035876</MD5>
+</FILE>
+
+<FILE Name="&plgpath;/harfbuzz-1.3.0-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/harfbuzz-1.3.0-x86_64-1.txz</URL>
+<MD5>348c80202ce746b41557708bddf9c35b</MD5>
 </FILE>
 
 <FILE Name="&plgpath;/httpd-2.4.23-x86_64-1.txz" Run="upgradepkg --install-new">
@@ -101,6 +111,11 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <FILE Name="&plgpath;/libtool-2.4.6-x86_64-4.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libtool-2.4.6-x86_64-4.txz</URL>
 <MD5>3a4d8446f6025bdc06f423d719f942e8</MD5>
+</FILE>
+
+<FILE Name="&plgpath;/libvpx-1.5.0-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libvpx-1.5.0-x86_64-1.txz</URL>
+<MD5>04ee011ea0510d961d121883930c2fda</MD5>
 </FILE>
 
 <FILE Name="&plgpath;/libX11-1.6.3-x86_64-2.txz" Run="upgradepkg --install-new">
