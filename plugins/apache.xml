@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Containers>
+<Plugin>True</Plugin>
+<PluginURL>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/apache.plg</PluginURL>
+<PluginAuthor>dmacias72</PluginAuthor>
+<Beta>False</Beta>
+<Category>Network:Webserver</Category>
+<Name>Apache Web Server</Name>
+<Description>
+The Apache HTTP Server Project is an effort to develop and maintain an open-source HTTP server for modern operating systems including UNIX and Windows NT. The goal of this project is to provide a secure, efficient and extensible server that provides HTTP services in sync with the current HTTP standards.
+</Description>
+<Support>http://lime-technology.com/forum/index.php?topic=33692.0</Support>
+<Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/apache.png</Icon>
+<Date>2016-09-24</Date>
+<Changes>
+###2016.09.24
+- fix: apr and apr-util packages not installing
+- fix: clearing log files
+- add: restart button
+- add: missing dependencies for gd.so
+###2016.09.17a
+- fix: php.ini not being used
+- update php extensions to 5.6.24 match unRAID 6.2
+###2016.09.17
+- update plugin for 6.2 only
+###2015.09.07
+- fix start and stop scripts
+###2015.09.06
+- change image png
+- refomat code for markdown and dynamix inherent functions
+###2015.08.31
+- add full path to settings page POST script
+###2015.08.27
+- fix plugin remove script
+###2015.08.26
+- update extensions to php 5.4.44
+- updated for unRAID 6.1
+###2015.08.20
+- fix rc.apache symlink
+###2015.08.19
+- update apache to 2.4.16
+- update extentions to php 5.4.43
+- updates for unRAID 6.1-rc* only
+###2015.06.06
+- update to apache 2.4.12
+- update php extensions to 5.4.40
+- remove libpng and libjpeg packages will need to reboot
+###2015.05.22
+- condense code
+- use native v6 code and styling
+###2015.04.18
+- fix bugs
+- add version and link to webserver
+###2015.04.17
+- update extentions to php 5.4.36
+- added directory browser
+- reformatted layout
+###2015.01.31
+- update for beta12+
+###2014.09.25
+- fix install and remove scripts
+###2014.09.25
+- reformated github and plugin format
+- conf files will now be in /boot/config/plugins/apache/httpd
+###2014.06.07
+- initial commit
+</Changes>
+</Containers>
