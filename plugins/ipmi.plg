@@ -18,6 +18,7 @@
 <CHANGES>
 ###2016.09.28
 - add: show readings for Oem Reserved e.g. Supermicro temp readings
+- fix: hard drives reading showing 0 when spun down
 ###2016.09.20
 - fix: inaccurate error when running fancontrol while disabled
 ###2016.09.16
