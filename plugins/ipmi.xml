@@ -13,8 +13,11 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
 <Date>2016-09-28</Date>
 <Changes>
+###2016.09.28a
+- add: show readings for OEM Reserved in dashboard
+- add: ability to select OEM Reserved to display in footer
 ###2016.09.28
-- add: show readings for Oem Reserved e.g. Supermicro temp readings
+- add: show readings for OEM Reserved e.g. Supermicro temp readings
 - fix: hard drives reading showing 0 when spun down
 ###2016.09.20
 - fix: inaccurate error when running fancontrol while disabled

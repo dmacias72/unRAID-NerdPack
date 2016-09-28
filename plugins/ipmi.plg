@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.28">
+<!ENTITY version   "2016.09.28a">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,8 +16,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.09.28a
+- add: show readings for OEM Reserved in dashboard
+- add: ability to select OEM Reserved to display in footer
 ###2016.09.28
-- add: show readings for Oem Reserved e.g. Supermicro temp readings
+- add: show readings for OEM Reserved e.g. Supermicro temp readings
 - fix: hard drives reading showing 0 when spun down
 ###2016.09.20
 - fix: inaccurate error when running fancontrol while disabled
