@@ -40,9 +40,9 @@ This plugin uses PyQuassel to send Pushbullet notifications for Quassel Core Ser
 <MD5>e19803aa714dcea6dd8f922089d4e996</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python3-3.5.1-x86_64-2.txz">
-<URL>&pkgURL;/6.2/python3-3.5.1-x86_64-2.txz</URL>
-<MD5>a2b6f257cbb6dea91df4d422cc7b2b0b</MD5>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python3-3.5.2-x86_64-1.tgz">
+<URL>&pkgURL;/6.2/python3-3.5.2-x86_64-1.tgz</URL>
+<MD5>d535f46f828f8200e907787ddf9294ed</MD5>
 </FILE>
 
 <!--
@@ -119,7 +119,7 @@ else
 
     if [[ $VER == 6.2 ]]; then
         echo "\nInstalling dependencies for unRAID 6.2"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.1-x86_64-2.txz
+        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.2-x86_64-1.tgz
     fi
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
