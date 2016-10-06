@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.29">
+<!ENTITY version   "2016.10.05">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.10.05
+- add: update to freeipmi-1.5.3
+- add: automatic system specific configuration of ipmi fans for ASRock boards
+- fix: move boards.json to board.json
+- fix: cache board type to speed up settings page
+- fix: minor fixes, cleanup and remove depreciated code
+- fix: css affecting dashboard
+- fix: unRaid 6.3 compatibility
 ###2016.09.29
 - fix: remove quotes from OEM Reserved readings
 ###2016.09.28a
@@ -190,9 +198,9 @@ This plugin uses freeipmi to display sensor readings
 <MD5>6c7839886f7c7b0cc4947aaf6199d60e</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/freeipmi-1.5.1-x86_64-1.txz">
-<URL>&pkgURL;/freeipmi-1.5.1-x86_64-1.txz</URL>
-<MD5>f9df6ccd8c231e937ac4a8459ae91330</MD5>
+<FILE Name="&plgPATH;/freeipmi-1.5.3-x86_64-1.txz">
+<URL>&pkgURL;/freeipmi-1.5.3-x86_64-1.txz</URL>
+<MD5>1aa566b9a1c0561b82f27118ee3d8f14</MD5>
 </FILE>
 
 <!--
@@ -234,13 +242,6 @@ IPMIBOARD=""
 </FILE>
 
 <!--
-The 'boards' json file.
--->
-<FILE Name="&plgPATH;/boards.json">
-<URL>&gitURL;/plugins/boards.json</URL>
-</FILE>
-
-<!--
 The 'plugin' package file.
 -->
 <FILE Name="&plgPATH;/&plgNAME;.txz">
@@ -279,14 +280,17 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
 else
     if [[ $VER == 6.1 ]]; then
         echo "\nInstalling dependencies for unRAID 6.1"
-        rm &plgPATH;/freeipmi-1.5.1-x86_64-1.txz
         upgradepkg --install-new &plgPATH;/freeipmi-1.4.11-x86_64-3.txz
     fi
 
     if [[ $VER == 6.2 ]]; then
         echo "\nInstalling dependencies for unRAID 6.2"
-        rm &plgPATH;/freeipmi-1.4.11-x86_64-3.txz
-        upgradepkg --install-new &plgPATH;/freeipmi-1.5.1-x86_64-1.txz
+        upgradepkg --install-new &plgPATH;/freeipmi-1.5.3-x86_64-1.txz
+    fi
+
+    if [[ $VER == 6.3 ]]; then
+        echo "\nInstalling dependencies for unRAID 6.3"
+        upgradepkg --install-new &plgPATH;/freeipmi-1.5.3-x86_64-1.txz
     fi
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
@@ -296,6 +300,10 @@ else
     for module in ipmi_msghandler ipmi_devintf ipmi_si; do
         modprobe $module
     done
+
+    if [ -e $plgPATH;/boards.json ]; then
+         mv $plgPATH;/boards.json $plgPATH;/board.json
+    fi
 
     # Start scripts if enabled
     <![CDATA[
