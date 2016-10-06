@@ -301,8 +301,8 @@ else
         modprobe $module
     done
 
-    if [ -e $plgPATH;/boards.json ]; then
-         mv $plgPATH;/boards.json $plgPATH;/board.json
+    if [ -e "/boot/config/plugins/ipmi/boards.json" ]; then
+         mv /boot/config/plugins/ipmi/boards.json /boot/config/plugins/ipmi/board.json
     fi
 
     # Start scripts if enabled
