@@ -11,9 +11,9 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-10-05</Date>
+<Date>2016-10-06</Date>
 <Changes>
-###2016.10.05
+###2016.10.06
 - add: update to freeipmi-1.5.3
 - add: automatic system specific configuration of ipmi fans for ASRock boards
 - fix: move boards.json to board.json
