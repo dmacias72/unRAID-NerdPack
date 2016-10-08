@@ -63,11 +63,10 @@ $(function(){
     // set cookie on apply button press
     $('#btnApply').click(function() {
         checkDepends();
-
+        var Arg2 = (typeof $.cookie('nerdpack_packages_uninstall') === 'undefined') ? '' : '&arg2='+$.cookie('nerdpack_packages_uninstall');
+        var Arg3 = (typeof $.cookie('nerdpack_packages_delete')    === 'undefined') ? '' : '&arg3='+$.cookie('nerdpack_packages_delete');
         $.post('/update.php', $('#package_form').serializeArray(), function() {
-                openBox('/plugins/NerdPack/scripts/packagemanager&arg1=--download'+
-                            '&arg2='+$.cookie('nerdpack_packages_uninstall')+
-                            '&arg3='+$.cookie('nerdpack_packages_delete'),
+                openBox('/plugins/NerdPack/scripts/packagemanager&arg1=--download'+ Arg2 + Arg3,
                             'Package Manager', 600, 900, true);
             }
         );
