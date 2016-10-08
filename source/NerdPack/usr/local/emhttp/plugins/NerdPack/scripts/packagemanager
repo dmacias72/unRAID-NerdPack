@@ -68,7 +68,7 @@ logger('Processing Packages...');
 foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each package
     $pkg_cmd = '';
     $pkg_name    = str_replace('_', '.', $pkg_name); // replace "_" with "." in package names
-    $pkg_pattern = '/^'.$pkg_name.'.*/'; // search pattern for packages
+    $pkg_pattern = '/^'.$pkg_name.'.-*/'; // search pattern for packages
     $pkg_install_status  = preg_grep($pkg_pattern, $pkgs_installed); // check install status
     $pkg_download_status = preg_grep($pkg_pattern, $pkgs_downloaded); // check package download status
     $pkg_online_status   = preg_grep($pkg_pattern, $pkgs_github_array);
@@ -93,7 +93,8 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
         logger(substr($plg_msg, 0, -2));
     }
 
-    if ($pkg_pref == 'yes') { // if package is selected to be installed
+    // if package is selected to be installed
+    if ($pkg_pref == 'yes') {
         // if executing from the wegui check status and download if necessary
         if ($argd) {
             if (!$pkg_download_status) { //if package is not downloaded
