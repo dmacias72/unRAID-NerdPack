@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.18">
+<!ENTITY version   "2016.10.08">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.10.08
+- fix: false positive of installed packages
+- fix: packagemanager bug if cookies are missing 
 ###2016.09.18
 - fix: packagemanager array errors
 ###2016.09.16
@@ -152,22 +155,6 @@ The 'tablesorter' package file.
 </INLINE>
 </FILE>
 
-
-<!--
-The Github repo packages file.
-
-<FILE Name="&plgpath;/packages/packages.json">
-<URL>&gitURL;/plugins/packages.json</URL>
-</FILE>
--->
-
-<!--
-The package description file.
--->
-<FILE Name="&plgpath;/packages/packages-desc">
-<URL>&gitURL;/plugins/packages-desc</URL>
-</FILE>
-
 <!--
 The 'plugin' package file.
 -->
@@ -204,10 +191,6 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
         &plgpath;/&plgname;.md5
     exit 1
 else
-    if [ ! -d &plgpath;/packages/$VER ]; then
-        mkdir &plgpath;/packages/$VER
-    fi
-
     count=`ls -1 /boot/config/plugins/NerdPack/packages/*.txz 2>/dev/null | wc -l`
     if [ $count != 0 ]; then
         if [ ! -d &plgpath;/packages/6.1 ]; then
@@ -215,6 +198,23 @@ else
         fi
         echo "Moving package files..."
         mv  &plgpath;/packages/*txz  &plgpath;/packages/6.1
+    fi
+
+    if [[ $VER == 6.3 ]]; then
+        if [ ! -d &plgpath;/packages/$VER ]; then
+            mkdir &plgpath;/packages/$VER
+            if [ -d &plgpath;/packages/6.2 ]; then
+                count2=`ls -1 /boot/config/plugins/NerdPack/packages/6.2/*.txz 2>/dev/null | wc -l`
+                if [ $count2 != 0 ]; then
+                    echo "Copying package files..."
+                    cp &plgpath;/packages/6.2/* &plgpath;/packages/$VER/
+                fi
+            fi
+        fi
+    fi
+
+    if [ ! -d &plgpath;/packages/$VER ]; then
+        mkdir &plgpath;/packages/$VER
     fi
 
     upgradepkg --install-new &plgpath;/&plgname;.txz
