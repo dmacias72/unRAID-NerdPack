@@ -13,7 +13,8 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
 <Date>2016-10-07</Date>
 <Changes>
-###2016.10.07
+###2016.10.07a
+- fix: add padding to single digit percentage for ###2016.10.07
 - fix: fan page showing config missing for fan ###2016.10.06a
 - fix: array_key_error on fans page
 ###2016.10.06
