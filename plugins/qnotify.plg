@@ -36,15 +36,14 @@
 <!--
 This plugin uses PyQuassel to send Pushbullet notifications for Quassel Core Server
 -->
-
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-1.txz">
-<URL>&pkgURL;/6.1/python3-3.5.1-x86_64-1.txz</URL>
-<MD5>e19803aa714dcea6dd8f922089d4e996</MD5>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python3-3.5.2-x86_64-1.tgz" Min="6.2" Run="/sbin/upgradepkg --install-new">
+<URL>&plgPATH;/6.2/python3-3.5.2-x86_64-1.tgz</URL>
+<MD5>d535f46f828f8200e907787ddf9294ed</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python3-3.5.2-x86_64-1.tgz">
-<URL>&pkgURL;/6.2/python3-3.5.2-x86_64-1.tgz</URL>
-<MD5>d535f46f828f8200e907787ddf9294ed</MD5>
+<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-1.txz" Max="6.1" Run="/sbin/upgradepkg --install-new">
+<URL>&pkgURL;/6.1/python3-3.5.1-x86_64-1.txz</URL>
+<MD5>e19803aa714dcea6dd8f922089d4e996</MD5>
 </FILE>
 
 <!--
@@ -113,21 +112,6 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
      &plgPATH;/&plgNAME;.md5
   exit 1
 else
-    if [[ $VER == 6.1 ]]; then
-        echo "\nInstalling dependencies for unRAID 6.1"
-        rm -f /boot/config/plugins/NerdPack/packages/6.1/python3-3.5.1-x86_64-2.txz
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.1-x86_64-1.txz
-    fi
-
-    if [[ $VER == 6.2 ]]; then
-        echo "\nInstalling dependencies for unRAID 6.2"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.2-x86_64-1.tgz
-    fi
-
-    if [[ $VER == 6.3 ]]; then
-        echo "\nInstalling dependencies for unRAID 6.3"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python3-3.5.2-x86_64-1.tgz
-    fi
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
