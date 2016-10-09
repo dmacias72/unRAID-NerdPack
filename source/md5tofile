@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ $# -ne 1 ] ; then
+        echo "Usage $0 [directory]" 
+        exit 1
+fi
+find $1 -type f  -print0 | while IFS= read -r -d $'\0' file; do
+    (
+    cd "$(dirname "$file")"
+    filename="$(basename "$file")"
+    md5sum "$filename" > "$filename".md5
+    )
+done
