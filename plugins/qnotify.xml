@@ -11,8 +11,10 @@ The Quassel Notify plugin allows you to receive Pushbullet notifications based o
 </Description>
 <Support>http://lime-technology.com/forum/</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/qnotify.png</Icon>
-<Date>2016-10-02</Date>
+<Date>2016-10-09</Date>
 <Changes>
+###2016.10.09
+- update for 6.3
 ###2016.10.02
 - add: Python 3.5.2 for unRAID 6.2
 ###2016.06.23

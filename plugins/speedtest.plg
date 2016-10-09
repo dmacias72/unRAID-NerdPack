@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.16">
+<!ENTITY version   "2016.10.09">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,6 +21,8 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.10.09
+- update for 6.3
 ###2016.09.16
 - update python to 2.7.12
 - update tablesorter to 2.27.6
@@ -228,6 +230,11 @@ else
 
     if [[ $VER == 6.2 ]]; then
         echo "\nInstalling dependencies for unRAID 6.2"
+        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.12-x86_64-1.txz
+    fi
+
+    if [[ $VER == 6.3 ]]; then
+        echo "\nInstalling dependencies for unRAID 6.3"
         upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.12-x86_64-1.txz
     fi
 
