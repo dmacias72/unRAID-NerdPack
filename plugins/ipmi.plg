@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.10.09">
+<!ENTITY version   "2016.10.10">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,8 +16,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.10.10
+- fix: plugin file
 ###2016.10.09
-- quiet modprobe
+- fix: quiet modprobe
 - update for min/max and 6.3
 ###2016.10.07a
 - fix: add padding to single digit percentage for fan log
@@ -290,25 +292,16 @@ else
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
-
     if [ -e "/boot/config/plugins/ipmi/boards.json" ]; then
          mv &plgPATH;/boards.json &plgPATH;/board.json
-    fi
 
-
-    CONFIG=&plgPATH;/&name;.cfg
-
-    <![CDATA[
-    [ -e "$CONFIG" ] && source "$CONFIG"
-
-    if [ [ "$NETWORK" == "disable" ] || [ "$NETWORK" == "enable" && "$LOCAL" == "enable" ] ]; then
         # Load impi drivers
         echo "loading ipmi drivers..."
         for module in ipmi_msghandler ipmi_devintf ipmi_si; do
-            modprobe -q $module > /dev/null 2>&1
+            modprobe -q $module
         done
     fi
-
+    <![CDATA[
     # Start scripts if enabled
     echo "checking ipmi event monitor..."
     /etc/rc.d/rc.ipmiseld start >/dev/null 2>&1 < /dev/null &
