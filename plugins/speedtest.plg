@@ -9,8 +9,8 @@
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY pkgs      "/boot/packages">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
@@ -154,22 +154,22 @@ The 'tablesorter' package file.
 <MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.12-x86_64-1.txz" Min="6.2" Run="/sbin/upgradepkg --install-new">
-<URL>&pkgURL;/python-2.7.12-x86_64-1.txz</URL>
+<FILE Name="&plgPATH;/python-2.7.12-x86_64-1.txz" Min="6.2" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/packages/6.2/python-2.7.12-x86_64-1.txz</URL>
 <MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python-2.7.9-x86_64-1.txz" Max="6.1" Run="/sbin/upgradepkg --install-new">
-<URL>&pkgURL;/python-2.7.9-x86_64-1.txz</URL>
+<FILE Name="&plgPATH;/python-2.7.9-x86_64-1.txz" Max="6.1" Run="/sbin/upgradepkg --install-new">
+<URL>&gitURL;/packages/6.2/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
-<FILE Name="&pkgs;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
+<FILE Name="&plgPATH;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
 <URL>&pkgURL;/pyOpenSSL-0.15.1-x86_64-1_slack.txz</URL>
 <MD5>b422874df919df6baa10774bd2ddc2cc</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/&name;.cfg">
+<FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
 VERSION="0.3.4"
@@ -189,15 +189,15 @@ min="0"
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -215,21 +215,21 @@ if [[ $VER == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz
-  rm &plgpath;/&plgname;.md5
+  rm &plgPATH;/&plgNAME;.txz
+  rm &plgPATH;/&plgNAME;.md5
   exit 1
 else
 
-  upgradepkg --install-new &plgpath;/&plgname;.txz
+  upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
 
 # Cleaning old source files
-find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -249,10 +249,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-removepkg &plgpath;/&plgname;.txz
+removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
-rm -f &plgpath;/&plgname;.md5
+rm -f &plgPATH;/&plgNAME;.txz
+rm -f &plgPATH;/&plgNAME;.md5
 
 # Remove cron entry
 rm -f /boot/config/plugins/dynamix/speedtest.cron
