@@ -8,8 +8,8 @@
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
@@ -149,7 +149,7 @@ The 'tablesorter' package file.
 <MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/&name;.cfg">
+<FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
 
@@ -160,15 +160,15 @@ The 'tablesorter' package file.
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -185,47 +185,47 @@ if [[ $VER == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
     echo "Wrong 'plugin' package md5 hash."
-    rm &plgpath;/&plgname;.txz \
-        &plgpath;/&plgname;.md5
+    rm &plgPATH;/&plgNAME;.txz \
+        &plgPATH;/&plgNAME;.md5
     exit 1
 else
     count=`ls -1 /boot/config/plugins/NerdPack/packages/*.txz 2>/dev/null | wc -l`
     if [ $count != 0 ]; then
-        if [ ! -d &plgpath;/packages/6.1 ]; then
-            mkdir -p &plgpath;/packages/6.1
+        if [ ! -d &plgPATH;/packages/6.1 ]; then
+            mkdir -p &plgPATH;/packages/6.1
         fi
         echo "Moving package files..."
-        mv  &plgpath;/packages/*txz  &plgpath;/packages/6.1
+        mv  &plgPATH;/packages/*txz  &plgPATH;/packages/6.1
     fi
 
     if [[ $VER == 6.3 ]]; then
-        if [ ! -d &plgpath;/packages/$VER ]; then
-            mkdir -p &plgpath;/packages/$VER
-            if [ -d &plgpath;/packages/6.2 ]; then
+        if [ ! -d &plgPATH;/packages/$VER ]; then
+            mkdir -p &plgPATH;/packages/$VER
+            if [ -d &plgPATH;/packages/6.2 ]; then
                 count2=`ls -1 /boot/config/plugins/NerdPack/packages/6.2/*.txz 2>/dev/null | wc -l`
                 if [ $count2 != 0 ]; then
                     echo "Copying package files..."
-                    cp &plgpath;/packages/6.2/* &plgpath;/packages/$VER/
+                    cp &plgPATH;/packages/6.2/* &plgPATH;/packages/$VER/
                 fi
             fi
         fi
     fi
 
-    if [ ! -d &plgpath;/packages/$VER ]; then
-        mkdir -p &plgpath;/packages/$VER
+    if [ ! -d &plgPATH;/packages/$VER ]; then
+        mkdir -p &plgPATH;/packages/$VER
     fi
 
-    upgradepkg --install-new &plgpath;/&plgname;.txz
+    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
     /usr/sbin/packagemanager
 
     # Cleaning old source files
-    find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-    find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -244,10 +244,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-removepkg &plgpath;/&plgname;.txz
+removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
-rm -f &plgpath;/&plgname;.md5
+rm -f &plgPATH;/&plgNAME;.txz
+rm -f &plgPATH;/&plgNAME;.md5
 
 echo ""
 echo "-----------------------------------------------------------"
