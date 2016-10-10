@@ -155,12 +155,12 @@ The 'tablesorter' package file.
 </FILE>
 
 <FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.12-x86_64-1.txz" Min="6.2" Run="/sbin/upgradepkg --install-new">
-<URL>&plgpath;/python-2.7.12-x86_64-1.txz</URL>
+<URL>&pkgURL;/python-2.7.12-x86_64-1.txz</URL>
 <MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
 </FILE>
 
 <FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python-2.7.9-x86_64-1.txz" Max="6.1" Run="/sbin/upgradepkg --install-new">
-<URL>&plgpath;/python-2.7.9-x86_64-1.txz</URL>
+<URL>&pkgURL;/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
