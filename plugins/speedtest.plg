@@ -21,6 +21,8 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 -->
 
 <CHANGES>
+###2016.10.15
+- update speedtest-linux to 1.0.2-b
 ###2016.10.09a
 - update for 6.3
 ###2016.09.16
@@ -164,7 +166,7 @@ The 'tablesorter' package file.
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Run="/sbin/upgradepkg --install-new">
+<FILE Name="&plgPATH;/pyOpenSSL-0.15.1-x86_64-1_slack.txz" Min="6.1" Run="/sbin/upgradepkg --install-new">
 <URL>&pkgURL;/pyOpenSSL-0.15.1-x86_64-1_slack.txz</URL>
 <MD5>b422874df919df6baa10774bd2ddc2cc</MD5>
 </FILE>
@@ -251,8 +253,8 @@ The 'remove' script.
 <INLINE>
 removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgPATH;/&plgNAME;.txz
-rm -f &plgPATH;/&plgNAME;.md5
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
 
 # Remove cron entry
 rm -f /boot/config/plugins/dynamix/speedtest.cron

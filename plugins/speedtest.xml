@@ -11,8 +11,10 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2016-10-09</Date>
+<Date>2016-10-15</Date>
 <Changes>
+###2016.10.15
+- update speedtest-linux to 1.0.2-b
 ###2016.10.09
 - update for 6.3
 ###2016.09.16
