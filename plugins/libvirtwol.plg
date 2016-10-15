@@ -195,7 +195,6 @@ rm -f &plgPATH;/&plgNAME;.md5
 
 #remove installed packages
 rm -f &plgPATH;/libpcap*.txz
-removepkg &plgPATH;/*.txz
 rm -f &plgPATH;/*.txz
 
 # restore VM Manager Menu
