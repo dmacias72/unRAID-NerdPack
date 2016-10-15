@@ -250,8 +250,8 @@ The 'remove' script.
 /etc/rc.d/rc.apache stop
 removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgPATH;/&plgNAME;.txz
-rm -f &plgPATH;/&plgNAME;.md5
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
 
 #remove installed packages
 echo "Please wait, removing installed packages..."

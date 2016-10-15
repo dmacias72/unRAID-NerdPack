@@ -148,7 +148,7 @@ The 'remove' script.
 /etc/rc.d/rc.qnotify stop
 sleep 1
 
-removepkg &plgPATH;/*.txz
+removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
   &plgPATH;/*.md5

@@ -190,12 +190,8 @@ The 'remove' script.
 &emhttp;/scripts/stop
 removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgPATH;/&plgNAME;.txz
-rm -f &plgPATH;/&plgNAME;.md5
-
-#remove installed packages
-rm -f &plgPATH;/libpcap*.txz
-rm -f &plgPATH;/*.txz
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
 
 # restore VM Manager Menu
 #sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
