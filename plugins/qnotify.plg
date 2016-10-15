@@ -115,7 +115,6 @@ else
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
-
     # Start scripts if enabled
     <![CDATA[
     echo "checking qnotify daemon..."
