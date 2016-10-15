@@ -3,13 +3,13 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.10.09">
+<!ENTITY version   "2016.10.15">
 <!ENTITY launch    "Settings/VMSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
@@ -20,6 +20,8 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 -->
 
 <CHANGES>
+###2016.10.15
+- add: min and max versions
 ###2016.10.09
 - update for 6.3
 ###2016.09.16
@@ -73,28 +75,27 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 - initial commit
 </CHANGES>
 
-
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.1/python-2.7.9-x86_64-1.txz">
-<URL>&gitURL;/packages/6.1/python-2.7.9-x86_64-1.txz</URL>
-<MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
-</FILE>
-
-<FILE Name="/boot/config/plugins/NerdPack/packages/6.2/python-2.7.12-x86_64-1.txz">
+<FILE Name="&plgPATH;/python-2.7.12-x86_64-1.txz" Min="6.2" Run="upgradepkg --install-new">
 <URL>&gitURL;/packages/6.2/python-2.7.12-x86_64-1.txz</URL>
 <MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz">
-<URL>&pkgURL;/libvirt-python-1.2.18-x86_64-1ponce.txz</URL>
-<MD5>4198c7784a57d7ff80fb1d53811ceb5e</MD5>
+<FILE Name="&plgPATH;/python-2.7.9-x86_64-1.txz" Max="6.1" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.1/python-2.7.9-x86_64-1.txz</URL>
+<MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/libvirt-python-1.3.1-x86_64-1ponce.txz">
+<FILE Name="&plgPATH;/libvirt-python-1.3.1-x86_64-1ponce.txz" Min="6.2" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libvirt-python-1.3.1-x86_64-1ponce.txz</URL>
 <MD5>9a64e4941dd9c7fa3b9c8bf244c9a2d3</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/pylibpcap-0.6.2-x86_64-1_slack.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/libvirt-python-1.2.18-x86_64-1ponce.txz" Max="6.1" Run="upgradepkg --install-new">
+<URL>&pkgURL;/libvirt-python-1.2.18-x86_64-1ponce.txz</URL>
+<MD5>4198c7784a57d7ff80fb1d53811ceb5e</MD5>
+</FILE>
+
+<FILE Name="&plgPATH;/pylibpcap-0.6.2-x86_64-1_slack.txz" Min="6.1" Run="upgradepkg --install-new">
 <URL>&pkgURL;/pylibpcap-0.6.2-x86_64-1_slack.txz</URL>
 <MD5>2531f44126b3c05d76782c9eedba9988</MD5>
 </FILE>
@@ -110,15 +111,15 @@ WOL="disable"
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -136,36 +137,25 @@ if [[ $VER == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz
-  rm &plgpath;/&plgname;.md5
+  rm &plgPATH;/&plgNAME;.txz
+  rm &plgPATH;/&plgNAME;.md5
   exit 1
 else
-    if [[ $VER == 6.1 ]]; then
-        echo "\nInstalling dependencies for unRAID 6.1"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.9-x86_64-1.txz
-        upgradepkg --install-new &plgpath;/libvirt-python-1.2.18-x86_64-1ponce.txz
-    fi
-
     if [[ $VER == 6.2 ]]; then
-        echo "\nInstalling dependencies for unRAID 6.2"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.12-x86_64-1.txz
-        upgradepkg --install-new &plgpath;/libvirt-python-1.3.1-x86_64-1ponce.txz
-
         # restore VM Manager Menu
         sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
     fi
 
     if [[ $VER == 6.3 ]]; then
-        echo "\nInstalling dependencies for unRAID 6.3"
-        upgradepkg --install-new /boot/config/plugins/NerdPack/packages/$VER/python-2.7.12-x86_64-1.txz
-        upgradepkg --install-new &plgpath;/libvirt-python-1.3.1-x86_64-1ponce.txz
+        # restore VM Manager Menu
+        sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page
     fi
 
-    upgradepkg --install-new &plgpath;/&plgname;.txz
+    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
     #restart event daemon
     <![CDATA[
@@ -176,8 +166,8 @@ else
     ]]>
 
     # Cleaning old source files
-    find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-    find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -198,15 +188,15 @@ The 'remove' script.
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
 &emhttp;/scripts/stop
-removepkg &plgpath;/&plgname;.txz
+removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
-rm -f &plgpath;/&plgname;.md5
+rm -f &plgPATH;/&plgNAME;.txz
+rm -f &plgPATH;/&plgNAME;.md5
 
 #remove installed packages
-rm -f &plgpath;/libpcap*.txz
-removepkg &plgpath;/*.txz
-rm -f &plgpath;/*.txz
+rm -f &plgPATH;/libpcap*.txz
+removepkg &plgPATH;/*.txz
+rm -f &plgPATH;/*.txz
 
 # restore VM Manager Menu
 #sed -i -- 's/VMManager:1/OtherSettings/g' /usr/local/emhttp/plugins/dynamix.vm.manager/VMSettings.page

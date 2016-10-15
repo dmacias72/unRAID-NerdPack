@@ -11,8 +11,11 @@ The Apache HTTP Server Project is an effort to develop and maintain an open-sour
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=33692.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/apache.png</Icon>
-<Date>2016-09-24</Date>
+<Date>2016-10-15</Date>
 <Changes>
+###2016.10.15
+- add: min and max version to plg
+- update php extensions to 5.6.26 match unRAID 6.3
 ###2016.09.24
 - fix: apr and apr-util packages not installing
 - fix: clearing log files
