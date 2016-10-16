@@ -156,7 +156,7 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 <MD5>b83aefdaa0904deec56e00fc6dc5def5</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/php-ext-5.6.26-x86_64-1.txz" Min="6.3" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/php-ext-5.6.26-x86_64-1.txz" Min="6.2.1" Run="upgradepkg --install-new">
 <URL>&pkgURL;/php-ext-5.6.26-x86_64-1.txz</URL>
 <MD5>6caeec1b7f8bf4c29baa27b63dd46891</MD5>
 </FILE>
