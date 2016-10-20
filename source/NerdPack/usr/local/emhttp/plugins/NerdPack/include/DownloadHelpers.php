@@ -1,4 +1,4 @@
-<?php
+<?
 // Download a file from given url
 function get_file_from_url($file, $url) {
     $chfile = fopen($file, 'w');
