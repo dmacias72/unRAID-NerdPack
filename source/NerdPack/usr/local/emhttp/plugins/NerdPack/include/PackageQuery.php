@@ -47,7 +47,7 @@ foreach ($pkgs_github_array as $pkg_github) {
         $pkg_set = "no";
         foreach ($pkg_cfg as $pkg_key => $pkg_line) {
             if (preg_match('/^'.$pkg_name.'.*/',$pkg_key)){
-                if(sizeof(array_diff(split('-', $pkg_key), split('-', $pkg_name))) < 2 ){
+                if(sizeof(array_diff(explode('-', $pkg_key), explode('-', $pkg_name))) < 2 ){
                     $pkg_set = $pkg_line;
                     break;
                 }
