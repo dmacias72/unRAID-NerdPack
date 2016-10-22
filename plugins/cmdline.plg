@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "cmdline">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.06.14">
+<!ENTITY version   "2016.10.22">
 <!ENTITY launch    "Settings/CommandLineSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -20,6 +20,9 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
+###2016.10.22
+- fix: ip connection for 6.2+
+- add: tabs for terminal and settings
 ###2016.06.14
 - add: dynamix plugin update api
 - add: help content
@@ -93,7 +96,7 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 </CHANGES>
 
 
-<FILE Name="&plgPATH;/shellinabox-2.20-x86_64-2.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/shellinabox-2.20-x86_64-2.txz" Min="6.1" Run="upgradepkg --install-new">
 <URL>&pkgURL;/shellinabox-2.20-x86_64-2.txz</URL>
 <MD5>59ed3289a33c40fecf95c8da658a8bd8</MD5>
 </FILE>
@@ -148,24 +151,6 @@ if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
     rm &plgPATH;/&plgNAME;.md5
     exit 1
 else
-    #remove old plugin and move old files
-    OLDPLG="/boot/config/plugins/shellinabox-plugin"
-    if [ -d /usr/local/emhttp/plugins/shellinabox ]; then
-        rm -rf  /usr/local/emhttp/plugins/shellinabox
-    fi
-    if [ -d /usr/local/emhttp/plugins/shellinabox-plugin ]; then
-        rm -rf  /usr/local/emhttp/plugins/shellinabox-plugin
-    fi
-    if [ -f $OLDPLG/shellinabox-plugin.cfg ]; then
-        mv -f $OLDPLG/shellinabox-plugin.cfg &plgPATH;/cmdline.cfg
-    fi
-    if [ -f $OLDPLG/home_directory.tar.gz ]; then
-        mv -f $OLDPLG/home_directory.tar.gz &plgPATH;/home_directory.tar.gz
-    fi
-    if [ -d $OLDPLG ]; then
-        rm -rf  $OLDPLG
-    fi
-
     # upgrade package
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
