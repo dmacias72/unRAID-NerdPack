@@ -3,19 +3,22 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "wakeonlan">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.09.16">
+<!ENTITY version   "2016.10.22">
 <!ENTITY launch    "Settings/Wakeonlan">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
-<!ENTITY plgpath   "/boot/config/plugins/&name;">
-<!ENTITY plgname   "&name;-&version;-x86_64-1">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
 <PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.10.22
+- update ip address variable
+- update code formatting
 ###2016.09.16
 - update tablesorter to 2.27.6
 ###2016.01.16
@@ -57,33 +60,38 @@ The 'tablesorter' package file.
 <!--
 This plugin uses etherwake for wake on lan
 -->
-<FILE Name="&plgpath;/etherwake-1.09-x86_64-5cf.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/etherwake-1.09-x86_64-5cf.txz" Min="6.1" Run="upgradepkg --install-new">
 <URL>&pkgURL;/etherwake-1.09-x86_64-5cf.txz</URL>
 <MD5>0b65b7b7ac2262f1a9b998cbb9f913e2</MD5>
 </FILE>
 
-<FILE Name="&plgpath;/nmap-6.40-x86_64-1.txz" Run="upgradepkg --install-new">
-<URL>&pkgURL;/nmap-6.40-x86_64-1.txz</URL>
-<MD5>462cf835c4475ddfd2bd15cd10e8349d</MD5>
-</FILE>
-
-<FILE Name="&plgpath;/libnl-1.1.4-x86_64-1.txz" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/libnl-1.1.4-x86_64-1.txz" Min="6.1" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libnl-1.1.4-x86_64-1.txz</URL>
 <MD5>435837a5bf0401a937d6ec93e458333b</MD5>
+</FILE>
+
+<FILE Name="&plgPATH;/nmap-7.12-x86_64-1.txz" Min="6.2" Run="upgradepkg --install-new">
+<URL>&pkgURL;/nmap-7.12-x86_64-1.txz</URL>
+<MD5>79f5ae8093b85f19c483c0e9ec42e2b4</MD5>
+</FILE>
+
+<FILE Name="&plgPATH;/nmap-6.40-x86_64-1.txz" Min="6.1" Max="6.2" Run="upgradepkg --install-new">
+<URL>&pkgURL;/nmap-6.40-x86_64-1.txz</URL>
+<MD5>462cf835c4475ddfd2bd15cd10e8349d</MD5>
 </FILE>
 
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgpath;/&plgname;.txz">
-<URL>&gitURL;/archive/&plgname;.txz</URL>
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgpath;/&plgname;.md5">
-<URL>&gitURL;/archive/&plgname;.md5</URL>
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -99,31 +107,20 @@ if [[ ${version:0:3} == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgpath;/&plgname;.txz)
-sum2=$(/usr/bin/cat &plgpath;/&plgname;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgpath;/&plgname;.txz
-  rm &plgpath;/&plgname;.md5
+  rm &plgPATH;/&plgNAME;.txz
+  rm &plgPATH;/&plgNAME;.md5
   exit 1
 else
-  upgradepkg --install-new &plgpath;/&plgname;.txz
+  upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 fi
-
-# remove old plugin name folder
-if [ -d /usr/local/emhttp/plugins/wol ]; then
-    rm -f /usr/local/emhttp/plugins/wol
-fi
-
-# create log directory
-if [ ! -d /var/log/&name; ]; then
-    mkdir -p /var/log/&name;
-fi
-chmod 755 /var/log/&name;
 
 # Cleaning old source files
-find &plgpath;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-find &plgpath;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -140,14 +137,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-removepkg &plgpath;/&plgname;.txz
+removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
-rm -f &plgpath;/&plgname;.txz
-rm -f &plgpath;/&plgname;.md5
-
-#remove installed packages
-removepkg &plgpath;/*.txz
-rm -f &plgpath;/*.txz
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
 
 echo ""
 echo "-----------------------------------------------------------"
