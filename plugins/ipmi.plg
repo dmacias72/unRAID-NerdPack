@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.10.19">
+<!ENTITY version   "2016.10.22">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -16,6 +16,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2016.10.22
+- fix: min/max version in plugin
 ###2016.10.19
 - fix: min/max version in plugin
 - fix: cached board status set add unknown
@@ -216,7 +218,7 @@ This plugin uses freeipmi to display sensor readings
 <MD5>1aa566b9a1c0561b82f27118ee3d8f14</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-3.txz" Min="6.1" Max="6.2" Run="/sbin/upgradepkg --install-new">
+<FILE Name="&plgPATH;/freeipmi-1.4.11-x86_64-3.txz" Min="6.1" Max="6.1.99" Run="/sbin/upgradepkg --install-new">
 <URL>&pkgURL;/freeipmi-1.4.11-x86_64-3.txz</URL>
 <MD5>6c7839886f7c7b0cc4947aaf6199d60e</MD5>
 </FILE>
