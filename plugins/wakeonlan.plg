@@ -16,7 +16,8 @@
 <PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016.10.22
+##&name;
+###&version;
 - update ip address variable
 - update code formatting
 ###2016.09.16

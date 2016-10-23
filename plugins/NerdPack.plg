@@ -16,7 +16,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016.10.20
+##&name;
+###&version;
 - fix: php7 compatibility
 ###2016.10.09
 - fix: not creating package directory

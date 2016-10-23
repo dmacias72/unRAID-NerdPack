@@ -20,7 +20,8 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 -->
 
 <CHANGES>
-###2016.10.22
+##&name;
+###&version;
 - fix: ip connection for 6.2+
 - add: tabs for terminal and settings
 ###2016.06.14
