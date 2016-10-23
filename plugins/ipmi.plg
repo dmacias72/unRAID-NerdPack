@@ -16,7 +16,8 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2016.10.22
+##&name;
+###&version;
 - fix: min/max version in plugin
 ###2016.10.19
 - fix: min/max version in plugin
