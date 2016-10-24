@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ipmi">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.10.22">
+<!ENTITY version   "2016.10.24">
 <!ENTITY launch    "Settings/IPMI">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -18,6 +18,9 @@
 <CHANGES>
 ##&name;
 ###&version;
+- update codemirror for sensor and config editor
+- add: search and replace functions for config editor
+###2016.10.22
 - fix: min/max version in plugin
 ###2016.10.19
 - fix: min/max version in plugin

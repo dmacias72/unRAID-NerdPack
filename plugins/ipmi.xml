@@ -11,8 +11,11 @@ The ipmi plugin allows you to view your system sensors and events using your ipm
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=39787.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/ipmi.png</Icon>
-<Date>2016-10-22</Date>
+<Date>2016-10-24</Date>
 <Changes>
+###2016.10.24
+- update codemirror for sensor and config editor
+- add: search and replace functions for config editor
 ###2016.10.22
 - fix: min/max version in plugin
 ###2016.10.19
