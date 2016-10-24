@@ -24,6 +24,7 @@ This Plugin installs and controls The Apache HTTP Server ("httpd") for unRaid 6.
 ###&version;
 - fix: docroot permissions on service start
 - add: browser based config editor for conf files and php.ini
+- add: search functions to editor
 - add: drop down list of users
 ###2016.10.15
 - add: min and max version to plg
