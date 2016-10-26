@@ -13,6 +13,8 @@ The Apache HTTP Server Project is an effort to develop and maintain an open-sour
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/apache.png</Icon>
 <Date>2016-10-24</Date>
 <Changes>
+###2016.10.26
+- fix: harfbuzz package for 6.2
 ###2016.10.24
 - fix: docroot permissions on service start
 - add: browser based config editor for conf files and php.ini
