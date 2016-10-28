@@ -42,7 +42,7 @@ This plugin uses PyQuassel to send Pushbullet notifications for Quassel Core Ser
 <MD5>d535f46f828f8200e907787ddf9294ed</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/python3-3.5.1-x86_64-1.txz" Max="6.1" Run="/sbin/upgradepkg --install-new">
+<FILE Name="&plgPATH;/python3-3.5.1-x86_64-1.txz" Max="6.1.99" Run="/sbin/upgradepkg --install-new">
 <URL>&gitURL;/packages/6.1/python3-3.5.1-x86_64-1.txz</URL>
 <MD5>e19803aa714dcea6dd8f922089d4e996</MD5>
 </FILE>

@@ -83,7 +83,7 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/python-2.7.9-x86_64-1.txz" Max="6.1.99" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/python-2.7.9-x86_64-1.txz" Min="6.1" Max="6.1.99" Run="upgradepkg --install-new">
 <URL>&gitURL;/packages/6.1/python-2.7.9-x86_64-1.txz</URL>
 <MD5>7d5f6d12757c59e5f08ca25bd63aab78</MD5>
 </FILE>
