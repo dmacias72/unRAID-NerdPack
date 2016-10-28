@@ -266,7 +266,7 @@ rm -f /boot/config/plugins/dynamix/speedtest.cron
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2016, &author;"
+echo " Copyright 2015-2016, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
