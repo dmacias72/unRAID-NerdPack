@@ -91,7 +91,7 @@ function checkRUNNING(form) {
 }
 
 function verifyDATA(form) {
-    if (form.PORT.value < 0 || form.PORT.value > 65535){
+    if (form.PORT.value < 0 || form.PORT.value > 65535 || form.PORT.value == ''){
         form.PORT.value = 8448;
     }
     form.DAEMON.value = form.DAEMON.value.replace(/ /g,"_");
