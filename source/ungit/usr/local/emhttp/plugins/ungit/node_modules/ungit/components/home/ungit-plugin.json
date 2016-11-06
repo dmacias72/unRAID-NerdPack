@@ -1,0 +1,9 @@
+{
+  "exports": {
+    "knockoutTemplates": {
+      "home": "home.html"
+    },
+    "javascript": "home.bundle.js",
+    "css": "home.css"
+  }
+}

@@ -1,0 +1,20 @@
+.home .nux {
+  text-align: center;
+}
+.home .nux .logo-large {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.home .repository {
+  position: relative;
+  min-height: 62px;
+}
+.home .repository.path-removed .list-group-item-heading {
+  color: #CF5353;
+}
+.home .repository .glyphicon {
+  color: #686868;
+}
+.home .repository:hover .glyphicon {
+  color: #A5A5A5;
+}

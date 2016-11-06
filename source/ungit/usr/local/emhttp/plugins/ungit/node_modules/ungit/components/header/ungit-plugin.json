@@ -1,0 +1,9 @@
+{
+  "exports": {
+    "knockoutTemplates": {
+      "header": "header.html"
+    },
+    "javascript": "header.bundle.js",
+    "css": "header.css"
+  }
+}

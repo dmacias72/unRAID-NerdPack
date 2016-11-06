@@ -1,0 +1,9 @@
+{
+  "exports": {
+    "knockoutTemplates": {
+      "staging": "staging.html"
+    },
+    "javascript": "staging.bundle.js",
+    "css": "staging.css"
+  }
+}
