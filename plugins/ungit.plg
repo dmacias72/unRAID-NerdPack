@@ -84,16 +84,16 @@ else
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
+    echo "updating nodejs..."
     npm -g update
+    echo "installing ungit (takes a minute)"
     npm -g install ungit
 
     #restart event daemon
-    <![CDATA[
-    /usr/local/emhttp/plugins/ungit/scripts/stop >/dev/null 2>&1 < /dev/null &
-    sleep 1
     echo "starting ungit..."
-    setsid /usr/local/emhttp/plugins/ungit/scripts/start >/dev/null 2>&1 < /dev/null &
-    ]]>
+    at -M -f &emhttp;/scripts/stop now 2>/dev/null
+    sleep 1
+    at -M -f &emhttp;/scripts/start now 2>/dev/null
 
     # Cleaning old source files
     find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
@@ -122,6 +122,9 @@ removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
   &plgPATH;/*.md5
+
+echo "removing ungit..."
+npm -g uninstall ungit
 
 echo ""
 echo "-----------------------------------------------------------"
