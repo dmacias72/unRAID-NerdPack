@@ -8,11 +8,11 @@
        |-----handy-ruler------------------------------------------------------|
 ungit: unGit unRAID 6.1+ Plugin
 ungit:
-ungit: Ungit is to bring user friendliness to git without sacrificing
+ungit: Ungit brings user friendliness to git without sacrificing
 ungit: versatility of git. Clean and intuitive UI that makes it easy to
 ungit: understand git.
 ungit:
-ungit: https://github.com/FredrikNoren/ungit-gerrit
+ungit: https://github.com/FredrikNoren/ungit
 ungit:
 ungit: dmacias72/unRAID
 ungit: https://github.com/dmacias72/unRAID-plugins
