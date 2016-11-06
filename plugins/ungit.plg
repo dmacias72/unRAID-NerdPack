@@ -84,11 +84,14 @@ else
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
+    npm -g update
+    npm -g install ungit
+
     #restart event daemon
     <![CDATA[
     /usr/local/emhttp/plugins/ungit/scripts/stop >/dev/null 2>&1 < /dev/null &
     sleep 1
-    echo "starting libvirtwol..."
+    echo "starting ungit..."
     setsid /usr/local/emhttp/plugins/ungit/scripts/start >/dev/null 2>&1 < /dev/null &
     ]]>
 

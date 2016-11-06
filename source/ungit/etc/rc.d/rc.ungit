@@ -1,8 +1,7 @@
 #!/bin/sh
 # start/stop/restart ungit daemon:
 PLG="ungit"
-EMHTTP="/usr/local/emhttp/plugins/$PLG"
-PROG="$EMHTTP/node_modules/$PLG/src/server.js"
+PROG="/usr/lib64/node_modules/$PLG/src/server.js"
 LOCKFILE="/var/lock/$PLG"
 PIDFILE="/var/run/$PLG.pid"
 CONFIG="/boot/config/plugins/$PLG/$PLG.cfg"
@@ -17,7 +16,6 @@ ungit_start() {
         if [ "$DAEMON" == "enable" ]; then
             echo "starting $PLG..."
             sleep 1
-            #cd $EMHTTP/node_modules/$PLG
             nohup /usr/bin/node $PROG --port="$PORT" --logDirectory="/var/log/" --logGitCommands --logGitOutput >/var/log/$PLG 2>&1 | echo $! > $PIDFILE &
             touch $LOCKFILE
             TIMER=0
@@ -58,6 +56,14 @@ ungit_restart() {
     ungit_start
 }
 
+# Restart ungit:
+ungit_update() {
+    ungit_stop
+    sleep 1
+    npm -g update
+    ungit_start
+}
+
 case "$1" in
 'start')
   ungit_start
@@ -67,6 +73,9 @@ case "$1" in
   ;;
 'restart')
   ungit_restart
+  ;;
+'update')
+  ungit_update
   ;;
 *)
   echo "usage rc.ungit: start|stop|restart"
