@@ -115,7 +115,10 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-&emhttp;/scripts/stop
+# stop service
+echo "stopping ungit..."
+at -M -f &emhttp;/scripts/stop  now 2>/dev/null
+
 removepkg &plgPATH;/&plgNAME;.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
