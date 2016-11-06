@@ -91,9 +91,7 @@ else
 
     #restart event daemon
     echo "starting ungit..."
-    at -M -f &emhttp;/scripts/stop now 2>/dev/null
-    sleep 1
-    at -M -f &emhttp;/scripts/start now 2>/dev/null
+    at -M -f &emhttp;/scripts/restart now 2>/dev/null
 
     # Cleaning old source files
     find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
