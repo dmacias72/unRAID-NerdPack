@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ungit">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.11.05">
+<!ENTITY version   "2016.11.06">
 <!ENTITY launch    "Settings/UnGit">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
