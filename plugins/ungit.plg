@@ -86,7 +86,7 @@ else
 
     echo "updating nodejs..."
     npm -g update
-    echo "installing ungit (takes a minute)"
+    echo "installing ungit (takes a minute)..."
     npm -g install ungit
 
     #restart event daemon
