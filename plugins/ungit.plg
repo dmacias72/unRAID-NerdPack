@@ -1,0 +1,133 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "ungit">
+<!ENTITY author    "dmacias72">
+<!ENTITY version   "2016.11.05">
+<!ENTITY launch    "Settings/UnGit">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pkgURL    "&gitURL;/source/packages">
+<!ENTITY plgPATH   "/boot/config/plugins/&name;">
+<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+<!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
+]>
+
+<PLUGIN name="&name;" author="&author;" launch="&launch;" version="&version;" pluginURL="&pluginURL;">
+
+<!--
+This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are installed as needed and is controlable from the webgui.
+-->
+
+<CHANGES>
+##&name;
+###&version;
+- initial commit
+</CHANGES>
+
+<FILE Name="&plgPATH;/nodejs-4.6.0-x86_64-1_slonly.txz" Min="6.2" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.2/nodejs-4.6.0-x86_64-1_slonly.txz</URL>
+<MD5>8a7dae6947e415f2dd01bf4d2a57b6f4</MD5>
+</FILE>
+
+<FILE Name="&plgPATH;/nodejs-4.2.4-x86_64-1_slack.txz" Min="6.1" Max="6.1.99" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.1/nodejs-4.2.4-x86_64-1_slack.txz</URL>
+<MD5>7c17ad5a7aab095c9dbfe54051772ded</MD5>
+</FILE>
+
+<FILE Name="&plgPATH;/&name;.cfg">
+<INLINE>
+<![CDATA[
+DAEMON="disable"
+PORT="8888"
+]]>
+</INLINE>
+</FILE>
+
+<!--
+The 'plugin' package file.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.txz">
+<URL>&gitURL;/archive/&plgNAME;.txz</URL>
+</FILE>
+
+<!--
+The 'plugin' package MD5 hash.
+-->
+<FILE Name="&plgPATH;/&plgNAME;.md5">
+<URL>&gitURL;/archive/&plgNAME;.md5</URL>
+</FILE>
+
+<!--
+The 'install' script.
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+#Verify unRAID Version
+source /etc/unraid-version
+VER=${version:0:3}
+
+if [[ $VER == 6.0 ]]; then
+  echo "unRAID version 6.1 or higher is required"
+  exit 1
+fi
+
+# Verify and install plugin package
+sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
+if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
+  echo "Wrong 'plugin' package md5 hash."
+  rm &plgPATH;/&plgNAME;.txz
+  rm &plgPATH;/&plgNAME;.md5
+  exit 1
+else
+
+    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+
+    #restart event daemon
+    <![CDATA[
+    /usr/local/emhttp/plugins/ungit/scripts/stop >/dev/null 2>&1 < /dev/null &
+    sleep 1
+    echo "starting libvirtwol..."
+    setsid /usr/local/emhttp/plugins/ungit/scripts/start >/dev/null 2>&1 < /dev/null &
+    ]]>
+
+    # Cleaning old source files
+    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been installed."
+echo " This plugin requires Dynamix webGui to operate"
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+
+fi
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+&emhttp;/scripts/stop
+removepkg &plgPATH;/&plgNAME;.txz
+rm -rf &emhttp;
+rm -f &plgPATH;/*.txz \
+  &plgPATH;/*.md5
+
+echo ""
+echo "-----------------------------------------------------------"
+echo " &name; has been removed."
+echo " Copyright 2016, &author;"
+echo " Version: &version;"
+echo "-----------------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+</PLUGIN>
