@@ -39,7 +39,7 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <INLINE>
 <![CDATA[
 DAEMON="disable"
-PORT="8888"
+PORT="8448"
 ]]>
 </INLINE>
 </FILE>
