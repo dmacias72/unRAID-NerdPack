@@ -37,7 +37,7 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 
 <FILE Name="&plgPATH;/ungit-node-0.10.3-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
 <URL>&pkgURL;/ungit-node-0.10.3-x86_64-1.txz</URL>
-<MD5>549487f7fca204968b82a330307acb4a</MD5>
+<MD5>707d35232f912ec3a293d8ffa1f7dccd</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
