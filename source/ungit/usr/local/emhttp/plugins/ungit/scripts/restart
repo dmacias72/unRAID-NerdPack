@@ -1,2 +1,0 @@
-#!/bin/sh
-/etc/rc.d/rc.ungit restart
