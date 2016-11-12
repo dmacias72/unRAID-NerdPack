@@ -1,7 +1,7 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "ungit">
+<!ENTITY name      "ungit-plugin">
 <!ENTITY author    "dmacias72">
 <!ENTITY version   "2016.11.06">
 <!ENTITY launch    "Settings/UnGit">
@@ -9,7 +9,7 @@
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
-<!ENTITY plgNAME   "&name;-&version;-x86_64-1">
+<!ENTITY pkgNAME   "&name;-&version;-x86_64-1">
 <!ENTITY emhttp    "/usr/local/emhttp/plugins/&name;">
 ]>
 
@@ -35,7 +35,7 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <MD5>7c17ad5a7aab095c9dbfe54051772ded</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/ungit-node-0.10.3-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
+<FILE Name="&plgPATH;/ungit-node-0.10.3-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/ungit-node-0.10.3-x86_64-1.txz</URL>
 <MD5>707d35232f912ec3a293d8ffa1f7dccd</MD5>
 </FILE>
@@ -52,15 +52,15 @@ PORT="8448"
 <!--
 The 'plugin' package file.
 -->
-<FILE Name="&plgPATH;/&plgNAME;.txz">
-<URL>&gitURL;/archive/&plgNAME;.txz</URL>
+<FILE Name="&plgPATH;/&pkgNAME;.txz">
+<URL>&gitURL;/archive/&pkgNAME;.txz</URL>
 </FILE>
 
 <!--
 The 'plugin' package MD5 hash.
 -->
-<FILE Name="&plgPATH;/&plgNAME;.md5">
-<URL>&gitURL;/archive/&plgNAME;.md5</URL>
+<FILE Name="&plgPATH;/&pkgNAME;.md5">
+<URL>&gitURL;/archive/&pkgNAME;.md5</URL>
 </FILE>
 
 <!--
@@ -78,16 +78,16 @@ if [[ $VER == 6.0 ]]; then
 fi
 
 # Verify and install plugin package
-sum1=$(/usr/bin/md5sum &plgPATH;/&plgNAME;.txz)
-sum2=$(/usr/bin/cat &plgPATH;/&plgNAME;.md5)
+sum1=$(/usr/bin/md5sum &plgPATH;/&pkgNAME;.txz)
+sum2=$(/usr/bin/cat &plgPATH;/&pkgNAME;.md5)
 if [ "${sum1:0:32}" != "${sum2:0:32}" ]; then
   echo "Wrong 'plugin' package md5 hash."
-  rm &plgPATH;/&plgNAME;.txz
-  rm &plgPATH;/&plgNAME;.md5
+  rm &plgPATH;/&pkgNAME;.txz
+  rm &plgPATH;/&pkgNAME;.md5
   exit 1
 else
 
-    upgradepkg --install-new &plgPATH;/&plgNAME;.txz
+    upgradepkg --install-new &plgPATH;/&pkgNAME;.txz
 
     #restart event daemon
     echo "starting ungit..."
@@ -119,13 +119,12 @@ The 'remove' script.
 echo "stopping ungit..."
 at -M -f &emhttp;/scripts/stop  now 2>/dev/null
 
-removepkg &plgPATH;/&plgNAME;.txz
+echo "removing ungit..."
+removepkg &plgPATH;/&pkgNAME;.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
   &plgPATH;/*.md5
 
-echo "removing ungit..."
-npm -g uninstall ungit
 
 echo ""
 echo "-----------------------------------------------------------"
