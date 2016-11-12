@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "ungit">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.11.12">
+<!ENTITY version   "2016.11.06">
 <!ENTITY launch    "Settings/UnGit">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -35,8 +35,8 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <MD5>7c17ad5a7aab095c9dbfe54051772ded</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/ungit-node-module-0.10.3-x86_64-1.txz" Run="upgradepkg --install-new">
-<URL>&pkgURL;/ungit-node-module-0.10.3-x86_64-1.txz</URL>
+<FILE Name="&plgPATH;/nodejs-ungit-0.10.3-x86_64-1.txz" Run="upgradepkg --install-new">
+<URL>&pkgURL;/nodejs-ungit-0.10.3-x86_64-1.txz</URL>
 <MD5>7a34f1f9886a78dcca62515774bee2e2</MD5>
 </FILE>
 
@@ -94,8 +94,8 @@ else
     at -M -f &emhttp;/scripts/restart now 2>/dev/null
 
     # Cleaning old source files
-    find &plgPATH;/ -type f -iname "&name;-plugin*.txz" ! -iname "*&version;-plugin*" -delete
-    find &plgPATH;/ -type f -iname "&name;-plugin*.md5" ! -iname "*&version;-plugin*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
@@ -120,7 +120,8 @@ echo "stopping ungit..."
 at -M -f &emhttp;/scripts/stop  now 2>/dev/null
 
 echo "removing ungit..."
-removepkg &plgPATH;/ungit*.txz
+removepkg &plgPATH;/&pkgNAME;.txz
+removepkg &plgPATH;/nodejs-&name;*.txz
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
   &plgPATH;/*.md5
