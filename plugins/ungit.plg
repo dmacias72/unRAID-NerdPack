@@ -120,6 +120,7 @@ echo "stopping ungit..."
 at -M -f &emhttp;/scripts/stop  now 2>/dev/null
 
 echo "removing ungit..."
+rm -rf /usr/lib64/node_modules/&name;
 removepkg &plgPATH;/&pkgNAME;.txz
 removepkg &plgPATH;/nodejs-&name;*.txz
 rm -rf &emhttp;
