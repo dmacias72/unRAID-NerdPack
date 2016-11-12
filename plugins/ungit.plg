@@ -84,8 +84,6 @@ else
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
 
-    echo "updating nodejs..."
-    npm -g update
     echo "installing ungit (takes a minute)..."
     npm -g install ungit
 
