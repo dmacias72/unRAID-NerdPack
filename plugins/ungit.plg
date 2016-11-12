@@ -37,7 +37,7 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 
 <FILE Name="&plgPATH;/nodejs-ungit-0.10.3-x86_64-1.txz" Run="upgradepkg --install-new">
 <URL>&pkgURL;/nodejs-ungit-0.10.3-x86_64-1.txz</URL>
-<MD5>7a34f1f9886a78dcca62515774bee2e2</MD5>
+<MD5>baaec03e308e815368eae60dafb3e6ef</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
@@ -120,9 +120,8 @@ echo "stopping ungit..."
 at -M -f &emhttp;/scripts/stop  now 2>/dev/null
 
 echo "removing ungit..."
-rm -rf /usr/lib64/node_modules/&name;
 removepkg &plgPATH;/&pkgNAME;.txz
-removepkg &plgPATH;/nodejs-&name;*.txz
+removepkg &plgPATH;/nodejs-&name;*.txz --quiet
 rm -rf &emhttp;
 rm -f &plgPATH;/*.txz \
   &plgPATH;/*.md5
