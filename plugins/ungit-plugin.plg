@@ -1,9 +1,9 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "ungit-plugin">
+<!ENTITY name      "ungit">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.11.06">
+<!ENTITY version   "2016.11.12">
 <!ENTITY launch    "Settings/UnGit">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -94,8 +94,8 @@ else
     at -M -f &emhttp;/scripts/restart now 2>/dev/null
 
     # Cleaning old source files
-    find &plgPATH;/ -type f -iname "&name;*.txz" ! -iname "*&version;*" -delete
-    find &plgPATH;/ -type f -iname "&name;*.md5" ! -iname "*&version;*" -delete
+    find &plgPATH;/ -type f -iname "&name;-plugin*.txz" ! -iname "*&version;-plugin*" -delete
+    find &plgPATH;/ -type f -iname "&name;-plugin*.md5" ! -iname "*&version;-plugin*" -delete
 
 echo ""
 echo "-----------------------------------------------------------"
