@@ -1,6 +1,7 @@
 {
  "apr":"The mission of the Apache Portable Runtime (APR) is to provide a free library of C data structures and routines, forming a system portability layer to as many operating systems as possible.",
  "apr-util":"The mission of the Apache Portable Runtime (APR) is to provide a free library of C data structures and routines, forming a system portability layer to as many operating systems as possible. This package contains additional utility interfaces for APR; including support for XML, LDAP, database interfaces, URI parsing, and more.",
+ "atop":"ATOP is an advanced interactive monitor for Linux-systems to view the load on system-level and process-level.",
  "bc":"bc is an arbitrary precision numeric processing language. Syntax is similar to C, but differs in many substantial areas. It supports interactive execution of statements. bc is a utility included in the POSIX P1003.2\/D11 draft standard.",
  "bind":"The named daemon and support utilities such as dig, host, and nslookup. Sample configuration files for running a simple caching nameserver are included. Documentation for advanced name server setup can be found in \/usr\/doc\/bind-9.x.x\/.",
  "bwm-ng":"Bandwidth Monitor NG is a small and simple curses-based bandwidth monitor for Linux or other systems with \/proc\/net\/dev or net-tools netstat. You can choose whether to show all interfaces or only those interfaces that are up.",
