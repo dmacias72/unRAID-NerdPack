@@ -24,6 +24,7 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 ###&version;
 - update shellinabox unofficial to latest v2.20
 - add: security patches
+- fix: suppress var.ini parse error
 ###2016.10.22
 - fix: ip connection for 6.2+
 - add: tabs for terminal and settings
