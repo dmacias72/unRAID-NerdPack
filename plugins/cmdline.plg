@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "cmdline">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.10.22">
+<!ENTITY version   "2017.01.22">
 <!ENTITY launch    "Settings/CommandLineSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -22,13 +22,16 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 <CHANGES>
 ##&name;
 ###&version;
+- update shellinabox unofficial to latest v2.20
+- add: security patches
+###2016.10.22
 - fix: ip connection for 6.2+
 - add: tabs for terminal and settings
 ###2016.06.14
 - add: dynamix plugin update api
 - add: help content
 ###2016.03.24
-- update shellinabox to unofficial 2.20
+- update shellinabox unofficial to pre 2.20
 - fix: https when ssl is enabled
 - remove linux-pam package
 ###2016.03.11
@@ -97,9 +100,9 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 </CHANGES>
 
 
-<FILE Name="&plgPATH;/shellinabox-2.20-x86_64-2.txz" Min="6.1" Run="upgradepkg --install-new">
-<URL>&pkgURL;/shellinabox-2.20-x86_64-2.txz</URL>
-<MD5>59ed3289a33c40fecf95c8da658a8bd8</MD5>
+<FILE Name="&plgPATH;/shellinabox-2.20-x86_64-3.txz" Min="6.1" Run="upgradepkg --install-new">
+<URL>&pkgURL;/shellinabox-2.20-x86_64-3.txz</URL>
+<MD5>69dbef133f81930c16d0376b9dd39588</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/&name;.cfg">
@@ -191,7 +194,7 @@ rm -f &plgPATH;/*.txz \
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2016, &author;"
+echo " Copyright 2017, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
