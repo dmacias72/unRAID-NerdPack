@@ -169,7 +169,7 @@ else
  echo "-----------------------------------------------------------"
  echo " &name; has been installed."
  echo " This plugin requires Dynamix webGui to operate"
- echo " Copyright 2016, &author;"
+ echo " Copyright 2017, &author;"
  echo " Version: &version;"
  echo "-----------------------------------------------------------"
  echo ""
