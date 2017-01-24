@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.01.07">
+<!ENTITY version   "2017.01.23">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -23,6 +23,10 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <CHANGES>
 ##&name;
 ###&version;
+- move js depends to cdn
+- add sivel version 1.0.2
+- update security 
+###2017.01.07
 - update scripts
 - add support for speedtest-linux script
 - fix deleting single result
@@ -157,14 +161,6 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 - initial commit
 </CHANGES>
 
-<!--
-The 'tablesorter' package file.
--->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2.27.6-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2.27.6-x86_64-1.txz</URL>
-<MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
-</FILE>
-
 <FILE Name="&plgPATH;/python-2.7.12-x86_64-1.txz" Min="6.2" Run="/sbin/upgradepkg --install-new">
 <URL>&gitURL;/packages/6.2/python-2.7.12-x86_64-1.txz</URL>
 <MD5>a94235dba17e63e12eb888cba9bbb155</MD5>
@@ -183,7 +179,7 @@ The 'tablesorter' package file.
 <FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
-VERSION="0.3.4"
+VERSION="1.0.2"
 TIMEOUT="10"
 SECURE="no"
 UNITS="bits"
@@ -272,7 +268,7 @@ rm -f /boot/config/plugins/dynamix/speedtest.cron
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2015-2017, &author;"
+echo " Copyright 2017, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""

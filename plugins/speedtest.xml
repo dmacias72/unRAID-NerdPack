@@ -11,8 +11,12 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2017-01-07</Date>
+<Date>2017-01-23</Date>
 <Changes>
+###2017.01.23
+- move js depends to cdn
+- add sivel version 1.0.2
+- update security 
 ###2017.01.07
 - update scripts
 - add support for speedtest-linux script
@@ -22,7 +26,7 @@ This plugin interacts with the command line interface for testing internet bandw
 ###2016.10.28
 - update min/max version
 ###2016.10.15
-- update speedtest-linux to 1.0.2-b
+- update zpeters speedtest-linux to 1.0.2-b
 ###2016.10.09
 - update for 6.3
 ###2016.09.16
