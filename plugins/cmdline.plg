@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "cmdline">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.01.22">
+<!ENTITY version   "2017.01.28">
 <!ENTITY launch    "Settings/CommandLineSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -22,6 +22,10 @@ This Plugin installs and controls shellinabox for unRaid 6.1  All dependencies a
 <CHANGES>
 ##&name;
 ###&version;
+- update security for XSS and CSRF vulnerabilities
+- strip down screenfetch for slackware/unRAID
+- add unRAID version to screenshot
+###2017.01.22
 - update shellinabox unofficial to latest v2.20
 - add: security patches
 - fix: suppress var.ini parse error
@@ -170,7 +174,7 @@ else
  echo "-----------------------------------------------------------"
  echo " &name; has been installed."
  echo " This plugin requires Dynamix webGui to operate"
- echo " Copyright 2017, &author;"
+ echo " Copyright 2015-2017, &author;"
  echo " Version: &version;"
  echo "-----------------------------------------------------------"
  echo ""
@@ -195,7 +199,7 @@ rm -f &plgPATH;/*.txz \
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2017, &author;"
+echo " Copyright 2015-2017, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
