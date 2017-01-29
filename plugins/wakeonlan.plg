@@ -72,7 +72,7 @@ This plugin uses etherwake for wake on lan
 </FILE>
 
 <FILE Name="&plgPATH;/nmap-7.40-x86_64-1.txz" Min="6.2" Run="upgradepkg --install-new">
-<URL>&pkgURL;/nmap-7.12-x86_64-1.txz</URL>
+<URL>&pkgURL;/nmap-7.40-x86_64-1.txz</URL>
 <MD5>d48d79e1e57aaeb7aee322c78ad9b9a6</MD5>
 </FILE>
 
