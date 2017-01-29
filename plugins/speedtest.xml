@@ -19,7 +19,7 @@ This plugin interacts with the command line interface for testing internet bandw
 - remove local tablesorter
 - move js depends to cdn
 - add sivel version 1.0.2
-- update security 
+- harden code for XSS and CSRF vulnerabilities
 ###2017.01.07
 - update scripts
 - add support for speedtest-linux script
