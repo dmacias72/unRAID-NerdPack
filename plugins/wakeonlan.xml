@@ -13,7 +13,7 @@ Wake On Lan plugin allows you to scan your network, add and save computers from 
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/wakeonlan.png</Icon>
 <Date>2017-01-29</Date>
 <Changes>
-###2017.01.29
+###2017.01.29a
 - harden code for XSS and CSRF vulnerabilities
 - update nmap to 7.40
 - fix blank scan.xml causing errors
