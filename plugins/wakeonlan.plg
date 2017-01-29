@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "wakeonlan">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2016.10.24">
+<!ENTITY version   "2017.01.29">
 <!ENTITY launch    "Settings/Wakeonlan">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -18,6 +18,11 @@
 <CHANGES>
 ##&name;
 ###&version;
+- harden code for XSS and CSRF vulnerabilities
+- update nmap to 7.40
+- fix blank scan.xml causing errors
+- misc code improvements
+2016.10.24
 - fix: ip address variable
 - fix: scan not working
 ###2016.10.22
@@ -54,14 +59,6 @@
 </CHANGES>
 
 <!--
-The 'tablesorter' package file.
--->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2.27.6-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2.27.6-x86_64-1.txz</URL>
-<MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
-</FILE>
-
-<!--
 This plugin uses etherwake for wake on lan
 -->
 <FILE Name="&plgPATH;/etherwake-1.09-x86_64-5cf.txz" Min="6.1" Run="upgradepkg --install-new">
@@ -74,9 +71,9 @@ This plugin uses etherwake for wake on lan
 <MD5>435837a5bf0401a937d6ec93e458333b</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/nmap-7.12-x86_64-1.txz" Min="6.2" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/nmap-7.40-x86_64-1.txz" Min="6.2" Run="upgradepkg --install-new">
 <URL>&pkgURL;/nmap-7.12-x86_64-1.txz</URL>
-<MD5>79f5ae8093b85f19c483c0e9ec42e2b4</MD5>
+<MD5>d48d79e1e57aaeb7aee322c78ad9b9a6</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/nmap-6.40-x86_64-1.txz" Min="6.1" Max="6.1.99" Run="upgradepkg --install-new">
@@ -130,7 +127,7 @@ echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been installed."
 echo " This plugin requires Dynamix webGui to operate"
-echo " Copyright 2016, &author;"
+echo " Copyright 2016-2017, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
@@ -149,7 +146,7 @@ rm -f &plgPATH;/*.txz \
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2016, &author;"
+echo " Copyright 2016-2017, &author;"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
