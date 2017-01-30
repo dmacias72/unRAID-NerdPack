@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.01.27">
+<!ENTITY version   "2017.01.30">
 <!ENTITY launch    "Settings/SpeedtestSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -23,7 +23,10 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <CHANGES>
 ##&name;
 ###&version;
-- update security
+- update python to 2.7.13
+- add support link to readme
+###2017.01.27
+- more code for XSS and CSRF vulnerabilities
 ###2017.01.23
 - remove local tablesorter
 - move js depends to cdn

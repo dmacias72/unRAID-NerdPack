@@ -11,8 +11,11 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2017-01-27</Date>
+<Date>2017-01-30</Date>
 <Changes>
+###2017.01.30
+- update python to 2.7.13
+- add support link to readme
 ###2017.01.27
 - update security
 ###2017.01.23
