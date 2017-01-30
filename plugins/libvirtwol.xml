@@ -11,8 +11,14 @@ Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to 
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=44017.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
-<Date>2016-11-05</Date>
+<Date>2017.01.30</Date>
 <Changes>
+###2017.01.30
+- harden code for XSS and CSRF vulnerabilities
+- fix form not defined and submitting
+- update libvirt-python to 2.5.0 for 6.3
+- update python to 2.7.13
+- add support link to readme
 ###2016.11.05
 - fix: continue script on exception e.g. error in vm xml
 ###2016.10.22
