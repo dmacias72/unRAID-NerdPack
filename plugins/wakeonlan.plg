@@ -23,7 +23,7 @@
 - fix: blank scan.xml causing errors
 - misc code improvements
 - add: dynamix plugin update api
-2016.10.24
+###2016.10.24
 - fix: ip address variable
 - fix: scan not working
 ###2016.10.22
