@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.01.30">
+<!ENTITY version   "2017.01.30a">
 <!ENTITY launch    "Settings/VMSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -106,12 +106,12 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 <MD5>f8e0ec66914344f0894ff45f7d8561f5</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/libvirt-python-1.3.1-x86_64-1ponce.txz" Min="6.2" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/libvirt-python-1.3.1-x86_64-1ponce.txz" Min="6.2" Max="6.2.99" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libvirt-python-1.3.1-x86_64-1ponce.txz</URL>
 <MD5>9a64e4941dd9c7fa3b9c8bf244c9a2d3</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/libvirt-python-1.2.18-x86_64-1ponce.txz" Max="6.1.99" Run="upgradepkg --install-new">
+<FILE Name="&plgPATH;/libvirt-python-1.2.18-x86_64-1ponce.txz" Min="6.1" Max="6.1.99" Run="upgradepkg --install-new">
 <URL>&pkgURL;/libvirt-python-1.2.18-x86_64-1ponce.txz</URL>
 <MD5>4198c7784a57d7ff80fb1d53811ceb5e</MD5>
 </FILE>
