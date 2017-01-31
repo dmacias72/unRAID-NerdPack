@@ -147,14 +147,6 @@
  - cpio 2.11
 </CHANGES>
 
-<!--
-The 'tablesorter' package file.
--->
-<FILE Name="/boot/config/plugins/tablesorter/tablesorter-2.27.6-x86_64-1.txz" Run="/sbin/upgradepkg --install-new">
-<URL>&gitURL;/archive/tablesorter-2.27.6-x86_64-1.txz</URL>
-<MD5>ead9fb4c4a317e7d6426b3521f0e0c0b</MD5>
-</FILE>
-
 <FILE Name="&plgPATH;/&name;.cfg">
 <INLINE>
 <![CDATA[
