@@ -11,8 +11,10 @@ This plugin allows installation of extra packages, mostly CLI, for advanced user
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=37541.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/NerdPack.png</Icon>
-<Date>2016-10-20</Date>
+<Date>2017.01.30</Date>
 <Changes>
+###2017.01.30
+
 ###2016.10.20
 - fix: php7 compatibility
 ###2016.10.09

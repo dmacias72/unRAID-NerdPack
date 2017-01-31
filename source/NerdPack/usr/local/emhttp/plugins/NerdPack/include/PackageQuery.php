@@ -55,18 +55,18 @@ foreach ($pkgs_github_array as $pkg_github) {
         }
 
         $pkg = [
-            'name' => $pkg_github['name'], // add full package name
-            'pkgname' => $pkg_name, // add package name only
-            'pkgnver' => $pkg_nver, // add package name with underscored version
+            'name'       => $pkg_github['name'], // add full package name
+            'pkgname'    => $pkg_name, // add package name only
+            'pkgnver'    => $pkg_nver, // add package name with underscored version
             'pkgversion' => $pkg_version, // add package name with raw version
-            'size' => format_size($pkg_github['size'], 1, '?'), // add package size
-            'installed' => preg_grep($pkg_pattern, $pkgs_installed) ? 'yes' : 'no', // checks if package name is installed
-            'installeq' => in_array(pathinfo($pkg_github['name'], PATHINFO_FILENAME), $pkgs_installed) ? 'yes' : 'no', // checks if package installed equals github exactly
+            'size'       => format_size($pkg_github['size'], 1, '?'), // add package size
+            'installed'  => preg_grep($pkg_pattern, $pkgs_installed) ? 'yes' : 'no', // checks if package name is installed
+            'installeq'  => in_array(pathinfo($pkg_github['name'], PATHINFO_FILENAME), $pkgs_installed) ? 'yes' : 'no', // checks if package installed equals github exactly
             'downloaded' => preg_grep($pkg_pattern, $pkgs_downloaded) ? 'yes' : 'no', // checks if package name is downloaded
             'downloadeq' => in_array($pkg_github['name'], $pkgs_downloaded) ? 'yes' : 'no', // checks if package downloaded equals github exactly
-            'config' => $pkg_set, // install preference
-            'plugins' => $pkg_plgs, // plugins dependency on package
-            'desc' => $pkgs_desc_array[$pkg_name]
+            'config'     => $pkg_set, // install preference
+            'plugins'    => $pkg_plgs, // plugins dependency on package
+            'desc'       => $pkgs_desc_array[$pkg_name]
         ];
 
         $pkgs_array[] = $pkg;
@@ -75,7 +75,7 @@ foreach ($pkgs_github_array as $pkg_github) {
 
 $return = [
         'packages' => $pkgs_array,
-        'empty' => empty($pkgs_downloaded)
+        'empty'    => empty($pkgs_downloaded)
     ];
 
 echo json_encode($return);

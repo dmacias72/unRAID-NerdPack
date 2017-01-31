@@ -2,8 +2,8 @@ Icon="NerdPack.png"
 Menu="UserPreferences"
 Title="Nerd Pack"
 ---
-<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter.css">
-<link type="text/css" rel="stylesheet" href="/plugins/tablesorter/css/tablesorter-<?=$display["theme"];?>.css">
+<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter.css">
+<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter-<?=htmlspecialchars($display["theme"]);?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/NerdPack.css">
 
@@ -31,7 +31,7 @@ Title="Nerd Pack"
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
 
-<script type="text/javascript" src="/plugins/tablesorter/js/jquery.tablesorter.combined.min.js"></script>
-<script type="text/javascript" src="/plugins/tablesorter/js/parsers/parser-metric.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.combined.min.js" integrity="sha256-vrKUVFL6e2WKZ1sZ8oMOt3E7+x48uoubEk9qmBEGVH0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/js/parsers/parser-metric.min.js" integrity="sha256-SIkPAaAZ+8/AmijJwnVoHWW+q+fKil6V0NcK+MCnZvk=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
 <script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
