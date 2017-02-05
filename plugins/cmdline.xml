@@ -11,8 +11,11 @@ Command Line implements Shell In A Box. A web server that can export arbitrary c
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=42683.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/cmdline.png</Icon>
-<Date>2017.01.28</Date>
+<Date>2017.02.05</Date>
 <Changes>
+###2017.02.05
+- update some code to jquery
+- add support link in readme
 ###2017.01.28
 - update security for XSS and CSRF vulnerabilities
 - strip down screenfetch for slackware/unRAID
