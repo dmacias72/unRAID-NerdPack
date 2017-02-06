@@ -159,4 +159,8 @@ function checkDepends() {
         $('#python').switchButton({checked: true});
         $('#python', '.pkgvalue').val('yes');
     }
+    if ($('#vim')[0].checked) {
+        $('#perl').switchButton({checked: true});
+        $('#perl', '.pkgvalue').val('yes');
+    }
 }
