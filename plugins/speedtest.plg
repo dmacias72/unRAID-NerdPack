@@ -4,7 +4,7 @@
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
 <!ENTITY version   "2017.02.12a">
-<!ENTITY launch    "Settings/SpeedtestSettings">
+<!ENTITY launch    "Settings/SpeedtestSettingsTabs">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
