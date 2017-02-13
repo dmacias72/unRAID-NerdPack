@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.02.12a">
+<!ENTITY version   "2017.02.13">
 <!ENTITY launch    "Settings/SpeedtestSettingsTabs">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -23,6 +23,8 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 <CHANGES>
 ##&name;
 ###&version;
+- version bump
+###2017.02.12a
 - fix scheduler hourly setting
 - fix scheduler tab calculation
 ###2017.01.30

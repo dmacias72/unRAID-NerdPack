@@ -11,8 +11,10 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2017-02-12</Date>
+<Date>2017-02-13</Date>
 <Changes>
+###2017.02.13
+- version bump
 ###2017.02.12a
 - fix scheduler hourly setting
 - fix scheduler tab calculation
