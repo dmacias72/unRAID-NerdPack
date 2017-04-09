@@ -11,8 +11,10 @@ Wake On Lan plugin allows you to scan your network, add and save computers from 
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=38289.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/wakeonlan.png</Icon>
-<Date>2017-01-29</Date>
+<Date>2017-04-09</Date>
 <Changes>
+2017.04.09
+- fix empty ip address resulting in failed scan
 ###2017.01.29a
 - harden code for XSS and CSRF vulnerabilities
 - update nmap to 7.40
@@ -42,7 +44,7 @@ Wake On Lan plugin allows you to scan your network, add and save computers from 
 ###2015.03.05a
 - fix default ethernet interface
 ###2015.02.24
-- button bindings when editing 
+- button bindings when editing
 ###2015.02.21
 - added autosave
 - added table sorting
