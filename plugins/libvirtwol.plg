@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "libvirtwol">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.01.30a">
+<!ENTITY version   "2017.04.11">
 <!ENTITY launch    "Settings/VMSettings">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -21,7 +21,9 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 
 <CHANGES>
 ##&name;
-###&version;
+###2017.04.11
+- update python for 6.2, 6.3 and 6.4
+###2017.01.30a
 - harden code for XSS and CSRF vulnerabilities
 - fix form not defined and submitting
 - update libvirt-python to 2.5.0 for 6.3
@@ -86,14 +88,14 @@ This Plugin installs libvirt wake on lan for unRaid 6.1  All dependencies are in
 - initial commit
 </CHANGES>
 
-<FILE Name="&plgPATH;/python-2.7.13-x86_64-1.txz" Min="6.3" Run="upgradepkg --install-new">
-<URL>&gitURL;/packages/6.3/python-2.7.13-x86_64-1.txz</URL>
+<FILE Name="&plgPATH;/python-2.7.13-x86_64-1.txz" Min="6.4" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.4/python-2.7.13-x86_64-1.txz</URL>
 <MD5>67d18569672de5dd48e4dda2f7ce0e88</MD5>
 </FILE>
 
-<FILE Name="&plgPATH;/python-2.7.13-x86_64-1.txz" Min="6.2" Max="6.2.99" Run="upgradepkg --install-new">
-<URL>&gitURL;/packages/6.2/python-2.7.13-x86_64-1.txz</URL>
-<MD5>67d18569672de5dd48e4dda2f7ce0e88</MD5>
+<FILE Name="&plgPATH;/python-2.7.13a-x86_64-2.txz" Min="6.2" Max="6.3.99" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.3/python-2.7.13a-x86_64-2.txz</URL>
+<MD5>576078a891a9c50d19e04b1b2249dc05</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/python-2.7.9-x86_64-1.txz" Min="6.1" Max="6.1.99" Run="upgradepkg --install-new">

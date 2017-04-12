@@ -7,12 +7,14 @@
 <Category>Tools:System</Category>
 <Name>Virtual Machine Wake On Lan</Name>
 <Description>
-Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to wake or start up kvm virtual machines. 
+Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to wake or start up kvm virtual machines.
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=44017.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/libvirtwol.png</Icon>
-<Date>2017.01.30</Date>
+<Date>2017.04.11</Date>
 <Changes>
+###2017.04.11
+- update python for 6.2, 6.3 and 6.4
 ###2017.01.30a
 - harden code for XSS and CSRF vulnerabilities
 - fix form not defined and submitting
@@ -37,7 +39,7 @@ Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to 
 - add dynamix plugin API
 - add white-space: normal to fix status css formatting
 ###2016.03.23
-- remove libpcap from 6.2 install	
+- remove libpcap from 6.2 install
 ###2016.03.19
 - add wake on lan to advanced view
 ###2016.03.14
@@ -66,7 +68,7 @@ Wake On Lan for Virtual Machines. Allows you to recieve a wake on lan packet to 
 ###2015.11.17
 - fix start and stop event permissions
 ###2015.11.16
-- added promiscuous mode to listen for all packets 
+- added promiscuous mode to listen for all packets
 - will recieve all ether proto 0x0842 packets now
 ###2015.11.15
 - added support for ethertype 0x0842
