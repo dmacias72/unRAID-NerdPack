@@ -11,8 +11,12 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2017-02-13</Date>
+<Date>2017-04-11</Date>
 <Changes>
+###2017.04.11
+- update python for 6.2, 6.3 and 6.4
+- remove zpeter's speetest script due to end of development
+- add sivel script to 1.0.3
 ###2017.02.13
 - version bump
 ###2017.02.12a
@@ -81,7 +85,7 @@ This plugin interacts with the command line interface for testing internet bandw
 - fix: chart and table sync on changes
 - fix: filters save
 - fix: page refresh after manual test
-- fix: various minor css and code 
+- fix: various minor css and code
 - add settings icon
 - removed stacked charts
 - add: persistent chart selection cookie
@@ -128,7 +132,7 @@ This plugin interacts with the command line interface for testing internet bandw
 - save sort and filter settings
 - added default cfg
 ###2015.12.29
-- update tablesorter to v2.25.0 combined 
+- update tablesorter to v2.25.0 combined
 - add tablesorter filters to table
 - save speedtest host server
 - add shadow box display when running speedtest
@@ -139,7 +143,7 @@ This plugin interacts with the command line interface for testing internet bandw
 - Speedtest Cron Settings under Settings/Scheduler
 - Speedtest App under Tools/Speedtest
 ###2015.12.20
-- added speedtest-xml script to /usr/sbin/ for cron jobs 
+- added speedtest-xml script to /usr/sbin/ for cron jobs
 - added logging to speedtest.php for start and completion of the script
 ###2015.12.19
 - changed icon thanks to hernandito

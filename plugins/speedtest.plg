@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "speedtest">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.02.13">
+<!ENTITY version   "2017.04.11">
 <!ENTITY launch    "Settings/SpeedtestSettingsTabs">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
@@ -22,7 +22,11 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 
 <CHANGES>
 ##&name;
-###&version;
+###2017.04.11
+- update python for 6.2, 6.3 and 6.4
+- remove zpeter's speetest script due to end of development
+- add sivel script to 1.0.3
+###2017.02.13
 - version bump
 ###2017.02.12a
 - fix scheduler hourly setting
@@ -172,9 +176,14 @@ This Plugin installs speedtest-cli for unRaid 6.1  All dependencies are installe
 - initial commit
 </CHANGES>
 
-<FILE Name="&plgPATH;/python-2.7.13-x86_64-1.txz" Min="6.2" Run="upgradepkg --install-new">
-<URL>&gitURL;/packages/6.3/python-2.7.13-x86_64-1.txz</URL>
+<FILE Name="&plgPATH;/python-2.7.13-x86_64-1.txz" Min="6.4" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.4/python-2.7.13-x86_64-1.txz</URL>
 <MD5>67d18569672de5dd48e4dda2f7ce0e88</MD5>
+</FILE>
+
+<FILE Name="&plgPATH;/python-2.7.13a-x86_64-1.txz" Min="6.2" Max="6.3.99" Run="upgradepkg --install-new">
+<URL>&gitURL;/packages/6.3/python-2.7.13a-x86_64-1.txz</URL>
+<MD5>576078a891a9c50d19e04b1b2249dc05</MD5>
 </FILE>
 
 <FILE Name="&plgPATH;/python-2.7.9-x86_64-1.txz" Max="6.1.99" Run="/sbin/upgradepkg --install-new">
