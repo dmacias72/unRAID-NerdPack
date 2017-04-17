@@ -11,8 +11,11 @@ This plugin interacts with the command line interface for testing internet bandw
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=43500.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/speedtest.png</Icon>
-<Date>2017-04-11</Date>
+<Date>2017-04-16</Date>
 <Changes>
+###2017.04.16
+- fix: remove my dangling link
+- fix: set server default to 0 to prevent null variable if saved before server list loads
 ###2017.04.11
 - update python for 6.2, 6.3 and 6.4
 - remove zpeter's speetest script due to end of development
