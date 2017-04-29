@@ -3,7 +3,7 @@
 # NUT NOTIFYCMD script macester macecapri@gmail.com
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
-BATTERYLEVEL=50
+BATTERYLEVEL=20
 
 trap "exit 0" SIGTERM
 if [ "$NOTIFYTYPE" = "ONLINE" ]
