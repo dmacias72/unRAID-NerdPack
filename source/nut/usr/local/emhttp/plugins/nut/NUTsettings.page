@@ -18,23 +18,15 @@ Icon="nut.png"
  * Modified by macester macecapri@gmail.com for NUT plugin
  *
  */
-?>
 
-<?
 $sName = "nut";
 $cfg = parse_plugin_cfg($sName);
 ?>
 
-<script>
-function toggleCustomDriver(form) {
-  var readonly = form.DRIVER.value != 'custom';
-  form.SERIAL.readOnly = readonly;
-  if (readonly) form.SERIAL.value = '';
-}
-$(function() {
-  showStatus('upsmon');
-});
-</script>
+<table class="tablesorter shift nut" <?if (!file_exists('/var/run/upsmon.pid')):?>style="display:none"<?endif;?>>
+<thead><tr><th>UPS Status</th><th>Battery Charge %</th><th>Runtime Left </th><th>Nominal Power</th><th>UPS Load</th><th>UPS Load %</th></tr></thead>
+<tbody id="nut_summary"><tr><td colspan="6">&nbsp;</td></tr></tbody>
+</table>
 
 <form markdown="1" name="nut_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$sName?>/<?=$sName?>.cfg">
@@ -51,7 +43,7 @@ Start NUT UPS service:
 > Setting 'Yes' will also enable NUT on unRAID boot.
 
 UPS Driver:
-: <select name="DRIVER" size="1" onChange="toggleCustomDriver(this.form)">
+: <select id="DRIVER" name="DRIVER" size="1" >
   <?=mk_option($cfg['DRIVER'], "blazer_usb", "Blazer_usb");?>
   <?=mk_option($cfg['DRIVER'], "blazer_ser", "Blazer_ser");?>
   <?=mk_option($cfg['DRIVER'], "bcmxcp_usb", "Bcmxcp_usb");?>
@@ -59,7 +51,7 @@ UPS Driver:
   <?=mk_option($cfg['DRIVER'], "tripplite_usb", "Tripplite_usb");?>
   <?=mk_option($cfg['DRIVER'], "usbhid-ups", "Usbhid-ups");?>
   <?=mk_option($cfg['DRIVER'], "custom", "Custom");?>
-  </select>
+  </select><input type="text" class="serial" name="SERIAL" class="narrow" maxlength="40" value="<?=$cfg['SERIAL'];?>">
 
 > **Check the link below to find the driver matching your UPS**
 >
@@ -67,11 +59,6 @@ UPS Driver:
 >
 > For other devices set **Custom** and enter the driver manually below.
 > Dont forget to match the port with your driver
-
-
-Custom Driver:
-: <input type="text" name="SERIAL" class="narrow" maxlength="40" value="<?=$cfg['SERIAL'];?>">
-
 > Use the *Link* above to find which Driver to choose.
 > Dont forget to match the port with your driver
 
@@ -140,7 +127,7 @@ Turn off UPS after shutdown:
 > Check your bios and enable, "Automatically power on after power loss" so that the server starts again when powers is restored.
 
 
-<br><br><br>
+<br>
 
 > **Additional Notes**
 >
@@ -152,34 +139,22 @@ Turn off UPS after shutdown:
 >
 > macester (macecapri@gmail.com)
 
-
 <input type="submit" name="#default" value="Default">
 : <input type="submit" name="#apply" value="Apply"><input type="button" value="Done" onclick="done()">
 </form>
-<div id="title"><span class="left"><img src="/plugins/nut/icons/nutsettings.png" class="icon">NUT Status</span></div>
 
-<script src="jquery.min.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-
+<script>
 $(function() {
+    showStatus('upsmon');
 
-    getStatus();
-
+    $('#DRIVER').change(checkSerial);
+    checkSerial();
 });
 
-function getStatus() {
-
-    $('div#nut_status').load('/plugins/nut/include/nut_status.php');
-    setTimeout("getStatus()",10000);
-
+function checkSerial(){
+    if ($('#DRIVER')[0].selectedIndex == 6)
+        $('.serial').css('visibility','visible')
+    else
+        $('.serial').css('visibility','hidden')
 }
-
 </script>
-
-<table class='share_status dash m0'>
-<thead>
-<tr><td colspan='3'>UPS Statistics</td></tr>
-</thead>
-<tr><td colspan='3'><div id='nut_status'></div></td></tr>
-</table>
