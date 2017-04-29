@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# NUT NOTIFYCMD script macester macecapri@gmail.com
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+SECONDS=200
+
+trap "exit 0" SIGTERM
+if [ "$NOTIFYTYPE" = "ONLINE" ]
+then
+        echo $0: power restored | wall
+                /usr/local/emhttp/plugins/dynamix/scripts/notify -e "UPS Notification" -s "UPS is no longer on battery" -i "normal"
+        # Cause all instances of this script to exit.
+        killall -s SIGTERM `basename $0`
+fi
+if [ "$NOTIFYTYPE" = "ONBATT" ]
+then
+		echo $0: System shuts down when there is $SECONDS seconds left on the battery... | wall
+		/usr/local/emhttp/plugins/dynamix/scripts/notify -e "UPS Notification" -s "UPS is on battery" -i "alert"
+			# Loop with one second interval to allow SIGTERM reception.
+			timer=$( /usr/bin/upsc ups|grep battery.runtime:|awk '{print $2}' )
+			while [ $timer -gt $SECONDS ]
+			do
+				sleep 1
+				timer=$( /usr/bin/upsc ups|grep battery.runtime:|awk '{print $2}' )
+			done
+		echo $0: commencing shutdown | wall
+       /usr/local/emhttp/plugins/dynamix/scripts/notify -e "UPS Notification" -s "UPS is shutting down unRAID" -i "alert"
+		upsmon -c fsd
+fi

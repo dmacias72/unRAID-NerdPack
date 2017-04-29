@@ -1,0 +1,11 @@
+#!/bin/bash
+cfg=/boot/config/plugins/nut/nut.cfg
+
+# Daemon already running or no custom file?
+[[ -f /var/run/upsmon.pid || ! -f $cfg ]] && exit
+
+# Read settings
+source $cfg
+
+# Start daemon
+[[ $SERVICE == enable ]] && /usr/local/emhttp/plugins/nut/scripts/rc.nut start
