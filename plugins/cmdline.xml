@@ -11,8 +11,10 @@ Command Line implements Shell In A Box. A web server that can export arbitrary c
 </Description>
 <Support>http://lime-technology.com/forum/index.php?topic=42683.0</Support>
 <Icon>https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/cmdline.png</Icon>
-<Date>2017.02.05</Date>
+<Date>2017.05.21</Date>
 <Changes>
+###2017.05.21
+- fix screenfetch not added to bash profile
 ###2017.02.05
 - update some code to jquery
 - add support link in readme
@@ -41,7 +43,7 @@ Command Line implements Shell In A Box. A web server that can export arbitrary c
 - fix: conform screenfetch OS: to 80 columns (remove brackets)
 - condense and restructure code
 ###2016.02.20
-- fix: update plugin ovewriting home directory with saved 
+- fix: update plugin ovewriting home directory with saved
 ###2016.02.11a
 - fix screenfetch error if emhttp/var.ini were not ready
 ###2016.02.11
