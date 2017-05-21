@@ -1,4 +1,0 @@
-if [ -f /usr/local/emhttp/plugins/nut/scripts/nut_kill_inverter ]; then
-        . /usr/local/emhttp/plugins/nut/scripts/nut_kill_inverter
-fi
-
