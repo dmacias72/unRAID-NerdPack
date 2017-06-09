@@ -13,3 +13,5 @@ To compile the packages for unRAID plugin run from the source directory
 This creates a slackware compliant package and md5 in the archive directory with the date as the version number
 And adds the date to the plugin file in plugins directory.
 e.g. plugin-2017.04.11-x86_64-1.txz and plugin-2016.02.12a-x86_64-1.md5
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BKQJF5NVA5E3S)
