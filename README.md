@@ -7,11 +7,12 @@ I manage this on my laptop running Linux Mint Mate
 
 I use Sublime Text as an editor and SmarGit to upload to github
 
-copy tar-1.13 from unRAID to /bin/tar-1.13
+copy tar-1.13 from unRAID to /bin/tar-1.13 on laptop
 
-copy makepkg from unRAID to /sbin/makepkg
+copy makepkg from unRAID to /sbin/makepkg on laptop
 
 I modified gfjardim's pkg_build.sh to take an argument and add arch type plus modified the lettering function
+
 To compile the packages for unRAID plugin run from the source directory
 
 sudo ./mkpkg plugin
