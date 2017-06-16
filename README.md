@@ -1,5 +1,9 @@
 # unRAID 6.1+
-unRAID plugins and packages
+unRAID NerdPack plugin and packages
+
+Collection of packages for unRAID.
+
+
 
 These are notes more for my memory or for anyone who wants to make unRAID plugins using this structure
 
