@@ -7,7 +7,7 @@ else
     PLUGIN=$(basename ${DIR})
     ARCHIVE="$(dirname $(dirname ${DIR}))/archive"
     DESTDIR="$TMPDIR/usr/local/emhttp/plugins/${PLUGIN}"
-    PLG_FILE="$(dirname $(dirname ${DIR}))/plugins/${PLUGIN}.plg"
+    PLG_FILE="$(dirname $(dirname ${DIR}))/plugin/${PLUGIN}.plg"
     VERSION=$(date +"%Y.%m.%d")
     ARCH="-x86_64-1"
     PACKAGE="${ARCHIVE}/${PLUGIN}-${VERSION}${ARCH}.txz"
