@@ -210,9 +210,10 @@ else
     fi
 
     if [ ! -d &plgPATH;/packages/$VER ]; then
+        echo "Creating package directory.."
         mkdir -p &plgPATH;/packages/$VER
-        OLD="$(echo  "${VER} - 0.1" | bc)"
-        if [ -d &plgPATH;/packages/$OLD ]; then
+        OLD=$(echo  "${VER} - 0.1" | bc)
+        if [ -d &plgPATH;/packages/${OLD} ]; then
             count2=`ls -1 /boot/config/plugins/NerdPack/packages/${OLD}/*.txz 2>/dev/null | wc -l`
             if [ $count2 != 0 ]; then
                 echo "Copying package files..."
