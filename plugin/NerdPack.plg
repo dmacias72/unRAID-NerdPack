@@ -6,7 +6,7 @@
 <!ENTITY version   "2017.06.17">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-&name;/master">
-<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
+<!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
 <!ENTITY plgNAME   "&name;-&version;-x86_64-1">
@@ -212,12 +212,24 @@ else
     if [ ! -d &plgPATH;/packages/$VER ]; then
         echo "Creating package directory.."
         mkdir -p &plgPATH;/packages/$VER
-        OLD=$(echo  "${VER} - 0.1" | bc)
+
+        #check for previous version
+        OLD=$(echo | awk "{print ${VER} - 0.1}")
         if [ -d &plgPATH;/packages/${OLD} ]; then
             count2=`ls -1 /boot/config/plugins/NerdPack/packages/${OLD}/*.txz 2>/dev/null | wc -l`
             if [ $count2 != 0 ]; then
                 echo "Copying package files..."
                 cp &plgPATH;/packages/${OLD}/* &plgPATH;/packages/${VER}/
+            fi
+        else
+            #check for two versions ago
+            OLD2=$(echo | awk "{print ${VER} - 0.2}")
+            if [ -d &plgPATH;/packages/${OLD2} ]; then
+                count3=`ls -1 /boot/config/plugins/NerdPack/packages/${OLD2}/*.txz 2>/dev/null | wc -l`
+                if [ $count3 != 0 ]; then
+                    echo "Copying package files..."
+                    cp &plgPATH;/packages/${OLD2}/* &plgPATH;/packages/${VER}/
+                fi
             fi
         fi
     fi
