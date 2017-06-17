@@ -137,7 +137,8 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
                 if (file_check_sha1($pkg_file, $pkg_sha1)){
                     $pkg_msg = 'package up to date, checksum ok.';
                 }else{
-                    unlink($pkg_file);
+                    if(!is_dir($pkg_file))
+                        unlink($pkg_file);
                     $pkg_msg = 'checksum failed! package deleted.';
                 }
             }else{
