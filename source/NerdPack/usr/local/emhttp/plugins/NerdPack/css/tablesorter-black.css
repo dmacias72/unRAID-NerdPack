@@ -2,25 +2,33 @@
 .tablesorter .headerSortUp,
 .tablesorter .tablesorter-headerSortUp,
 .tablesorter .tablesorter-headerAsc {
-	background-color:#101010;
+    background-color:#212421;
 }
 .tablesorter .headerSortDown,
 .tablesorter .tablesorter-headerSortDown,
 .tablesorter .tablesorter-headerDesc {
-	background-color:#101010;
+    background-color:#212421;
 }
 /* filter widget */
 .tablesorter .tablesorter-filter-row {
-	background-color: #101010;
+    background-color: #101010;
 }
 .tablesorter .tablesorter-filter-row td {
-	background-color: #101010;
-	border-bottom: #000000 1px solid;
+    background-color: #1b1d1b;
+    border-bottom: #101010 1px solid;
 }
 /* filters */
 .tablesorter input.tablesorter-filter,
 .tablesorter select.tablesorter-filter {
-	background-color: #000000;
-	border: 1px solid #101010;
-	color: #808080;
+    background-color: #1b1d1b;
+    border: 1px solid #101010;
+    color: #808080;
+}
+
+/* Zebra Widget - row alternating colors */
+.tablesorter tr.odd > td {
+    background-color: #202020;
+}
+.tablesorter tr.even > td {
+    background-color: #1b1d1b;
 }
