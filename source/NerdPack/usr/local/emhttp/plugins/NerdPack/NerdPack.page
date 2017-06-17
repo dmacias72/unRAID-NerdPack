@@ -3,35 +3,36 @@ Menu="UserPreferences"
 Title="Nerd Pack"
 ---
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter.css">
-<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter-<?=htmlspecialchars($display["theme"]);?>.css">
+<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter-<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'white' : 'black';?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/NerdPack.css">
 
 <form markdown="1" id="package_form" name="package_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" id="include" name="#include" value="/plugins/NerdPack/include/ClearConfig.php"/>
 
+<div class="wrapper">
 <table class="tablesorter hover-highlight" id="tblPackages">
     <thead>
         <tr>
             <th class="filter-name" data-placeholder="Search..."> Name </th>
-            <th class="filter-version" data-placeholder="by status"> Version </th>
+            <th class="filter-version" data-placeholder="by status"> Status </th>
             <th class="sorter-metric filter-false" data-placeholder="by size" data-metric-name-full="byte|Byte|BYTE" data-metric-name-abbr="b|B"> Size </th>
             <th class="filter-downloaded" data-placeholder="by download"> Downloaded </th>
             <th class="filter-installed" data-placeholder="by install"> Installed </th>
             <th class="filter-plugins" data-placeholder="Search..."> Plugins </th>
-            <th class="parser-false filter-false"><input id="checkall" type="checkbox"></th>
+            <th class="parser-false filter-false"><input id="uninstallpkg" type="checkbox"><input id="checkall" type="checkbox"></th>
         </tr>
     </thead>
     <tbody>
     </tbody>
 </table>
-
+</div>
 <input onclick="packageQuery(1)" value="Check for Updates" type="button"><input class="reset" type="button" title="reset filters" value="Reset Filters">
 : <input id="btnApply" type="button" value="Apply"><input type="button" value="Done" onClick="done()">
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.4/js/jquery.tablesorter.combined.min.js" integrity="sha256-vrKUVFL6e2WKZ1sZ8oMOt3E7+x48uoubEk9qmBEGVH0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.5/js/parsers/parser-metric.min.js" integrity="sha256-SIkPAaAZ+8/AmijJwnVoHWW+q+fKil6V0NcK+MCnZvk=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.14/js/jquery.tablesorter.combined.min.js" integrity="sha256-Ul0fApVKRIGL7cePK/x7jd+/7nkSImsPRIc1ltPRah4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.14/js/parsers/parser-metric.min.js" integrity="sha256-nwUWqoc2DYBOTTWF9tSJMiJuE5pNRDKNdlzZTpngPGQ=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
 <script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
