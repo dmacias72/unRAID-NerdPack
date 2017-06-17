@@ -1,15 +1,11 @@
 $(function(){
-    // add switches to title bar
-    $('#title')
-            .append("<span class='status'><input id='uninstallpkg' type='checkbox'></span>")
-            .append("<span class='status'><input id='deletepkg' type='checkbox'></span>");
-
     // tablesorter options
     $('#tblPackages').tablesorter({
         sortList: [[0,0]],
-        widgets: ['saveSort', 'filter', 'stickyHeaders'],
+        widgets: ['saveSort', 'filter', 'stickyHeaders', 'zebra'],
         widgetOptions: {
-            stickyHeaders_filteredToTop: true,
+            stickyHeaders_filteredToTop: false,
+            //stickyHeaders_yScroll: $('.page_nerdpack'),
             filter_hideEmpty: true,
             filter_liveSearch: true,
             filter_saveFilters: true,
@@ -25,25 +21,13 @@ $(function(){
     // "uninstall package" switch and cookie
     $('#uninstallpkg')
         .switchButton({
-            labels_placement: 'left',
+            labels_placement: 'right',
             on_label: 'unInstall On',
             off_label: 'unInstall Off',
             checked: $.cookie('nerdpack_packages_uninstall') == '--uninstall'
         })
         .change(function () {
             $.cookie('nerdpack_packages_uninstall', $('#uninstallpkg')[0].checked ? '--uninstall' : '', { expires: 3650 });
-        });
-
-    // "delete package" switch and cookie
-    $('#deletepkg')
-        .switchButton({
-            labels_placement: 'left',
-            on_label: 'delete On',
-            off_label: 'delete Off',
-            checked: $.cookie('nerdpack_packages_delete') == '--delete'
-        })
-        .change(function () {
-            $.cookie('nerdpack_packages_delete', $('#deletepkg')[0].checked ? '--delete' : '', { expires: 3650 });
         });
 
     // select all packages switch
@@ -60,17 +44,7 @@ $(function(){
             $('#tblPackages tbody td:visible .pkgcheckbox').switchButton({checked: myval});
         });
 
-    // set cookie on apply button press
-    $('#btnApply').click(function() {
-        checkDepends();
-        var Arg2 = (typeof $.cookie('nerdpack_packages_uninstall') === 'undefined') ? '' : '&arg2='+$.cookie('nerdpack_packages_uninstall');
-        var Arg3 = (typeof $.cookie('nerdpack_packages_delete')    === 'undefined') ? '' : '&arg3='+$.cookie('nerdpack_packages_delete');
-        $.post('/update.php', $('#package_form').serializeArray(), function() {
-                openBox('/plugins/NerdPack/scripts/packagemanager&arg1=--download'+ Arg2 + Arg3,
-                            'Package Manager', 600, 900, true);
-            }
-        );
-    });
+    $('#btnApply').click(Apply);
 
     packageQuery();
 });
@@ -88,7 +62,7 @@ function packageQuery(force) {
             if (data.packages[i].downloadeq == data.packages[i].downloaded && data.packages[i].installeq == data.packages[i].installed){
                 Update = "<span><i class='uptodate fa fa-check'></i> up-to-date </span>";
             }else{
-                Update = "<span ><a><i class='updateready fa fa-cloud-download'></i> update ready </a></span>";
+                Update = "<span ><a class='update'><i class='updateready fa fa-cloud-download'></i> update ready </a></span>";
                 Ready = true;
             }
 
@@ -97,8 +71,6 @@ function packageQuery(force) {
                 Downloaded = 'old';
 
             var Installed = data.packages[i].installed;
-            if (data.packages[i].installeq != data.packages[i].installed)
-                Installed = 'old';
 
             var Checked = "";
             if (data.packages[i].config=="yes"){
@@ -134,20 +106,45 @@ function packageQuery(force) {
                 $('#btnApply').prop("disabled", false);
             });
 
+        // attach submit to update ready
+        $('.update').click(Apply);
+
         // restore filters
         var lastSearch = $('#tblPackages')[0].config.lastSearch;
         $('#tblPackages').trigger('update')
         .trigger('search', [lastSearch]);
 
         if (data.empty == true && Count > 0) {
-            swal({title:'Downloaded Packages Missing!',text:'You either changed unRAID versions or deleted your downloaded packages. Click the Apply button below to download and install your selected packages.',type:'warning',closeOnConfirm: true,},function() {
-                $('#btnApply').prop('disabled', false);
-                $('html, body').animate({
-                    scrollTop: $("#btnApply").offset().top
-                }, 2000);
-            });
+            swal({
+                title:'Downloaded Packages Missing!',
+                text:'You either changed unRAID versions or deleted your downloaded packages. Click Download or the Apply button below to download and install your selected packages.',
+                type:'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#00AA00",
+                confirmButtonText: 'Download',
+                closeOnConfirm: true,},
+                function(isConfirm) {
+                    $('#btnApply').prop('disabled', false);
+                    if(isConfirm)
+                        Apply();
+                    else
+                        $('html, body').animate({
+                            scrollTop: $("#btnApply").offset().top
+                        }, 2000);
+                }
+            );
         }
     });
+}
+
+function Apply() {
+        checkDepends();
+        var Arg2 = (typeof $.cookie('nerdpack_packages_uninstall') === 'undefined') ? '' : '&arg2='+$.cookie('nerdpack_packages_uninstall');
+        $.post('/update.php', $('#package_form').serializeArray(), function() {
+                openBox('/plugins/NerdPack/scripts/packagemanager&arg1=--download'+ Arg2,
+                            'Package Manager', 600, 900, true);
+            }
+        );
 }
 
 function checkDepends() {
