@@ -5,8 +5,8 @@ $pkg_path = $plg_path."packages/$os_version/"; // package path
 if (!is_dir($pkg_path))
     mkdir($pkg_path);
 
-$pkg_desc = 'https://raw.githubusercontent.com/dmacias72/unRAID-plugins/master/plugins/packages-desc';
-$pkg_repo = "https://api.github.com/repos/dmacias72/unRAID-plugins/contents/packages/$os_version";
+$pkg_desc = 'https://raw.githubusercontent.com/dmacias72/unRAID-NerdPack/master/packages/packages-desc';
+$pkg_repo = "https://api.github.com/repos/dmacias72/unRAID-NerdPack/contents/packages/$os_version";
 
 $desc_file   = $pkg_path.'packages-desc';
 $repo_file   = $pkg_path.'packages.json';
