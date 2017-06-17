@@ -3,9 +3,9 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.02.06">
+<!ENTITY version   "2017.06.17">
 <!ENTITY launch    "Settings/&name;">
-<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-plugins/master">
+<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-&name;/master">
 <!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
 <!ENTITY pkgURL    "&gitURL;/source/packages">
 <!ENTITY plgPATH   "/boot/config/plugins/&name;">
@@ -17,7 +17,13 @@
 
 <CHANGES>
 ##&name;
-###&version;
+###2017.06.17
+- combine delete and uninstall switch
+- add cleanup of old packages
+- add support for azure and gray themes
+- change to separate repo
+- update tablesorter
+###2017.02.06
 - fix support link
 - add perl toggle for vim
 ###2017.01.31
@@ -29,7 +35,7 @@
 - fix: not creating package directory
 ###2016.10.08
 - fix: false positive of installed packages
-- fix: packagemanager bug if cookies are missing 
+- fix: packagemanager bug if cookies are missing
 ###2016.09.18
 - fix: packagemanager array errors
 ###2016.09.16
@@ -203,21 +209,16 @@ else
         mv  &plgPATH;/packages/*txz  &plgPATH;/packages/6.1
     fi
 
-    if [[ $VER == 6.3 ]]; then
-        if [ ! -d &plgPATH;/packages/$VER ]; then
-            mkdir -p &plgPATH;/packages/$VER
-            if [ -d &plgPATH;/packages/6.2 ]; then
-                count2=`ls -1 /boot/config/plugins/NerdPack/packages/6.2/*.txz 2>/dev/null | wc -l`
-                if [ $count2 != 0 ]; then
-                    echo "Copying package files..."
-                    cp &plgPATH;/packages/6.2/* &plgPATH;/packages/$VER/
-                fi
-            fi
-        fi
-    fi
-
     if [ ! -d &plgPATH;/packages/$VER ]; then
         mkdir -p &plgPATH;/packages/$VER
+        OLD="$(echo  "${VER} - 0.1" | bc)"
+        if [ -d &plgPATH;/packages/$OLD ]; then
+            count2=`ls -1 /boot/config/plugins/NerdPack/packages/${OLD}/*.txz 2>/dev/null | wc -l`
+            if [ $count2 != 0 ]; then
+                echo "Copying package files..."
+                cp &plgPATH;/packages/${OLD}/* &plgPATH;/packages/${VER}/
+            fi
+        fi
     fi
 
     upgradepkg --install-new &plgPATH;/&plgNAME;.txz
