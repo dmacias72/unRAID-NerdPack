@@ -20,10 +20,9 @@ Usage: packagemanager [options]
 
 EOF;
 
-$shortopts = "drquv";
+$shortopts = "dquv";
 $longopts = [
     "debug",
-    "delete",
     "download",
     "help",
     "quiet",
@@ -45,7 +44,6 @@ if (array_key_exists("version", $args)) {
 
 $argd = (array_key_exists("d", $args) || array_key_exists("download", $args));
 $argq = (array_key_exists("q", $args) || array_key_exists("quiet", $args));
-$argr = (array_key_exists("r", $args) || array_key_exists("delete", $args));
 $argu = (array_key_exists("u", $args) || array_key_exists("uninstall", $args));
 $argv = (array_key_exists("v", $args) || array_key_exists("verbose", $args));
 $debug = array_key_exists("debug", $args);
@@ -65,6 +63,8 @@ function debug($m){
 
 logger('Processing Packages...');
 
+$pkg_find = '';
+
 foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each package
     $pkg_cmd = '';
     $pkg_name    = str_replace('_', '.', $pkg_name); // replace "_" with "." in package names
@@ -72,6 +72,7 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
     $pkg_install_status  = preg_grep($pkg_pattern, $pkgs_installed); // check install status
     $pkg_download_status = preg_grep($pkg_pattern, $pkgs_downloaded); // check package download status
     $pkg_online_status   = preg_grep($pkg_pattern, $pkgs_github_array);
+    $pkg_find .= " ! -name '".$pkg_name."*'";
 
     $pkg_matches = array_filter($pkgs_github_array, function($a) use ($pkg_pattern) {
         return preg_grep($pkg_pattern, $a);
@@ -122,20 +123,14 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
         if($plugins){
             logger("$pkg_name in use by another plugin, not uninstalled.",$argq);
         }else{
-            $pkg_msg = 'Uninstalling';
-            $pkg_cmd = 'removepkg '.$pkg_path.$pkg_name.'* 2>&1';
-            if ($argr) {
-                $pkg_cmd .= '; rm '.$pkg_path.$pkg_name.'* 2>&1';
-                $pkg_msg .= ' and deleting';
-            }
+            $pkg_msg = 'Uninstalling and deleting';
+            $pkg_cmd = 'removepkg '.$pkg_path.$pkg_name.'* 2>&1; rm '.$pkg_path.$pkg_name.'* 2>&1';
         }
     }
 
     if (!empty($pkg_cmd)) {
         logger("$pkg_msg $pkg_name package...");
         shell_exec($pkg_cmd);
-        //$output = shell_exec($pkg_cmd);
-        //logger($output);
     }else{
         if ($pkg_pref == 'yes'){
             if (file_exists($pkg_file)){
@@ -153,6 +148,10 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
         }
     }
 }
+logger('Cleaning up packages...');
+
+$cmd = "find ".$pkg_path." -type f ! -name 'packages.json' ! -name 'packages-desc'".$pkg_find." -delete 2>&1";
+shell_exec($cmd);
 
 logger('All packages processed...');
 
