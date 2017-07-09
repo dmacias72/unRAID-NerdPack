@@ -60,9 +60,9 @@ foreach ($pkgs_github_array as $pkg_github) {
             'pkgnver'    => $pkg_nver, // add package name with underscored version
             'pkgversion' => $pkg_version, // add package name with raw version
             'size'       => format_size($pkg_github['size'], 1, '?'), // add package size
-            'installed'  => preg_grep($pkg_pattern, $pkgs_installed) ? 'yes' : 'no', // checks if package name is installed
+            'installed'  => !empty(preg_grep($pkg_pattern, $pkgs_installed)) ? 'yes' : 'no', // checks if package name is installed
             'installeq'  => in_array(pathinfo($pkg_github['name'], PATHINFO_FILENAME), $pkgs_installed) ? 'yes' : 'no', // checks if package installed equals github exactly
-            'downloaded' => preg_grep($pkg_pattern, $pkgs_downloaded) ? 'yes' : 'no', // checks if package name is downloaded
+            'downloaded' => !empty(preg_grep($pkg_pattern, $pkgs_downloaded)) ? 'yes' : 'no', // checks if package name is downloaded
             'downloadeq' => in_array($pkg_github['name'], $pkgs_downloaded) ? 'yes' : 'no', // checks if package downloaded equals github exactly
             'config'     => $pkg_set, // install preference
             'plugins'    => $pkg_plgs, // plugins dependency on package

@@ -67,11 +67,12 @@ $pkg_find = '';
 
 foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each package
     $pkg_cmd = '';
+    $pkg_msg = '';
     $pkg_name    = str_replace('_', '.', $pkg_name); // replace "_" with "." in package names
     $pkg_pattern = '/^'.$pkg_name.'.-*/'; // search pattern for packages
-    $pkg_install_status  = preg_grep($pkg_pattern, $pkgs_installed); // check install status
-    $pkg_download_status = preg_grep($pkg_pattern, $pkgs_downloaded); // check package download status
-    $pkg_online_status   = preg_grep($pkg_pattern, $pkgs_github_array);
+    $pkg_install_status  = !empty(preg_grep($pkg_pattern, $pkgs_installed)); // check install status
+    $pkg_download_status = !empty(preg_grep($pkg_pattern, $pkgs_downloaded)); // check package download status
+    $pkg_online_status   = !empty(preg_grep($pkg_pattern, $pkgs_github_array));
     $pkg_find .= " ! -name '".$pkg_name."*'";
 
     $pkg_matches = array_filter($pkgs_github_array, function($a) use ($pkg_pattern) {
@@ -119,7 +120,7 @@ foreach ($pkg_cfg as $pkg_name => $pkg_pref) { // get preferences for each packa
             $pkg_cmd = 'upgradepkg --install-new '.$pkg_path.$pkg_name.'* 2>&1';
         }
 
-    } else if ($pkg_pref == 'no' && $pkg_install_status && $argu) {
+    } elseif ($pkg_pref == 'no' && $pkg_download_status && $argu) {
         if($plugins){
             logger("$pkg_name in use by another plugin, not uninstalled.",$argq);
         }else{
