@@ -15,3 +15,7 @@
     white-space:nowrap;
     cursor: pointer;
 }
+.uninstalled {
+    white-space:nowrap;
+    cursor: inherit;
+}

@@ -59,21 +59,24 @@ function packageQuery(force) {
         var len = data.packages.length, i = 0;
         for (i; i < len; i++) {
             var Update;
-            if (data.packages[i].downloadeq == data.packages[i].downloaded && data.packages[i].installeq == data.packages[i].installed){
-                Update = "<span><i class='uptodate fa fa-check'></i> up-to-date </span>";
+            var Downloaded = data.packages[i].downloaded;
+            var DownloadEQ = data.packages[i].downloadeq;
+            var Installed  = data.packages[i].installed;
+            if (DownloadEQ == Downloaded && data.packages[i].installeq == Installed){
+                if (Installed == "yes")
+                    Update = "<span><i class='uptodate fa fa-check'></i> up-to-date </span>";
+                else
+                    Update = "<span><i class='uninstalled fa fa-info-circle'></i> uninstalled </span>";
             }else{
                 Update = "<span ><a class='update'><i class='updateready fa fa-cloud-download'></i> update ready </a></span>";
                 Ready = true;
             }
 
-            var Downloaded = data.packages[i].downloaded;
-            if (data.packages[i].downloadeq != data.packages[i].downloaded)
+            if (DownloadEQ != Downloaded)
                 Downloaded = 'old';
 
-            var Installed = data.packages[i].installed;
-
             var Checked = "";
-            if (data.packages[i].config=="yes"){
+            if (data.packages[i].config == "yes"){
                 Checked = "checked";
                 Count++;
             }
