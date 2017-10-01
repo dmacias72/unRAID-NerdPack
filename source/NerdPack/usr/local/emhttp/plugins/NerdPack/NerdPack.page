@@ -20,7 +20,7 @@ Title="Nerd Pack"
             <th class="filter-downloaded" data-placeholder="by download"> Downloaded </th>
             <th class="filter-installed" data-placeholder="by install"> Installed </th>
             <th class="filter-plugins" data-placeholder="Search..."> Plugins </th>
-            <th class="parser-false filter-false"><input id="uninstallpkg" type="checkbox"><input id="checkall" type="checkbox"></th>
+            <th class="parser-false filter-false"><input class="uninstallpkg" type="checkbox"><input class="checkall" type="checkbox"></th>
         </tr>
     </thead>
     <tbody>
@@ -32,7 +32,7 @@ Title="Nerd Pack"
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.14/js/jquery.tablesorter.combined.min.js" integrity="sha256-Ul0fApVKRIGL7cePK/x7jd+/7nkSImsPRIc1ltPRah4=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.14/js/parsers/parser-metric.min.js" integrity="sha256-nwUWqoc2DYBOTTWF9tSJMiJuE5pNRDKNdlzZTpngPGQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.combined.min.js" integrity="sha256-yZK2xfWbDpFuKS9ePpiTtRQlWree+/wtT/xevo8L8WE=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/parsers/parser-metric.min.js" integrity="sha256-nwUWqoc2DYBOTTWF9tSJMiJuE5pNRDKNdlzZTpngPGQ=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
 <script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
