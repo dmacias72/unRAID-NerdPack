@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2017.10.01a">
+<!ENTITY version   "2017.10.01b">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-&name;/master">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
@@ -17,7 +17,7 @@
 
 <CHANGES>
 ##&name;
-###2017.10.01a
+###2017.10.01b
 - fix stickyheaders for new themes
 - show status for installed packages but no dpwnloaded
 - update tablesorter to 2.29.0
