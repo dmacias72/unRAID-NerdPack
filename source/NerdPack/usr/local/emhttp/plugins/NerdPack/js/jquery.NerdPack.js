@@ -4,8 +4,9 @@ $(function(){
         sortList: [[0,0]],
         widgets: ['saveSort', 'filter', 'stickyHeaders', 'zebra'],
         widgetOptions: {
-            stickyHeaders_filteredToTop: false,
-            //stickyHeaders_yScroll: $('.page_nerdpack'),
+            stickyHeaders_filteredToTop: true,
+            stickyHeaders_attachTo: null,
+            stickyHeaders_offset: ($('#header').css("position") === "fixed") ? '90' : '0',
             filter_hideEmpty: true,
             filter_liveSearch: true,
             filter_saveFilters: true,
@@ -19,7 +20,7 @@ $(function(){
     });
 
     // "uninstall package" switch and cookie
-    $('#uninstallpkg')
+    $('.uninstallpkg')
         .switchButton({
             labels_placement: 'right',
             on_label: 'unInstall On',
@@ -31,7 +32,7 @@ $(function(){
         });
 
     // select all packages switch
-    $('#checkall')
+    $('.checkall')
         .switchButton({
             labels_placement: 'right',
             on_label: 'Select All',
@@ -62,11 +63,16 @@ function packageQuery(force) {
             var Downloaded = data.packages[i].downloaded;
             var DownloadEQ = data.packages[i].downloadeq;
             var Installed  = data.packages[i].installed;
-            if (DownloadEQ == Downloaded && data.packages[i].installeq == Installed){
-                if (Installed == "yes")
-                    Update = "<span><i class='uptodate fa fa-check'></i> up-to-date </span>";
-                else
+            var InstallEQ  = data.packages[i].installeq;
+            if (DownloadEQ == Downloaded && InstallEQ == Installed){
+                if (Installed == "yes"){
+                    if (Downloaded == "no")
+                        Update = "<span ><i class='installed fa fa-check-circle'></i> installed</span>";
+                    else
+                        Update = "<span><i class='uptodate fa fa-check'></i> up-to-date </span>";
+                }else{
                     Update = "<span><i class='uninstalled fa fa-info-circle'></i> uninstalled </span>";
+                }
             }else{
                 Update = "<span ><a class='update'><i class='updateready fa fa-cloud-download'></i> update ready </a></span>";
                 Ready = true;
@@ -79,7 +85,7 @@ function packageQuery(force) {
             if (data.packages[i].config == "yes"){
                 Checked = "checked";
                 Count++;
-            }
+           }
 
             $('#tblPackages tbody').append("<tr>"+
             "<td class='package' title='"+data.packages[i].desc+"'>"+data.packages[i].name+"</td>"+ // package name
@@ -154,6 +160,10 @@ function checkDepends() {
     if ($('#screen')[0].checked) {
         $('#utempter').switchButton({checked: true});
         $('#utempter', '.pkgvalue').val('yes');
+    }
+    if ($('#expect')[0].checked) {
+        $('#tcl').switchButton({checked: true});
+        $('#tcl', '.pkgvalue').val('yes');
     }
     if ($('#iotop')[0].checked) {
         $('#python').switchButton({checked: true});
