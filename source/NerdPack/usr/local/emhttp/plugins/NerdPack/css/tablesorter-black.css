@@ -22,12 +22,6 @@
     border: 1px solid #101010;
     color: #808080;
 }
-
-/* Zebra Widget - row alternating colors */
-.tablesorter tr.odd > td {
-    background-color: #202020;
-}
-.tablesorter tr.even > td,
 .tablesorter-headerRow {
     background-color: #1b1d1b;
 }

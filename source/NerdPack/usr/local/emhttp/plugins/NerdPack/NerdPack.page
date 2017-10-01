@@ -6,6 +6,14 @@ Title="Nerd Pack"
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter-<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'white' : 'black';?>.css">
 <link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/NerdPack.css">
+<style>
+table.tablesorter tbody tr:nth-child(odd) {
+    background-color: #<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'FFFFFF' : '212421';?>;
+}
+table.tablesorter tbody tr:nth-child(even) {
+    background-color: #<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'e4e2e4' : '1b1d1b';?>;
+}
+</style>
 
 <form markdown="1" id="package_form" name="package_settings" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" id="include" name="#include" value="/plugins/NerdPack/include/ClearConfig.php"/>
