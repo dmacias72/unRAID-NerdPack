@@ -1,9 +1,7 @@
 /* header */
 .tablesorter .headerSortUp,
 .tablesorter .tablesorter-headerSortUp,
-.tablesorter .tablesorter-headerAsc {
-    background-color:#212421;
-}
+.tablesorter .tablesorter-headerAsc,
 .tablesorter .headerSortDown,
 .tablesorter .tablesorter-headerSortDown,
 .tablesorter .tablesorter-headerDesc {
@@ -29,6 +27,7 @@
 .tablesorter tr.odd > td {
     background-color: #202020;
 }
-.tablesorter tr.even > td {
+.tablesorter tr.even > td,
+.tablesorter-headerRow {
     background-color: #1b1d1b;
 }
