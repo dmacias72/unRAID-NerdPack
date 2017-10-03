@@ -28,7 +28,7 @@ $(function(){
             checked: $.cookie('nerdpack_packages_uninstall') == '--uninstall'
         })
         .change(function () {
-            $.cookie('nerdpack_packages_uninstall', $('#uninstallpkg')[0].checked ? '--uninstall' : '', { expires: 3650 });
+            $.cookie('nerdpack_packages_uninstall', $('.uninstallpkg')[0].checked ? '--uninstall' : '', { expires: 3650 });
         });
 
     // select all packages switch
