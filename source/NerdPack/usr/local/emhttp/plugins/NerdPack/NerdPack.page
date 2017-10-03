@@ -40,7 +40,7 @@ table.tablesorter tbody tr:nth-child(even) {
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/jquery.tablesorter.combined.min.js" integrity="sha256-yZK2xfWbDpFuKS9ePpiTtRQlWree+/wtT/xevo8L8WE=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.0/js/parsers/parser-metric.min.js" integrity="sha256-nwUWqoc2DYBOTTWF9tSJMiJuE5pNRDKNdlzZTpngPGQ=" crossorigin="anonymous"></script>
+<script src="/plugins/NerdPack/js/jquery.tablesorter.combined.min.js"></script>
+<script src="/plugins/NerdPack/js/parser-metric.min.js"></script>
 <script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
 <script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
