@@ -23,8 +23,8 @@ $(function(){
     $('.uninstallpkg')
         .switchButton({
             labels_placement: 'right',
-            on_label: 'unInstall On',
-            off_label: 'unInstall Off',
+            on_label: 'unInstall',
+            off_label: 'unInstall',
             checked: $.cookie('nerdpack_packages_uninstall') == '--uninstall'
         })
         .change(function () {
