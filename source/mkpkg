@@ -25,6 +25,7 @@ else
     done
 
     sed -i -e "s#\(ENTITY\s*version[^\"]*\).*#\1\"${VERSION}\">#" "$PLG_FILE"
+    sed -i "/##&name/a\###${VERSION}" "$PLG_FILE"
 
     mkdir -p "${TMPDIR}/"
     cd "$DIR"
