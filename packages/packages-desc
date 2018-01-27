@@ -5,6 +5,7 @@
  "bc":"bc is an arbitrary precision numeric processing language. Syntax is similar to C, but differs in many substantial areas. It supports interactive execution of statements.",
  "bind":"The named daemon and support utilities such as dig, host, and nslookup. Sample configuration files for running a simple caching nameserver are included.",
  "bwm-ng":"A small and simple curses-based bandwidth monitor for Linux or other systems with \/proc\/net\/dev or net-tools netstat. You can choose whether to show all interfaces or only those interfaces that are up.",
+ "ccat":"Similar to cat but displays content with syntax highlighting.",
  "cdrtools":"Tools for mastering and writing compact discs.",
  "cksfv":"Check SFV creates simple file verification (.sfv) It can also list and verify existing sfv files. It uses the crc32 checksum. This is used to verify that the files that you received are the same as the originals.",
  "cpio":"A program to manage archives of files. This package also includes mt, a tape drive control program. cpio copies files into or out of a cpio or tar archive, which is a file that contains other files plus information about them, such as their pathname, owner, timestamps, and access permissions. The archive can be another file on the disk, a magnetic tape, or a pipe.",
