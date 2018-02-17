@@ -173,4 +173,12 @@ function checkDepends() {
         $('#perl').switchButton({checked: true});
         $('#perl', '.pkgvalue').val('yes');
     }
+    if ($('#borgbackup')[0].checked) {
+        $('#python3').switchButton({checked: true});
+        $('#python3', '.pkgvalue').val('yes');
+    }
+    if ($('#pip')[0].checked) {
+        $('#python').switchButton({checked: true});
+        $('#python', '.pkgvalue').val('yes');
+    }
 }
