@@ -29,6 +29,7 @@
  "joe":"Joseph H. Allen easy to use text editor, similar to WordStar(tm)",
  "jq-onig":"A lightweight and flexible command-line JSON processor. oniguruma Regular expression library included.",
  "kbd":"Load and save keyboard mappings. Needed if you are not using the US keyboard map. This package also contains utilities to change your console fonts - if you install it you ll get a menu later on that lets you select from many different fonts. If you like one, you can make it your default font. A new default font can be chosen at any time by typing setconsolefont.",
+ "ksh93":"KornShell is a powerful interactive shell offering a robust programming language with such features as associative arrays and built in integer math operations.",
  "lbzip2":"pthreads-based parallel bzip2\/bunzip2",
  "lftp":"A program that allows sophisticated ftp and http connections to other hosts. lftp can handle many file access methods including ftp, ftps, http, https, hftp, fish and file. Every operation in lftp is reliable, that is any non-fatal error is ignored and the operation is retried. lftp has shell-like command syntax. Has a built in mirror feature which can download or upload a whole directory tree. To learn about many more features of lftp, see  man lftp.",
  "lrzip":"A file compression program designed to do particularly well on very large files containing long distance redundancy.  The larger the file and the more memory you have, the better the compression advantage this will provide.  A variety of compression options allow optimizing for size or speed.",
