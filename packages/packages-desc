@@ -57,6 +57,7 @@
  "rsnapshot":"A remote backup program that uses rsync to take backup snapshots of filesystems. It uses hard links to save space on disk.",
  "reptyr":"A utility for taking an existing running program and attaching it to a new terminal.",
  "screen":"A full-screen window manager that multiplexes a physical terminal between several processes (typically interactive shells). Each virtual terminal provides the functions of a DEC VT100 terminal and several control functions from the ISO 6492 (ECMA 48, ANSI X3.64) and ISO 2022 standards.",
+ "sdparm":"A utility for listing and potentially changing SCSI disk parameters.",
  "serf":"The serf library is a high performance C-based HTTP client library built upon the Apache Portable Runtime (APR) library.",
  "slocate":"An enhanced version of locate, a command to help you locate files on the system. Like the original version of locate, it maintains a database of files on the system, updating it nightly. Unlike the original, it indexes every file on the machine rather than only the ones that can be seen by everyone. The secure part of slocate is that it will only return matches if the user is allowed to see the files.",
  "sshfs-fuse":"This is a filesystem client based on the SSH File Transfer Protocol. Since most SSH servers already support this protocol it is very easy to set up: i.e. on the server side there s nothing to do. On the client side mounting the filesystem is as easy as logging into the server with ssh.",
