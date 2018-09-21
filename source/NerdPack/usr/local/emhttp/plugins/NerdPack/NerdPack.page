@@ -2,10 +2,10 @@ Icon="NerdPack.png"
 Menu="UserPreferences"
 Title="Nerd Pack"
 ---
-<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter.css">
+<link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/tablesorter.css');?>">
 <link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter-<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'white' : 'black';?>.css">
-<link type="text/css" rel="stylesheet" href="/webGui/styles/jquery.switchbutton.css">
-<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/NerdPack.css">
+<link type="text/css" rel="stylesheet" href="<?=autov('/webGui/styles/jquery.switchbutton.css');?>">
+<link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/NerdPack.css');?>">
 <style>
 table.tablesorter tbody tr:nth-child(odd) {
     background-color: #<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'F0F0F0' : '212421';?>;
@@ -40,7 +40,7 @@ table.tablesorter tbody tr:nth-child(even) {
 <input type="hidden" name="#file" value="NerdPack/NerdPack.cfg">
 </form>
 
-<script src="/plugins/NerdPack/js/jquery.tablesorter.combined.min.js"></script>
-<script src="/plugins/NerdPack/js/parser-metric.min.js"></script>
-<script type="text/javascript" src="/webGui/javascript/jquery.switchbutton.js"></script>
-<script type="text/javascript" src="/plugins/NerdPack/js/jquery.NerdPack.js"></script>
+<script src="<?=autov('/plugins/NerdPack/js/jquery.tablesorter.combined.min.js');?>"></script>
+<script src="<?=autov('/plugins/NerdPack/js/parser-metric.min.js');?>"></script>
+<script type="text/javascript" src="<?=autov('/webGui/javascript/jquery.switchbutton.js');?>"></script>
+<script type="text/javascript" src="<?=autov('/plugins/NerdPack/js/jquery.NerdPack.js');?>"></script>
