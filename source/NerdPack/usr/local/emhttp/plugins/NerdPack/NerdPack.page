@@ -3,7 +3,7 @@ Menu="UserPreferences"
 Title="Nerd Pack"
 ---
 <link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/tablesorter.css');?>">
-<link type="text/css" rel="stylesheet" href="/plugins/NerdPack/css/tablesorter-<?=($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'white' : 'black';?>.css">
+<link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/tablesorter-'.(($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'white' : 'black').'.css');?>">
 <link type="text/css" rel="stylesheet" href="<?=autov('/webGui/styles/jquery.switchbutton.css');?>">
 <link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/NerdPack.css');?>">
 <style>
