@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2018.09.20">
+<!ENTITY version   "2019.01.24">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-&name;/master">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
@@ -17,6 +17,8 @@
 
 <CHANGES>
 ##&name;
+###2019.01.24
+- update settings icon to fa font
 ###2018.09.20
 - add autov to css and js
 - remove support link from readme
@@ -201,11 +203,11 @@ The 'install' script.
 -->
 <FILE Run="/bin/bash" Method="install">
 <INLINE>
-#Verify unRAID Version
+#Verify Unraid Version
 source /etc/unraid-version
 VER=${version:0:3}
 if [[ $VER == 6.0 ]]; then
-  echo "unRAID version 6.1 or higher is required"
+  echo "Unraid version 6.1 or higher is required"
   exit 1
 fi
 
@@ -264,7 +266,7 @@ echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been installed."
 echo " This plugin requires Dynamix webGui to operate"
-echo " Copyright 2016-2018, &author;, eschultz"
+echo " Copyright 2016-2019, &author;, eschultz"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
@@ -285,7 +287,7 @@ rm -f &plgPATH;/&plgNAME;.md5
 echo ""
 echo "-----------------------------------------------------------"
 echo " &name; has been removed."
-echo " Copyright 2016-2018, &author;, eschultz"
+echo " Copyright 2016-2019, &author;, eschultz"
 echo " Version: &version;"
 echo "-----------------------------------------------------------"
 echo ""
