@@ -1,6 +1,7 @@
 Icon="dropbox"
 Menu="UserPreferences"
 Title="Nerd Pack"
+Tag="dropbox"
 ---
 <link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/tablesorter.css');?>">
 <link type="text/css" rel="stylesheet" href="<?=autov('/plugins/NerdPack/css/tablesorter-'.(($display['theme'] == 'white' || $display['theme'] == 'azure') ? 'white' : 'black').'.css');?>">
