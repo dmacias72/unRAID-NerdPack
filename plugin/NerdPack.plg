@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2019.01.25">
+<!ENTITY version   "2019.12.31">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-&name;/master">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
@@ -17,6 +17,9 @@
 
 <CHANGES>
 ##&name;
+###2019.12.31
+- fix package subset fals positives
+- update depends
 ###2019.01.25
 - remove all icons and convert to fa fonts
 - fix tablesorter overwriting summarized notifications css
