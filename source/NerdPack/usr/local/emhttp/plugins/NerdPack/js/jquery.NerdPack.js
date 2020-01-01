@@ -160,6 +160,12 @@ function checkDepends() {
     if ($('#screen')[0].checked) {
         $('#utempter').switchButton({checked: true});
         $('#utempter', '.pkgvalue').val('yes');
+        $('#ncurses-terminfo').switchButton({checked: true});
+        $('#ncurses-terminfo', '.pkgvalue').val('yes');
+    }
+    if ($('#tmux')[0].checked) {
+        $('#ncurses-terminfo').switchButton({checked: true});
+        $('#ncurses-terminfo', '.pkgvalue').val('yes');
     }
     if ($('#expect')[0].checked) {
         $('#tcl').switchButton({checked: true});
@@ -176,9 +182,9 @@ function checkDepends() {
     if ($('#borgbackup')[0].checked) {
         $('#python3').switchButton({checked: true});
         $('#python3', '.pkgvalue').val('yes');
-    }
-    if ($('#pip')[0].checked) {
-        $('#python').switchButton({checked: true});
-        $('#python', '.pkgvalue').val('yes');
+        $('#python-setuptools').switchButton({checked: true});
+        $('#python-setuptools', '.pkgvalue').val('yes');
+        $('#llfuse').switchButton({checked: true});
+        $('#llfuse', '.pkgvalue').val('yes');
     }
 }
