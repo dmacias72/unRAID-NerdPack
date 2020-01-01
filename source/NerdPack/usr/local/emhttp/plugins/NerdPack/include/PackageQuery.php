@@ -30,7 +30,7 @@ foreach ($pkgs_github_array as $pkg_github) {
 
         $pkg_nver    = $pkg_name.'-'.str_replace('.', '_', $pkg_version); // add underscored version to package name
 
-        $pkg_pattern = '/^'.$pkg_name.'-.*/'; // search pattern for packages
+        $pkg_pattern = '/^'.$pkg_name.'-[0-9].*/'; // search pattern for packages
 
         // check all plugins for package dependency
         $plugins =  [];
