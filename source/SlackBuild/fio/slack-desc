@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+   |-----handy-ruler------------------------------------------------------|
+fio: fio (Flexible I/O Tester)
+fio:
+fio: fio is a tool that will spawn a number of threads or processes doing
+fio: a particular type of io action as specified by the user. fio takes a
+fio: number of global parameters, each inherited by the thread unless
+fio: otherwise parameters given to them overriding that setting is given.
+fio: The typical use of fio is to write a job file matching the io load
+fio: one wants to simulate.
+fio:
+fio: Homepage: http://git.kernel.dk/cgit/fio/
+fio:
