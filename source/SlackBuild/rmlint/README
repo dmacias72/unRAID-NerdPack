@@ -1,0 +1,6 @@
+rmlint
+
+rmlint finds space waste and other broken things on your filesystem
+and offers to remove it. Extremely fast. Paranoia mode for those 
+who do not trust hashsums. Many output formats. No interactivity.
+Search for files only newer than a certain mtime.

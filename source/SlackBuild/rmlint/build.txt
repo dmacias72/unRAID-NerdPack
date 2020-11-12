@@ -1,0 +1,10 @@
+installpkg python 2.x
+installpkg scons
+installpkg pysetuptool
+installpkg pip
+pip install --upgrade pip
+pip install sphinx
+cd rmlint
+scons config
+scons -j4 --prefix=/usr install
+makepkg -l y -c y /boot/build/rmlint/rmlint-2.4.6-x86_64-1.txz
