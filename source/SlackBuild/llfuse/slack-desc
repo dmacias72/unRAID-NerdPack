@@ -11,9 +11,9 @@ llfuse:
 llfuse: LLFUSE is a set of Python bindings for the low level FUSE API.
 llfuse: It requires at least FUSE 2.8.0 and supports both Python 2.x and 3.x.
 llfuse:
-llfuse: Homepage: https://bitbucket.org/nikratio/python-llfuse/
+llfuse: Warning - no longer maintained
+llfuse: Python-LLFUSE is no longer actively maintained. Unless you are stuck 
+llfuse: with Python 2.x or libfuse 2.x, use the pyfuse3 module instead.
 llfuse:
-llfuse:
-llfuse:
-llfuse:
+llfuse: Homepage: https://github.com/python-llfuse/python-llfuse
 llfuse:
