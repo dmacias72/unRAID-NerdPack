@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=borgbackup
-VERSION=${VERSION:-1.1.14}
+VERSION=${VERSION:-1.1.15}
 BUILD=${BUILD:-1}
 TAG=${TAG:-}
 
@@ -68,6 +68,13 @@ find -L . \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+# Modify the setup.py file so the system library build preferences are disabled.
+# This causes the built-in versions of blake2, zstd, lz4, and xxHash to be used
+sed -i 's/prefer_system_liblz4 = True/prefer_system_liblz4 = False/' setup.py
+sed -i 's/prefer_system_libzstd = True/prefer_system_libzstd = False/' setup.py
+sed -i 's/prefer_system_libb2 = True/prefer_system_libb2 = False/' setup.py
+sed -i 's/prefer_system_libxxhash = True/prefer_system_libxxhash = False/' setup.py
 
 python3 setup.py install --root=$PKG
 
