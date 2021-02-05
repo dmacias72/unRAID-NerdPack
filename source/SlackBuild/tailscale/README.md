@@ -44,7 +44,7 @@ Manual package installation and usage for Unraid:
   * b) Append the following to `/boot/config/stop`
       ```bash
       killall tailscaled
-      /usr/local/bin/tailscaled --cleanup
+      /usr/sbin/tailscaled --cleanup
       ```
       
 6. Reboot Unraid
