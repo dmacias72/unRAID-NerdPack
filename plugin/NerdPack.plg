@@ -3,7 +3,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "NerdPack">
 <!ENTITY author    "dmacias72">
-<!ENTITY version   "2021.01.08">
+<!ENTITY version   "2021.08.11">
 <!ENTITY launch    "Settings/&name;">
 <!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/unRAID-&name;/master">
 <!ENTITY pluginURL "&gitURL;/plugin/&name;.plg">
@@ -17,6 +17,8 @@
 
 <CHANGES>
 ##&name;
+###2021.08.11
+- Allow Multiple Digit Version Revisions thanks to Keith Lamprecht
 ###2021.01.08
 - fix plugin package permisions
 ###2019.12.31
