@@ -1,6 +1,6 @@
 <?php
 $plg_path = '/boot/config/plugins/NerdPack/'; // plugin path
-$os_version = substr(parse_ini_file('/etc/unraid-version')['version'],0,3);
+$os_version = strtok(parse_ini_file('/etc/unraid-version')['version'], '.') . '.' . strtok('.');
 $pkg_path = $plg_path."packages/$os_version/"; // package path
 if (!is_dir($pkg_path))
     mkdir($pkg_path);
